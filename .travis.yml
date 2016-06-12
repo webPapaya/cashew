@@ -4,5 +4,5 @@ node_js:
 script: bash ./deploy.sh
 env:
   global:
-  - ENCRYPTION_LABEL: openssl aes-256-cbc -K $encrypted_056edb9fd3e4_key -iv $encrypted_056edb9fd3e4_iv -in deploy.key.enc -out deploy.key -d
+  - ENCRYPTION_LABEL: 056edb9fd3e4
   - COMMIT_AUTHOR_EMAIL: "thomas+deploy@mayrhofer.at"
