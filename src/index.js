@@ -1,15 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from './store';
+import { createActions } from './actions';
 
-const createActions = ({ store }) => {
-  const incrementCounter = () => {
-    const { counter } = store.read();
-    store.update({ counter: counter + 1 });
-  };
-
-  return { incrementCounter };
-};
 
 const store = createStore({ counter: 0 });
 const actions = createActions({ store });
@@ -19,6 +12,8 @@ const Counter = ({ clickAmount }) =>
     <div>{ clickAmount }</div>
     <button onClick={ actions.incrementCounter }>Click me</button>
   </div>;
+
+
 
 store.subscribe(() => {
   const { counter } = store.read();
