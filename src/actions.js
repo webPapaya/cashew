@@ -1,12 +1,12 @@
 export const createActions = ({ store }) => {
-  const updateCounter = (newValue) => {
-    store.update({ counter: newValue });
-  };
+  const repositoriesLoaded = (reposFromRemote) => {
+    const repos = reposFromRemote.map((repo) => ({
+      name: repo.name,
+      url: repo.html_url,
+    }));
 
-  const incrementCounter = () => {
-    const { counter } = store.read();
-    updateCounter(counter + 1);
+    store.update({ repos });
   };
-
-  return { incrementCounter, updateCounter };
+  
+  return { repositoriesLoaded };
 };

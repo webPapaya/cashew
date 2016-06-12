@@ -1,30 +1,38 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import fetch from 'node-fetch';
 
 import { createStore } from './store';
 import { createActions } from './actions';
 
-const INITIAL_STORE_DATA = { counter: 0 };
+const INITIAL_STORE_DATA = {};
 
 const store = createStore(INITIAL_STORE_DATA);
 const actions = createActions({ store });
 
-const Counter = ({ clickAmount }) => {
-  const updateCounter = (evt) => {
-    const inputValue = parseInt(evt.currentTarget.value, 10);
-    actions.updateCounter(inputValue);
-  };
+const RepositoryList = ({ repos = [] }) => {
+  const repoList = repos.map((repo, index) =>
+    <li key={ index }><a href={ repo.url }>{ repo.name }</a></li>
+  );
 
   return (
-    <div>
-      <div>{ clickAmount }</div>
-      <button onClick={ actions.incrementCounter }>Click me</button>
-      <input type="range" min="-100" max="100" value={ clickAmount } onChange={ updateCounter }/>
-    </div>
+    <ul>
+      { repoList }
+    </ul>
   );
 };
 
-store.subscribe(() => {
-  const { counter } = store.read();
-  ReactDOM.render(<Counter clickAmount={ counter }/>, document.getElementById('main'));
-});
+const createRepositorySubscription = () => {
+  fetch("https://api.github.com/users/webpapaya/repos")
+    .then((result) => result.json())
+    .then((result) => {
+      actions.repositoriesLoaded(result);
+    });
+
+  return () => {
+    const { repos } = store.read();
+    ReactDOM.render(<RepositoryList repos={ repos }/>, document.getElementById('main'));
+  }
+};
+
+store.subscribe(createRepositorySubscription());
