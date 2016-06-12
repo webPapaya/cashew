@@ -35681,7 +35681,9 @@ var _actions = require('./actions');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var store = (0, _store.createStore)({ counter: 0 });
+var INITIAL_STORE_DATA = { counter: 0 };
+
+var store = (0, _store.createStore)(INITIAL_STORE_DATA);
 var actions = (0, _actions.createActions)({ store: store });
 
 var Counter = function Counter(_ref) {
