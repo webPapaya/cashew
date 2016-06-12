@@ -35673,12 +35673,11 @@ var createActions = function createActions(_ref) {
   return { incrementCounter: incrementCounter };
 };
 
-var store = (0, _store.createStore)();
+var store = (0, _store.createStore)({ counter: 0 });
 var actions = createActions({ store: store });
 
 var Counter = function Counter(_ref2) {
-  var _ref2$clickAmount = _ref2.clickAmount;
-  var clickAmount = _ref2$clickAmount === undefined ? 0 : _ref2$clickAmount;
+  var clickAmount = _ref2.clickAmount;
   return _react2.default.createElement(
     'div',
     null,
@@ -35722,7 +35721,9 @@ var _Rx2 = _interopRequireDefault(_Rx);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var createStore = exports.createStore = function createStore() {
-  var data = {};
+  var initialData = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+  var data = initialData;
   var renderLoop = new _Rx2.default.Subject();
 
   var read = function read() {
