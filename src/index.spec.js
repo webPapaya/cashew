@@ -11,5 +11,15 @@ describe('store', () => {
       assertThat(store.read(), equalTo({}))
     });
   });
+
+  describe('update', () => {
+    it('stores new data in the store', () => {
+      const store = createStore();
+      const newData = { myData: 'will be stored' };
+
+      store.update(newData);
+      assertThat(store.read(), equalTo(newData))
+    });
+  });
 });
 
