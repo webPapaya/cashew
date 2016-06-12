@@ -35645,21 +35645,12 @@ module.exports = function symbolObservablePonyfill(root) {
 };
 
 },{}],505:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _store = require('./store');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var createActions = function createActions(_ref) {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var createActions = exports.createActions = function createActions(_ref) {
   var store = _ref.store;
 
   var incrementCounter = function incrementCounter() {
@@ -35673,11 +35664,28 @@ var createActions = function createActions(_ref) {
   return { incrementCounter: incrementCounter };
 };
 
-var store = (0, _store.createStore)({ counter: 0 });
-var actions = createActions({ store: store });
+},{}],506:[function(require,module,exports){
+'use strict';
 
-var Counter = function Counter(_ref2) {
-  var clickAmount = _ref2.clickAmount;
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _store = require('./store');
+
+var _actions = require('./actions');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var store = (0, _store.createStore)({ counter: 0 });
+var actions = (0, _actions.createActions)({ store: store });
+
+var Counter = function Counter(_ref) {
+  var clickAmount = _ref.clickAmount;
   return _react2.default.createElement(
     'div',
     null,
@@ -35695,16 +35703,16 @@ var Counter = function Counter(_ref2) {
 };
 
 store.subscribe(function () {
-  var _store$read2 = store.read();
+  var _store$read = store.read();
 
-  var counter = _store$read2.counter;
+  var counter = _store$read.counter;
 
   _reactDom2.default.render(_react2.default.createElement(Counter, { clickAmount: counter }), document.getElementById('main'));
 });
 
 store.update();
 
-},{"./store":506,"react":167,"react-dom":29}],506:[function(require,module,exports){
+},{"./actions":505,"./store":507,"react":167,"react-dom":29}],507:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35744,4 +35752,4 @@ var createStore = exports.createStore = function createStore() {
   return { read: read, update: update, subscribe: subscribe };
 };
 
-},{"rxjs/Rx":177}]},{},[505]);
+},{"rxjs/Rx":177}]},{},[506]);
