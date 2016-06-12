@@ -20,6 +20,17 @@ describe('store', () => {
       store.update(newData);
       assertThat(store.read(), equalTo(newData))
     });
+
+    it('doesn\'t overwrite existing data', () => {
+      const store = createStore();
+      store.update({ firstUpdate: 'firstUpdate' });
+      store.update({ secondUpdate: 'secondUpdate' });
+      
+      assertThat(store.read(), equalTo({
+        firstUpdate: 'firstUpdate',
+        secondUpdate: 'secondUpdate',
+      }));
+    });
   });
 });
 
