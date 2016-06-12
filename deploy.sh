@@ -24,7 +24,7 @@ function setupDeployKeys {
 }
 
 function deploy {
-  wget -o deploy_to_branch.sh https://github.com/X1011/git-directory-deploy/raw/master/deploy.sh && chmod +x deploy_to_branch.sh
+  wget -O deploy_to_branch.sh https://github.com/X1011/git-directory-deploy/raw/master/deploy.sh && chmod +x deploy_to_branch.sh
   ./deploy_to_branch.sh
 }
 
