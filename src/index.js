@@ -14,12 +14,8 @@ const RepositoryList = ({ repos = [] }) => {
   const repoList = repos.map((repo, index) =>
     <li key={ index }><a href={ repo.url }>{ repo.name }</a></li>
   );
-
-  return (
-    <ul>
-      { repoList }
-    </ul>
-  );
+  
+  return (<ul>{ repoList }</ul>);
 };
 
 const createRepositorySubscription = () => {
