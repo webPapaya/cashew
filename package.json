@@ -4,7 +4,11 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "mkdir -p dist/; watchify --transform babelify --outfile=dist/crewmeister.js src/index.js --verbose",
+    "start": "mkdir -p dist/ && concurrently 'npm run build:html:watch' 'npm run build:js:watch' 'npm run serve:dev'",
+    "serve:dev": "http-server dist/ --silent",
+    "build:html": "cp src/index.html dist/index.html",
+    "build:html:watch": "chokidar 'src/**/*.html' --initial --command 'npm run build:html'",
+    "build:js:watch": "watchify --transform babelify --outfile=dist/index.js src/index.js --verbose",
     "test": "mocha src/ --recursive --compilers js:babel-register"
   },
   "repository": {
@@ -29,8 +33,11 @@
     "babel-register": "^6.9.0",
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
+    "chokidar-cli": "^1.2.0",
+    "concurrently": "^2.1.0",
     "eslint-config-crewmeister": "^2.0.0",
     "hamjest": "^2.13.0",
+    "http-server": "^0.9.0",
     "mocha": "^2.5.3",
     "uglify-js": "^2.6.2",
     "watchify": "^3.7.0"
