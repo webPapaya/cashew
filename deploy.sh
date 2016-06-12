@@ -47,7 +47,7 @@ git config user.email "$COMMIT_AUTHOR_EMAIL"
 
 # Run our compile script
 mkdir -p dist
-git subtree pull --prefix dist origin $TARGET_BRANCH
+git subtree pull --prefix dist origin $TARGET_BRANCH -m 'merge subtree'
 doCompile
 
 # If there are no changes to the compiled out (e.g. this is a README update) then just bail.
