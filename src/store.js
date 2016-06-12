@@ -5,8 +5,10 @@ export const createStore = (initialData = {}) => {
 
   const read = () => ({ ...data });
 
-  const subscribe = (...args) =>
-    renderLoop.subscribe(...args);
+  const subscribe = (next) => {
+    next('init');
+    renderLoop.subscribe(next);
+  };
 
   const update = (newData = {}) => {
     data = { ...data, ...newData };
