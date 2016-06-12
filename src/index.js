@@ -1,23 +1,6 @@
-import Rx from 'rxjs/Rx';
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-export const createStore = () => {
-  let data = {};
-  const renderLoop = new Rx.Subject();
-
-  const read = () => ({ ...data });
-
-  const subscribe = (...args) =>
-    renderLoop.subscribe(...args);
-
-  const update = (newData = {}) => {
-    data = { ...data, ...newData };
-    renderLoop.next(data);
-  };
-
-  return { read, update, subscribe };
-};
+import { createStore } from './store';
 
 const createActions = ({ store }) => {
   const incrementCounter = () => {
@@ -42,4 +25,4 @@ store.subscribe(() => {
   ReactDOM.render(<Counter clickAmount={ counter }/>, document.getElementById('main'));
 });
 
-// store.update();
+store.update();

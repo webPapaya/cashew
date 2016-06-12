@@ -1,8 +1,9 @@
-import { createStore } from './index';
 import {
   assertThat,
   equalTo,
 } from 'hamjest';
+
+import { createStore } from './store';
 
 describe('store', () => {
   describe('read', () => {
