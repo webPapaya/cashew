@@ -11,7 +11,7 @@
     "build:html": "cp src/index.html dist/index.html",
     "build:html:watch": "chokidar 'src/**/*.html' --initial --command 'npm run build:html'",
     "build:js:watch": "watchify --transform babelify --outfile=dist/index.js src/index.js --verbose",
-    "test": "mocha src/ --recursive --compilers js:babel-register"
+    "test": "mocha src/{*,**/*,**/**/*,**/**/**/*}.spec.js --recursive --compilers js:babel-register"
   },
   "repository": {
     "type": "git",
