@@ -13,6 +13,7 @@ const Counter = ({ clickAmount }) =>
   <div>
     <div>{ clickAmount }</div>
     <button onClick={ actions.incrementCounter }>Click me</button>
+    <input type="range" min="-100" max="100" value={ clickAmount } />
   </div>;
 
 store.subscribe(() => {
