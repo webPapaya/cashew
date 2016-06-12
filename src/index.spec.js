@@ -1,14 +1,14 @@
 import { createStore } from './index';
 import {
   assertThat,
-  equalTo
+  equalTo,
 } from 'hamjest';
 
 describe('store', () => {
   describe('read', () => {
     it('returns the stores data', () => {
       const store = createStore();
-      assertThat(store.read(), equalTo({}))
+      assertThat(store.read(), equalTo({}));
     });
   });
 
@@ -18,7 +18,7 @@ describe('store', () => {
       const newData = { myData: 'will be stored' };
 
       store.update(newData);
-      assertThat(store.read(), equalTo(newData))
+      assertThat(store.read(), equalTo(newData));
     });
 
     it('doesn\'t overwrite existing data', () => {
@@ -33,4 +33,3 @@ describe('store', () => {
     });
   });
 });
-

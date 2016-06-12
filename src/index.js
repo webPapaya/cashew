@@ -20,30 +20,26 @@ export const createStore = () => {
 };
 
 const createActions = ({ store }) => {
-  return {
-    incrementCounter() {
-      const { counter } = store.read();
-      store.update({ counter: counter + 1 });
-    }
-  }
+  const incrementCounter = () => {
+    const { counter } = store.read();
+    store.update({ counter: counter + 1 });
+  };
+
+  return { incrementCounter };
 };
 
 const store = createStore();
 const actions = createActions({ store });
 
-const Counter = ({ clickAmount = 0 }) => {
-  return(
-    <div>
-      <div>{ clickAmount }</div>
-      <button onClick={ actions.incrementCounter }>Click me</button>
-    </div>
-  );
-};
+const Counter = ({ clickAmount = 0 }) =>
+  <div>
+    <div>{ clickAmount }</div>
+    <button onClick={ actions.incrementCounter }>Click me</button>
+  </div>;
 
-// store.subscribe(() => {
-//   const { counter } = store.read();
-//   ReactDOM.render(<Counter clickAmount={ counter }/>, document.getElementById('main'));
-// });
+store.subscribe(() => {
+  const { counter } = store.read();
+  ReactDOM.render(<Counter clickAmount={ counter }/>, document.getElementById('main'));
+});
 
 // store.update();
-
