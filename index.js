@@ -35653,15 +35653,19 @@ Object.defineProperty(exports, "__esModule", {
 var createActions = exports.createActions = function createActions(_ref) {
   var store = _ref.store;
 
+  var updateCounter = function updateCounter(newValue) {
+    store.update({ counter: newValue });
+  };
+
   var incrementCounter = function incrementCounter() {
     var _store$read = store.read();
 
     var counter = _store$read.counter;
 
-    store.update({ counter: counter + 1 });
+    updateCounter(counter + 1);
   };
 
-  return { incrementCounter: incrementCounter };
+  return { incrementCounter: incrementCounter, updateCounter: updateCounter };
 };
 
 },{}],506:[function(require,module,exports){
@@ -35688,6 +35692,12 @@ var actions = (0, _actions.createActions)({ store: store });
 
 var Counter = function Counter(_ref) {
   var clickAmount = _ref.clickAmount;
+
+  var updateCounter = function updateCounter(evt) {
+    var inputValue = parseInt(evt.currentTarget.value, 10);
+    actions.updateCounter(inputValue);
+  };
+
   return _react2.default.createElement(
     'div',
     null,
@@ -35700,7 +35710,8 @@ var Counter = function Counter(_ref) {
       'button',
       { onClick: actions.incrementCounter },
       'Click me'
-    )
+    ),
+    _react2.default.createElement('input', { type: 'range', min: '-100', max: '100', value: clickAmount, onChange: updateCounter })
   );
 };
 
