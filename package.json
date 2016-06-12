@@ -5,7 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "start": "mkdir -p dist/ && concurrently 'npm run build:html:watch' 'npm run build:js:watch' 'npm run serve:dev'",
+    "build": "mkdir -p dist/ && npm run build:html && npm run build:js",
     "serve:dev": "http-server dist/ --silent",
+    "build:js": "browserify src/index.js --transform=babelify --outfile=dist/index.js",
     "build:html": "cp src/index.html dist/index.html",
     "build:html:watch": "chokidar 'src/**/*.html' --initial --command 'npm run build:html'",
     "build:js:watch": "watchify --transform babelify --outfile=dist/index.js src/index.js --verbose",
