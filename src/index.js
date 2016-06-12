@@ -11,10 +11,10 @@ const createActions = ({ store }) => {
   return { incrementCounter };
 };
 
-const store = createStore();
+const store = createStore({ counter: 0 });
 const actions = createActions({ store });
 
-const Counter = ({ clickAmount = 0 }) =>
+const Counter = ({ clickAmount }) =>
   <div>
     <div>{ clickAmount }</div>
     <button onClick={ actions.incrementCounter }>Click me</button>

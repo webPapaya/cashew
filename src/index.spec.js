@@ -6,6 +6,21 @@ import {
 import { createStore } from './store';
 
 describe('store', () => {
+  describe('create', () => {
+    it('can be initialized with initial data', () => {
+      const initialData = { initialData: 'initialData'};
+      const store = createStore(initialData);
+
+      assertThat(store.read(), equalTo(initialData));
+    });
+
+    it('without initial data given, responds {}', () => {
+      const store = createStore();
+      assertThat(store.read(), equalTo({}));
+    });
+  });
+
+
   describe('read', () => {
     it('returns the stores data', () => {
       const store = createStore();

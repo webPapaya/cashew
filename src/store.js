@@ -1,6 +1,6 @@
 import Rx from 'rxjs/Rx';
-export const createStore = () => {
-  let data = {};
+export const createStore = (initialData = {}) => {
+  let data = initialData;
   const renderLoop = new Rx.Subject();
 
   const read = () => ({ ...data });
