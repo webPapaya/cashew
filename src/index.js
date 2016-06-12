@@ -11,16 +11,18 @@ const actions = createActions({ store });
 
 const Counter = ({ clickAmount }) => {
   const updateCounter = (evt) => {
-    const inputValue = parseInt(evt.currentTarget.value);
+    const inputValue = parseInt(evt.currentTarget.value, 10);
     actions.updateCounter(inputValue);
   };
 
-  return <div>
-    <div>{ clickAmount }</div>
-    <button onClick={ actions.incrementCounter }>Click me</button>
-    <input type="range" min="-100" max="100" value={ clickAmount } onChange={ updateCounter }/>
-  </div>;
-}
+  return (
+    <div>
+      <div>{ clickAmount }</div>
+      <button onClick={ actions.incrementCounter }>Click me</button>
+      <input type="range" min="-100" max="100" value={ clickAmount } onChange={ updateCounter }/>
+    </div>
+  );
+};
 
 store.subscribe(() => {
   const { counter } = store.read();
