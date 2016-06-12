@@ -10,11 +10,13 @@ const INITIAL_STORE_DATA = {};
 const store = createStore(INITIAL_STORE_DATA);
 const actions = createActions({ store });
 
-const RepositoryList = ({ repos = [] }) => {
+const RepositoryList = ({ repos = [], status }) => {
+  if(status === 'fetching') { return <div>fetching</div>; }
+
   const repoList = repos.map((repo, index) =>
     <li key={ index }><a href={ repo.url }>{ repo.name }</a></li>
   );
-  
+
   return (<ul>{ repoList }</ul>);
 };
 
@@ -25,9 +27,11 @@ const createRepositorySubscription = () => {
       actions.repositoriesLoaded(result);
     });
 
+  actions.repositoriesLoading();
+
   return () => {
-    const { repos } = store.read();
-    ReactDOM.render(<RepositoryList repos={ repos }/>, document.getElementById('main'));
+    const { repos, status } = store.read();
+    ReactDOM.render(<RepositoryList repos={ repos } status={ status } />, document.getElementById('main'));
   }
 };
 
