@@ -35723,8 +35723,6 @@ store.subscribe(function () {
   _reactDom2.default.render(_react2.default.createElement(Counter, { clickAmount: counter }), document.getElementById('main'));
 });
 
-store.update();
-
 },{"./actions":505,"./store":507,"react":167,"react-dom":29}],507:[function(require,module,exports){
 'use strict';
 
@@ -35751,8 +35749,9 @@ var createStore = exports.createStore = function createStore() {
     return _extends({}, data);
   };
 
-  var subscribe = function subscribe() {
-    return renderLoop.subscribe.apply(renderLoop, arguments);
+  var subscribe = function subscribe(next) {
+    next('init');
+    renderLoop.subscribe(next);
   };
 
   var update = function update() {
