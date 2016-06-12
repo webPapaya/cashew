@@ -24,8 +24,6 @@ const Counter = ({ clickAmount }) => {
   );
 };
 
-
-
 store.subscribe(() => {
   const { counter } = store.read();
   ReactDOM.render(<Counter clickAmount={ counter }/>, document.getElementById('main'));
