@@ -3,7 +3,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 const rerenderLoop = new Rx.Subject();
-
 const AppState = {
   counter: 0
 };
@@ -11,7 +10,7 @@ const AppState = {
 const Actions = {
   incrementCounter() {
     AppState.counter += 1;
-    rerenderLoop.next(AppState.counter);
+    rerenderLoop.next();
   }
 };
 
