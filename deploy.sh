@@ -50,12 +50,11 @@ mkdir -p dist
 git subtree pull --prefix dist origin $TARGET_BRANCH -m 'merge subtree'
 doCompile
 
+git add dist -f
 # If there are no changes to the compiled out (e.g. this is a README update) then just bail.
 if [ -z `git diff --exit-code` ]; then
     echo "No changes to the output on this push; exiting."
     exit 0
 fi
-
-git add dist -f
 git commit -m "Deploy to GitHub Pages: ${SHA}"
 git subtree push --prefix dist origin $TARGET_BRANCH
