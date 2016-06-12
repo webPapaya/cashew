@@ -25,7 +25,7 @@ describe('store', () => {
       const store = createStore();
       store.update({ firstUpdate: 'firstUpdate' });
       store.update({ secondUpdate: 'secondUpdate' });
-      
+
       assertThat(store.read(), equalTo({
         firstUpdate: 'firstUpdate',
         secondUpdate: 'secondUpdate',
