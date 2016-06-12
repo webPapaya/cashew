@@ -2,8 +2,8 @@ import Rx from 'rxjs/Rx';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const createStore = () => {
-  let data = { counter: 0 };
+export const createStore = () => {
+  let data = {};
   const renderLoop = new Rx.Subject();
 
   const read = () => ({ ...data });
@@ -40,10 +40,10 @@ const Counter = ({ clickAmount = 0 }) => {
   );
 };
 
-store.subscribe(() => {
-  const { counter } = store.read();
-  ReactDOM.render(<Counter clickAmount={ counter }/>, document.getElementById('main'));
-});
+// store.subscribe(() => {
+//   const { counter } = store.read();
+//   ReactDOM.render(<Counter clickAmount={ counter }/>, document.getElementById('main'));
+// });
 
-store.update();
+// store.update();
 
