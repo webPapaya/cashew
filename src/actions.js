@@ -1,8 +1,12 @@
 export const createActions = ({ store }) => {
-  const incrementCounter = () => {
-    const { counter } = store.read();
-    store.update({ counter: counter + 1 });
+  const updateCounter = (newValue) => {
+    store.update({ counter: newValue });
   };
 
-  return { incrementCounter };
+  const incrementCounter = () => {
+    const { counter } = store.read();
+    updateCounter(counter + 1);
+  };
+
+  return { incrementCounter, updateCounter };
 };
