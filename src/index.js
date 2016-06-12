@@ -4,18 +4,20 @@ import ReactDOM from 'react-dom';
 
 const rerenderLoop = new Rx.Subject();
 
-const Counter = ({ data = 0 }) => {
-  const increment = () => rerenderLoop.next(data + 1)
-  
+
+
+const Counter = ({ clickAmount = 0 }) => {
+  const increment = () => rerenderLoop.next(clickAmount + 1)
+
   return(
     <div>
-      <div>{ data }</div>
+      <div>{ clickAmount }</div>
       <button onClick={ increment }>Click me</button>
     </div>
   );
 };
 
 rerenderLoop.subscribe((data) => {
-  ReactDOM.render(<Counter data={ data }/>, document.getElementById('main'));
+  ReactDOM.render(<Counter clickAmount={ data }/>, document.getElementById('main'));
 });
 rerenderLoop.next();
