@@ -1,6 +1,8 @@
+import { FETCHING, IDLE } from './states';
+
 export const createActions = ({ store }) => {
   const repositoriesLoading = () => {
-    store.update({ status: 'fetching' })
+    store.update({ status: FETCHING })
   };
 
   const repositoriesLoaded = (reposFromRemote) => {
@@ -9,7 +11,7 @@ export const createActions = ({ store }) => {
       url: repo.html_url,
     }));
 
-    store.update({ repos, status: 'idle' });
+    store.update({ repos, status: IDLE });
   };
   
   return { repositoriesLoading, repositoriesLoaded };

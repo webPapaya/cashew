@@ -4,6 +4,7 @@ import fetch from 'node-fetch';
 
 import { createStore } from './store';
 import { createActions } from './actions';
+import { FETCHING } from './states';
 
 const INITIAL_STORE_DATA = {};
 
@@ -11,7 +12,7 @@ const store = createStore(INITIAL_STORE_DATA);
 const actions = createActions({ store });
 
 const RepositoryList = ({ repos = [], status }) => {
-  if(status === 'fetching') { return <div>fetching</div>; }
+  if(status === FETCHING) { return <div>fetching</div>; }
 
   const repoList = repos.map((repo, index) =>
     <li key={ index }><a href={ repo.url }>{ repo.name }</a></li>
