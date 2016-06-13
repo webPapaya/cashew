@@ -15,8 +15,6 @@ const Counter = ({ counts }) => {
     actions.updateCounter(inputValue);
   };
 
-  console.log(counts)
-
   return (
     <div>
       <div>{ counts }</div>
