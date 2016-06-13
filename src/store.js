@@ -1,18 +1,19 @@
-import Rx from 'rxjs/Rx';
 export const createStore = (initialData = {}) => {
   let data = initialData;
-  const renderLoop = new Rx.Subject();
+  const updateCallbacks = [];
 
   const read = () => ({ ...data });
 
   const subscribe = (next) => {
-    next('init');
-    renderLoop.subscribe(next);
+    next(data);
+    updateCallbacks.push(next);
   };
 
   const update = (newData = {}) => {
     data = { ...data, ...newData };
-    renderLoop.next(data);
+    updateCallbacks.forEach((callback) => {
+      callback(data);
+    });
   };
 
   return { read, update, subscribe };
