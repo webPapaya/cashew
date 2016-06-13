@@ -47,4 +47,13 @@ describe('store', () => {
       }));
     });
   });
+  
+  describe('subscribe', () => {
+    it('is called on initialize', () => {
+      let wasCalled = false;
+      const store = createStore();
+      store.subscribe(() => { wasCalled = true; });
+      assertThat(wasCalled, equalTo(true));
+    });
+  });
 });
