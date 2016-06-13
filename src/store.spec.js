@@ -55,5 +55,14 @@ describe('store', () => {
       store.subscribe(() => { wasCalled = true; });
       assertThat(wasCalled, equalTo(true));
     });
+
+    it('is called on store update', () => {
+      let wasCalled = 0;
+      const store = createStore();
+      store.subscribe(() => { wasCalled += 1; });
+      store.update({});
+
+      assertThat(wasCalled, equalTo(2));
+    });
   });
 });
