@@ -7,7 +7,7 @@ const createOfflineStore = ({ adapter }) => {
 
   const update = (newData) => {
     const data = retrieveStorage();
-    adapter.updateStorage(JSON.stringify({ ...data, ...newData }));
+    adapter.updateStorage(JSON.stringify({ ...newData }));
   };
 
   return { findByKey, update };
@@ -40,7 +40,7 @@ describe('offline store', () => {
   });
 
   describe('update by key', () => {
-    it('updates a value by given key', () => {
+    it('updates store by given object', () => {
       const adapter = createDummyAdapter({});
       const offlineStore = createOfflineStore({ adapter });
 
