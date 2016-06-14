@@ -7,7 +7,7 @@ const createOfflineStore = ({ adapter }) => {
 
   const update = (newData) => {
     const data = retrieveStorage();
-    adapter.updateStorage(JSON.stringify({ ...newData }));
+    adapter.updateStorage(JSON.stringify({ ...data, ...newData }));
   };
 
   return { findByKey, update };
@@ -46,6 +46,14 @@ describe('offline store', () => {
 
       offlineStore.update({ myKey: 'myValue' });
       assertThat(offlineStore.findByKey('myKey'), equalTo('myValue'));
+    });
+
+    it('doesn\'t override existing data', () => {
+      const adapter = createDummyAdapter({ existing: 'value' });
+      const offlineStore = createOfflineStore({ adapter });
+
+      offlineStore.update({ myKey: 'myValue' });
+      assertThat(offlineStore.findByKey('existing'), equalTo('value'));
     });
   });
 });
