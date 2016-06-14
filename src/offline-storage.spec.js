@@ -3,23 +3,13 @@ import {
   equalTo,
 } from 'hamjest';
 
+import { createLocalStorageAdapter } from './external-deps/local-storage';
 import { createOfflineStorage } from './offline-storage';
-
-const createDummyAdapter = (data) => {
-  let storedData = data;
-  const retrieveStorage = () =>
-    JSON.stringify(storedData);
-
-  const updateStorage = (updateData) =>
-    storedData = JSON.parse(updateData);
-
-  return { retrieveStorage, updateStorage };
-};
 
 describe('offline storage', () => {
   describe('find by key', () => {
     it('retrieves value from store by key', () => {
-      const adapter = createDummyAdapter({ dummy: 'data' });
+      const adapter = createLocalStorageAdapter({ dummy: 'data' });
       const offlineStore = createOfflineStorage({ adapter });
 
       assertThat(offlineStore.findByKey('dummy'), equalTo('data'));
@@ -28,7 +18,7 @@ describe('offline storage', () => {
 
   describe('update', () => {
     it('updates store by given object', () => {
-      const adapter = createDummyAdapter({});
+      const adapter = createLocalStorageAdapter({});
       const offlineStore = createOfflineStorage({ adapter });
 
       offlineStore.update({ myKey: 'myValue' });
@@ -36,7 +26,7 @@ describe('offline storage', () => {
     });
 
     it('doesn\'t override existing data', () => {
-      const adapter = createDummyAdapter({ existing: 'value' });
+      const adapter = createLocalStorageAdapter({ existing: 'value' });
       const offlineStore = createOfflineStorage({ adapter });
 
       offlineStore.update({ myKey: 'myValue' });
