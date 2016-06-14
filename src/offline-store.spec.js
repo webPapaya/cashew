@@ -4,7 +4,12 @@ const createOfflineStore = ({ adapter }) => {
     return JSON.parse(data)[key];
   };
 
-  return { findByKey };
+  const update = (newData) => {
+    const data = JSON.parse(adapter.retrieveStorage());
+    adapter.updateStorage(JSON.stringify({ ...data, ...newData }));
+  };
+
+  return { findByKey, update };
 };
 
 import {
@@ -24,12 +29,22 @@ const createDummyAdapter = (data) => {
 };
 
 describe('offline store', () => {
-  describe('find', () => {
+  describe('find by key', () => {
     it('retrieves value from store by key', () => {
       const adapter = createDummyAdapter({ dummy: 'data' });
       const offlineStore = createOfflineStore({ adapter });
 
       assertThat(offlineStore.findByKey('dummy'), equalTo('data'));
+    });
+  });
+
+  describe('update by key', () => {
+    it('updates a value by given key', () => {
+      const adapter = createDummyAdapter({});
+      const offlineStore = createOfflineStore({ adapter });
+
+      offlineStore.update({ myKey: 'myValue' });
+      assertThat(offlineStore.findByKey('myKey'), equalTo('myValue'));
     });
   });
 });
