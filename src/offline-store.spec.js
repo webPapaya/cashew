@@ -1,4 +1,4 @@
-const createOfflineStore = (adapter) => {
+const createOfflineStore = ({ adapter }) => {
   const find = (key) => {
     const data = adapter.retrieveStorage();
     return JSON.parse(data)[key];
@@ -27,7 +27,7 @@ describe('offline store', () => {
   describe('find', () => {
     it('retrieves key from store', () => {
       const adapter = createDummyAdapter({ dummy: 'data' });
-      const offlineStore = createOfflineStore(adapter);
+      const offlineStore = createOfflineStore({ adapter });
 
       assertThat(offlineStore.find('dummy'), equalTo('data'));
     });
