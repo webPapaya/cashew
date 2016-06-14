@@ -1,4 +1,6 @@
-const createOfflineStore = ({ adapter }) => {
+import { createLocalStorageAdapter } from './external-deps/local-storage';
+
+const createOfflineStore = ({ adapter = createLocalStorageAdapter()}) => {
   const retrieveStorage = () =>
     JSON.parse(adapter.retrieveStorage());
 
