@@ -26,7 +26,7 @@ describe('offline storage', () => {
     });
   });
 
-  describe('update by key', () => {
+  describe('update', () => {
     it('updates store by given object', () => {
       const adapter = createDummyAdapter({});
       const offlineStore = createOfflineStorage({ adapter });
