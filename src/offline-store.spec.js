@@ -25,7 +25,7 @@ const createDummyAdapter = (data) => {
 
 describe('offline store', () => {
   describe('find', () => {
-    it('retrieves key from store', () => {
+    it('retrieves value from store by key', () => {
       const adapter = createDummyAdapter({ dummy: 'data' });
       const offlineStore = createOfflineStore({ adapter });
 
