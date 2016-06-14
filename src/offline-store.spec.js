@@ -1,11 +1,12 @@
 const createOfflineStore = ({ adapter }) => {
-  const findByKey = (key) => {
-    const data = adapter.retrieveStorage();
-    return JSON.parse(data)[key];
-  };
+  const retrieveStorage = () =>
+    JSON.parse(adapter.retrieveStorage());
+
+  const findByKey = (key) =>
+    retrieveStorage()[key];
 
   const update = (newData) => {
-    const data = JSON.parse(adapter.retrieveStorage());
+    const data = retrieveStorage();
     adapter.updateStorage(JSON.stringify({ ...data, ...newData }));
   };
 
