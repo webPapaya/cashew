@@ -1,15 +1,14 @@
-const DEFAULT = 'default';
-const TESTING = 'testing';
-
-let currentEnv = DEFAULT;
-const getEnv = () => currentEnv;
-const setEnv = (env) => { currentEnv = env };
-
-
 import {
   assertThat,
   equalTo,
 } from 'hamjest';
+
+import {
+  DEFAULT,
+  TESTING,
+  getEnv,
+  setEnv,
+} from './environments';
 
 describe('Environment', () => {
   describe('get environment', () => {
