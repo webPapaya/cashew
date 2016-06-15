@@ -48,7 +48,7 @@ describe('store', () => {
     });
   });
   
-  describe('subscribe', () => {
+  describe('subscribe callback', () => {
     it('is called on initialize', () => {
       let wasCalled = false;
       const store = createStore();
