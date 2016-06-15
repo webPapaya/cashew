@@ -27,24 +27,41 @@ describe('store', () => {
     });
   });
 
-  describe('save offline', () => {
-    it('stores data', () => {
-      const store = createStore();
-      const data = { newData: 'offline' };
-      store.saveOffline(data);
+  describe('save', () => {
+    describe('offline', () => {
+      it('stores data', () => {
+        const store = createStore();
+        const data = { newData: 'offline' };
+        store.saveOffline(data);
 
-      assertThat(store.retrieve(), equalTo(data));
+        assertThat(store.retrieve(), equalTo(data));
+      });
+
+      it('notifies when data changed', () => {
+        let wasCalled = 0;
+        const store = createStore();
+        store.subscribe(() => { wasCalled += 1; });
+        store.saveOffline({});
+
+        assertThat(wasCalled, equalTo(2));
+      });
     });
 
-    it('notifies when data changed', () => {
-      let wasCalled = 0;
-      const store = createStore();
-      store.subscribe(() => { wasCalled += 1; });
-      store.saveOffline({});
+    describe('session', () => {
+      it('stores data', () => {
+        const store = createStore();
+        const data = { newData: 'session' };
+        store.saveSession(data);
 
-      assertThat(wasCalled, equalTo(2));
+        assertThat(store.retrieve(), equalTo(data));
+      });
     });
+
+
   });
+
+
+
 
 
 
@@ -68,7 +85,7 @@ describe('store', () => {
       }));
     });
   });
-  
+
   describe('subscribe callback', () => {
     it('is called on initialize', () => {
       let wasCalled = false;

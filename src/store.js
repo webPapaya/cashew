@@ -7,10 +7,12 @@ export const createStore = (initialData = {}) => {
   let data = initialData;
   const updateCallbacks = [];
   const offlineStorage = createOfflineStorage();
+  const sessionStorage = createSessionStorage();
 
   const retrieve = () => ({
     ...data,
     ...offlineStorage.retrieve(),
+    ...sessionStorage.retrieve(),
   });
 
   const subscribe = (next) => {
@@ -34,5 +36,9 @@ export const createStore = (initialData = {}) => {
     notify();
   };
 
-  return { retrieve, update, subscribe, saveOffline };
+  const saveSession = (newData = {}) => {
+    sessionStorage.update(newData);
+  };
+
+  return { retrieve, update, subscribe, saveOffline, saveSession };
 };
