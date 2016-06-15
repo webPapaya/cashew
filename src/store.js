@@ -3,10 +3,10 @@ import {
   createSessionStorage,
 } from './storage';
 
-export const createStore = () => {
+export const createStore = ({ sessionData = {}, offlineData = {} } = {}) => {
   const updateCallbacks = [];
-  const offlineStorage = createOfflineStorage();
-  const sessionStorage = createSessionStorage();
+  const offlineStorage = createOfflineStorage({ initialData: offlineData });
+  const sessionStorage = createSessionStorage({ initialData: sessionData });
 
   const retrieve = () => ({
     ...offlineStorage.retrieve(),
