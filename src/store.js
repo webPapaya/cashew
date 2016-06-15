@@ -31,6 +31,7 @@ export const createStore = (initialData = {}) => {
 
   const saveOffline = (newData = {}) => {
     offlineStorage.update(newData);
+    notify();
   };
 
   return { retrieve, update, subscribe, saveOffline };

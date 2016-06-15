@@ -35,6 +35,15 @@ describe('store', () => {
 
       assertThat(store.retrieve(), equalTo(data));
     });
+
+    it('notifies when data changed', () => {
+      let wasCalled = 0;
+      const store = createStore();
+      store.subscribe(() => { wasCalled += 1; });
+      store.saveOffline({});
+
+      assertThat(wasCalled, equalTo(2));
+    });
   });
 
 
