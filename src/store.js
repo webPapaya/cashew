@@ -9,11 +9,14 @@ export const createStore = (initialData = {}) => {
     updateCallbacks.push(next);
   };
 
+  const notify = () => {
+    updateCallbacks
+      .forEach((callback) => { callback(data); });
+  };
+
   const update = (newData = {}) => {
     data = { ...data, ...newData };
-    updateCallbacks.forEach((callback) => {
-      callback(data);
-    });
+    notify();
   };
 
   return { read, update, subscribe };
