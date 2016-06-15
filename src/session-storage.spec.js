@@ -10,7 +10,7 @@ const createSessionStorage = ({ initialData = {} }) => {
   };
 
   const update = (newData) => {
-    data = newData;
+    data = { ...data, ...newData };
   };
 
   return { retrieve, update };
@@ -35,6 +35,16 @@ describe('session storage', () => {
       assertThat(offlineStore.retrieve(), equalTo(data));
     });
 
+    it('AND doesn\'t override existing data', () => {
+      const existingData = { existing: 'value' };
+      const updateData = { myKey: 'myValue' };
+
+      const offlineStore = createSessionStorage({ initialData: existingData });
+      offlineStore.update(updateData);
+
+      assertThat(offlineStore.retrieve(),
+        equalTo({ ...existingData, ...updateData }));
+    });
   });
 });
 
