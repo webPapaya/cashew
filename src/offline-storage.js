@@ -1,16 +1,16 @@
 import { createLocalStorageAdapter } from './external-deps/local-storage';
 
 export const createOfflineStorage = ({ adapter = createLocalStorageAdapter()}) => {
-  const retrieveStorage = () =>
+  const retrieve = () =>
     JSON.parse(adapter.retrieveStorage());
 
   const findByKey = (key) =>
-    retrieveStorage()[key];
+    retrieve()[key];
 
   const update = (newData) => {
-    const data = retrieveStorage();
+    const data = retrieve();
     adapter.updateStorage(JSON.stringify({ ...data, ...newData }));
   };
 
-  return { findByKey, update };
+  return { retrieve, findByKey, update };
 };

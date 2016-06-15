@@ -7,6 +7,16 @@ import { createLocalStorageAdapter } from './external-deps/local-storage';
 import { createOfflineStorage } from './offline-storage';
 
 describe('offline storage', () => {
+  describe('retrieve', () => {
+    it('responds the whole store', () => {
+      const data = { dummy: 'data' };
+      const adapter = createLocalStorageAdapter(data);
+      const offlineStore = createOfflineStorage({ adapter });
+
+      assertThat(offlineStore.retrieve(), equalTo(data));
+    });
+  });
+  
   describe('find by key', () => {
     it('retrieves value from store by key', () => {
       const adapter = createLocalStorageAdapter({ dummy: 'data' });
