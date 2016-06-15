@@ -3,7 +3,7 @@ import {
   equalTo,
 } from 'hamjest';
 
-import { createOfflineStorage } from './offline-storage';
+import { createOfflineStorage } from './storage/offline-storage';
 
 describe('offline storage', () => {
   describe('retrieve', () => {

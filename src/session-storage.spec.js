@@ -5,7 +5,7 @@ import {
 
 import {
   createSessionStorage,
-} from './session-storage';
+} from './storage/session-storage';
 
 describe('session storage', () => {
   describe('retrieve', () => {
