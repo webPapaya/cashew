@@ -24,7 +24,6 @@ describe('store', () => {
     });
   });
 
-
   describe('retrieve', () => {
     it('returns the stores data', () => {
       const store = createStore();
