@@ -1,6 +1,5 @@
 import {
   TESTING,
-  DEFAULT,
   getEnv,
 } from '../environments';
 
@@ -30,9 +29,6 @@ const browserLocalStorage = (initialData = JSON.stringify({})) => {
 };
 
 export const createLocalStorageAdapter = (data = {}) => {
-  if(getEnv() === TESTING) {
-    return nodeLocalStorage(data);
-  } else if (getEnv() === DEFAULT) {
-    return browserLocalStorage(data)
-  }
+  if(getEnv() === TESTING) { return nodeLocalStorage(data); }
+  return browserLocalStorage(data);
 };
