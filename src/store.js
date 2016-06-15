@@ -1,19 +1,37 @@
-import Rx from 'rxjs/Rx';
-export const createStore = (initialData = {}) => {
-  let data = initialData;
-  const renderLoop = new Rx.Subject();
+import {
+  createOfflineStorage,
+  createSessionStorage,
+} from './storage';
 
-  const read = () => ({ ...data });
+export const createStore = () => {
+  const updateCallbacks = [];
+  const offlineStorage = createOfflineStorage();
+  const sessionStorage = createSessionStorage();
+
+  const retrieve = () => ({
+    ...offlineStorage.retrieve(),
+    ...sessionStorage.retrieve(),
+  });
 
   const subscribe = (next) => {
-    next('init');
-    renderLoop.subscribe(next);
+    next(retrieve());
+    updateCallbacks.push(next);
   };
 
-  const update = (newData = {}) => {
-    data = { ...data, ...newData };
-    renderLoop.next(data);
+  const notify = () => {
+    updateCallbacks
+      .forEach((callback) => { callback(retrieve()); });
   };
 
-  return { read, update, subscribe };
+  const saveOffline = (newData = {}) => {
+    offlineStorage.update(newData);
+    notify();
+  };
+
+  const saveSession = (newData = {}) => {
+    sessionStorage.update(newData);
+    notify();
+  };
+
+  return { retrieve, subscribe, saveOffline, saveSession };
 };

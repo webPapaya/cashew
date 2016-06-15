@@ -12,7 +12,7 @@
     "build:html": "cp src/index.html dist/index.html",
     "build:html:watch": "chokidar 'src/**/*.html' --initial --command 'npm run build:html'",
     "build:js:watch": "watchify --transform babelify --outfile=dist/index.js src/index.js --verbose",
-    "test": "mocha src/{*,**/*,**/**/*,**/**/**/*}.spec.js --recursive --compilers js:babel-register"
+    "test": "mocha src/test-helper.js src/{*,**/*,**/**/*,**/**/**/*}.spec.js --recursive --compilers js:babel-register"
   },
   "repository": {
     "type": "git",
@@ -47,7 +47,6 @@
   },
   "dependencies": {
     "react": "^15.1.0",
-    "react-dom": "^15.1.0",
-    "rxjs": "^5.0.0-beta.8"
+    "react-dom": "^15.1.0"
   }
 }

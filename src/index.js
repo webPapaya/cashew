@@ -4,12 +4,12 @@ import ReactDOM from 'react-dom';
 import { createStore } from './store';
 import { createActions } from './actions';
 
-const INITIAL_STORE_DATA = { counter: 0 };
+const INITIAL_STORE_DATA = { counts: 0 };
 
 const store = createStore(INITIAL_STORE_DATA);
 const actions = createActions({ store });
 
-const Counter = ({ clickAmount }) => {
+const Counter = ({ counts }) => {
   const updateCounter = (evt) => {
     const inputValue = parseInt(evt.currentTarget.value, 10);
     actions.updateCounter(inputValue);
@@ -17,16 +17,14 @@ const Counter = ({ clickAmount }) => {
 
   return (
     <div>
-      <div>{ clickAmount }</div>
+      <div>{ counts }</div>
       <button onClick={ actions.incrementCounter }>Click me</button>
-      <input type="range" min="-100" max="100" value={ clickAmount } onChange={ updateCounter }/>
+      <input type="range" min="-100" max="100" value={ counts } onChange={ updateCounter }/>
     </div>
   );
 };
 
-
-
 store.subscribe(() => {
-  const { counter } = store.read();
-  ReactDOM.render(<Counter clickAmount={ counter }/>, document.getElementById('main'));
+  const { counts } = store.read();
+  ReactDOM.render(<Counter counts={ counts }/>, document.getElementById('main'));
 });

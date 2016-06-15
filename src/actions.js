@@ -1,6 +1,6 @@
 export const createActions = ({ store }) => {
   const updateCounter = (newValue) => {
-    store.update({ counter: newValue });
+    store.update({ counts: newValue });
   };
 
   const incrementCounter = () => {

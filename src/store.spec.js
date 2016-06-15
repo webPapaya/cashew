@@ -6,45 +6,82 @@ import {
 import { createStore } from './store';
 
 describe('store', () => {
-  describe('create', () => {
-    it('can be initialized with initial data', () => {
-      const initialData = { initialData: 'initialData' };
-      const store = createStore(initialData);
-
-      assertThat(store.read(), equalTo(initialData));
-    });
-
-    it('without initial data given, responds {}', () => {
-      const store = createStore();
-      assertThat(store.read(), equalTo({}));
-    });
-  });
-
-  describe('read', () => {
+  describe('retrieve', () => {
     it('returns the stores data', () => {
       const store = createStore();
-      assertThat(store.read(), equalTo({}));
+      assertThat(store.retrieve(), equalTo({}));
+    });
+
+    it('responds data from session AND offline store', () => {
+      const store = createStore();
+      const offlineData = { offline: 'offline' };
+      const sessionData = { session: 'session' };
+
+      store.saveOffline(offlineData);
+      store.saveSession(sessionData);
+
+      assertThat(store.retrieve(), equalTo({ ...sessionData, ...offlineData }));
     });
   });
 
-  describe('update', () => {
-    it('stores new data in the store', () => {
-      const store = createStore();
-      const newData = { myData: 'will be stored' };
+  describe('save', () => {
+    describe('offline', () => {
+      it('stores data', () => {
+        const store = createStore();
+        const data = { newData: 'offline' };
+        store.saveOffline(data);
 
-      store.update(newData);
-      assertThat(store.read(), equalTo(newData));
+        assertThat(store.retrieve(), equalTo(data));
+      });
+
+      it('notifies when data changed', () => {
+        let wasCalled = 0;
+        const store = createStore();
+        store.subscribe(() => { wasCalled += 1; });
+        store.saveOffline({});
+
+        assertThat(wasCalled, equalTo(2));
+      });
     });
 
-    it('doesn\'t overwrite existing data', () => {
-      const store = createStore();
-      store.update({ firstUpdate: 'firstUpdate' });
-      store.update({ secondUpdate: 'secondUpdate' });
+    describe('session', () => {
+      it('stores data', () => {
+        const store = createStore();
+        const data = { newData: 'session' };
+        store.saveSession(data);
 
-      assertThat(store.read(), equalTo({
-        firstUpdate: 'firstUpdate',
-        secondUpdate: 'secondUpdate',
-      }));
+        assertThat(store.retrieve(), equalTo(data));
+      });
+
+      it('notifies when data changed', () => {
+        let wasCalled = 0;
+        const store = createStore();
+        store.subscribe(() => { wasCalled += 1; });
+        store.saveSession({});
+
+        assertThat(wasCalled, equalTo(2));
+      });
+    });
+  });
+
+  describe('subscribe callback', () => {
+    it('is called on initialize', () => {
+      let wasCalled = false;
+      const store = createStore();
+      store.subscribe(() => { wasCalled = true; });
+      assertThat(wasCalled, equalTo(true));
+    });
+
+    it('pushes store data to subscriptions', () => {
+      const store = createStore();
+
+      let wasCalledWith = void 0;
+      store.subscribe((newData) => { wasCalledWith = newData; });
+
+      const newData = { newData: 'newData' };
+      store.saveOffline(newData);
+
+      assertThat(wasCalledWith, equalTo(newData));
     });
   });
 });
