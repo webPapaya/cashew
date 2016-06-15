@@ -19700,15 +19700,15 @@ var createActions = exports.createActions = function createActions(_ref) {
   var store = _ref.store;
 
   var updateCounter = function updateCounter(newValue) {
-    store.update({ counts: newValue });
+    store.saveOffline({ counts: newValue });
   };
 
   var incrementCounter = function incrementCounter() {
-    var _store$read = store.read();
+    var _store$retrieve = store.retrieve();
 
-    var counter = _store$read.counter;
+    var counts = _store$retrieve.counts;
 
-    updateCounter(counter + 1);
+    updateCounter(counts + 1);
   };
 
   return { incrementCounter: incrementCounter, updateCounter: updateCounter };
@@ -19742,9 +19742,9 @@ exports.createStorageAdapter = undefined;
 var _environments = require('../environments');
 
 var nodeLocalStorage = function nodeLocalStorage() {
-  var initialData = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+  var initialData = arguments.length <= 0 || arguments[0] === undefined ? "{}" : arguments[0];
 
-  var storedData = initialData;
+  var storedData = JSON.parse(initialData);
   var retrieveStorage = function retrieveStorage() {
     return JSON.stringify(storedData);
   };
@@ -19766,7 +19766,7 @@ var browserLocalStorage = function browserLocalStorage() {
   };
 
   var updateStorage = function updateStorage(updateData) {
-    return window.location.setItem(STORAGE_KEY, updateData);
+    return window.localStorage.setItem(STORAGE_KEY, updateData);
   };
 
   updateStorage(initialData);
@@ -19802,7 +19802,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var INITIAL_STORE_DATA = { counts: 0 };
 
-var store = (0, _store.createStore)(INITIAL_STORE_DATA);
+var store = (0, _store.createStore)({ offlineData: INITIAL_STORE_DATA });
 var actions = (0, _actions.createActions)({ store: store });
 
 var Counter = function Counter(_ref) {
@@ -19830,10 +19830,8 @@ var Counter = function Counter(_ref) {
   );
 };
 
-store.subscribe(function () {
-  var _store$read = store.read();
-
-  var counts = _store$read.counts;
+store.subscribe(function (appState) {
+  var counts = appState.counts;
 
   _reactDom2.default.render(_react2.default.createElement(Counter, { counts: counts }), document.getElementById('main'));
 });
@@ -19858,7 +19856,7 @@ var createOfflineStorage = exports.createOfflineStorage = function createOffline
   var adapterFn = _args$adapterFn === undefined ? _localStorage.createStorageAdapter : _args$adapterFn;
 
 
-  var adapter = adapterFn(initialData);
+  var adapter = adapterFn(JSON.stringify(initialData));
 
   var retrieve = function retrieve() {
     return JSON.parse(adapter.retrieveStorage());
@@ -19903,9 +19901,16 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 var _storage = require('./storage');
 
 var createStore = exports.createStore = function createStore() {
+  var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+  var _ref$sessionData = _ref.sessionData;
+  var sessionData = _ref$sessionData === undefined ? {} : _ref$sessionData;
+  var _ref$offlineData = _ref.offlineData;
+  var offlineData = _ref$offlineData === undefined ? {} : _ref$offlineData;
+
   var updateCallbacks = [];
-  var offlineStorage = (0, _storage.createOfflineStorage)();
-  var sessionStorage = (0, _storage.createSessionStorage)();
+  var offlineStorage = (0, _storage.createOfflineStorage)({ initialData: offlineData });
+  var sessionStorage = (0, _storage.createSessionStorage)({ initialData: sessionData });
 
   var retrieve = function retrieve() {
     return _extends({}, offlineStorage.retrieve(), sessionStorage.retrieve());
