@@ -6,6 +6,24 @@ import {
 import { createStore } from './store';
 
 describe('store', () => {
+  describe('create', () => {
+    describe('can be initialized with', () => {
+      it('sessionData', () => {
+        const sessionData = { session: 'data' };
+        const store = createStore({ sessionData });
+
+        assertThat(store.retrieve(), equalTo(sessionData));
+      });
+
+      it('offlineData', () => {
+        const offlineData = { offline: 'data' };
+        const store = createStore({ offlineData });
+
+        assertThat(store.retrieve(), equalTo(offlineData));
+      });
+    });
+  });
+
   describe('retrieve', () => {
     it('returns the stores data', () => {
       const store = createStore();
