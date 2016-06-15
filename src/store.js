@@ -1,8 +1,17 @@
+import {
+  createOfflineStorage,
+  createSessionStorage
+} from './storage';
+
 export const createStore = (initialData = {}) => {
   let data = initialData;
   const updateCallbacks = [];
+  const offlineStorage = createOfflineStorage();
 
-  const retrieve = () => ({ ...data });
+  const retrieve = () => ({
+    ...data,
+    ...offlineStorage.retrieve(),
+  });
 
   const subscribe = (next) => {
     next(data);
@@ -19,5 +28,10 @@ export const createStore = (initialData = {}) => {
     notify();
   };
 
-  return { retrieve, update, subscribe };
+
+  const saveOffline = (newData = {}) => {
+    offlineStorage.update(newData);
+  };
+
+  return { retrieve, update, subscribe, saveOffline };
 };
