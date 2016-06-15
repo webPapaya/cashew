@@ -38,6 +38,7 @@ export const createStore = (initialData = {}) => {
 
   const saveSession = (newData = {}) => {
     sessionStorage.update(newData);
+    notify();
   };
 
   return { retrieve, update, subscribe, saveOffline, saveSession };
