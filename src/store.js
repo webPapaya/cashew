@@ -25,12 +25,6 @@ export const createStore = (initialData = {}) => {
       .forEach((callback) => { callback(data); });
   };
 
-  const update = (newData = {}) => {
-    data = { ...data, ...newData };
-    notify();
-  };
-
-
   const saveOffline = (newData = {}) => {
     offlineStorage.update(newData);
     notify();
@@ -41,5 +35,5 @@ export const createStore = (initialData = {}) => {
     notify();
   };
 
-  return { retrieve, update, subscribe, saveOffline, saveSession };
+  return { retrieve, subscribe, saveOffline, saveSession };
 };
