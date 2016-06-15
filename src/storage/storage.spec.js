@@ -3,12 +3,14 @@ import {
   equalTo,
 } from 'hamjest';
 
-import { createOfflineStorage } from './offline-storage';
-import { createSessionStorage } from './session-storage';
+import {
+  createOfflineStorage,
+  createSessionStorage,
+} from './storage';
 
 [
   { name: 'session', createStorage: createSessionStorage},
-  { name: 'offline', createStorage: createOfflineStorage}
+  { name: 'offline', createStorage: createOfflineStorage},
 ].forEach(({ name, createStorage }) => {
   describe(`${name} storage`, () => {
     describe('retrieve', () => {
