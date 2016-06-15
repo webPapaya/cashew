@@ -28,7 +28,7 @@ const browserLocalStorage = (initialData = JSON.stringify({})) => {
   return { retrieveStorage, updateStorage };
 };
 
-export const createLocalStorageAdapter = (data = {}) => {
+export const createStorageAdapter = (data = {}) => {
   if(getEnv() === TESTING) { return nodeLocalStorage(data); }
   return browserLocalStorage(data);
 };
