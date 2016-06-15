@@ -17,7 +17,7 @@ describe('offline storage', () => {
   
   describe('update', () => {
     it('updates store by given object', () => {
-      const offlineStore = createOfflineStorage({ });
+      const offlineStore = createOfflineStorage();
 
       const data = { myKey: 'myValue' };
       offlineStore.update(data);
