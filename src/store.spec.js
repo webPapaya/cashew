@@ -71,5 +71,17 @@ describe('store', () => {
       store.subscribe(() => { wasCalled = true; });
       assertThat(wasCalled, equalTo(true));
     });
+
+    it('pushes store data to subscriptions', () => {
+      const store = createStore();
+
+      let wasCalledWith = void 0;
+      store.subscribe((newData) => { wasCalledWith = newData; });
+
+      const newData = { newData: 'newData' };
+      store.saveOffline(newData)
+
+      assertThat(wasCalledWith, equalTo(newData));
+    });
   });
 });
