@@ -14,7 +14,7 @@ describe('store', () => {
       assertThat(store.retrieve(), equalTo(initialData));
     });
 
-    it('without initial data given, responds {}', () => {
+    it('OR without initial data given, responds {}', () => {
       const store = createStore();
       assertThat(store.retrieve(), equalTo({}));
     });
@@ -36,7 +36,7 @@ describe('store', () => {
       assertThat(store.retrieve(), equalTo(newData));
     });
 
-    it('doesn\'t overwrite existing data', () => {
+    it('AND doesn\'t overwrite existing data', () => {
       const store = createStore();
       store.update({ firstUpdate: 'firstUpdate' });
       store.update({ secondUpdate: 'secondUpdate' });
@@ -56,7 +56,7 @@ describe('store', () => {
       assertThat(wasCalled, equalTo(true));
     });
 
-    it('is called on store update', () => {
+    it('AND is called as well on store update', () => {
       let wasCalled = 0;
       const store = createStore();
       store.subscribe(() => { wasCalled += 1; });

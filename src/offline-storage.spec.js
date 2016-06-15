@@ -24,7 +24,7 @@ describe('offline storage', () => {
       assertThat(offlineStore.retrieve(), equalTo(data));
     });
 
-    it('doesn\'t override existing data', () => {
+    it('AND doesn\'t override existing data', () => {
       const existingData = { existing: 'value' };
       const updateData = { myKey: 'myValue' };
 
