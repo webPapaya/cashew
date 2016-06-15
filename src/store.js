@@ -2,7 +2,7 @@ export const createStore = (initialData = {}) => {
   let data = initialData;
   const updateCallbacks = [];
 
-  const read = () => ({ ...data });
+  const retrieve = () => ({ ...data });
 
   const subscribe = (next) => {
     next(data);
@@ -19,5 +19,5 @@ export const createStore = (initialData = {}) => {
     notify();
   };
 
-  return { read, update, subscribe };
+  return { retrieve, update, subscribe };
 };

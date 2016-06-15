@@ -11,19 +11,19 @@ describe('store', () => {
       const initialData = { initialData: 'initialData' };
       const store = createStore(initialData);
 
-      assertThat(store.read(), equalTo(initialData));
+      assertThat(store.retrieve(), equalTo(initialData));
     });
 
     it('without initial data given, responds {}', () => {
       const store = createStore();
-      assertThat(store.read(), equalTo({}));
+      assertThat(store.retrieve(), equalTo({}));
     });
   });
 
-  describe('read', () => {
+  describe('retrieve', () => {
     it('returns the stores data', () => {
       const store = createStore();
-      assertThat(store.read(), equalTo({}));
+      assertThat(store.retrieve(), equalTo({}));
     });
   });
 
@@ -33,7 +33,7 @@ describe('store', () => {
       const newData = { myData: 'will be stored' };
 
       store.update(newData);
-      assertThat(store.read(), equalTo(newData));
+      assertThat(store.retrieve(), equalTo(newData));
     });
 
     it('doesn\'t overwrite existing data', () => {
@@ -41,7 +41,7 @@ describe('store', () => {
       store.update({ firstUpdate: 'firstUpdate' });
       store.update({ secondUpdate: 'secondUpdate' });
 
-      assertThat(store.read(), equalTo({
+      assertThat(store.retrieve(), equalTo({
         firstUpdate: 'firstUpdate',
         secondUpdate: 'secondUpdate',
       }));
