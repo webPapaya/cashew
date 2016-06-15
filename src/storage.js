@@ -1,6 +1,11 @@
 import { createStorageAdapter } from './external-deps/local-storage';
 
-export const createOfflineStorage = ({ initialData = {}, adapterFn = createStorageAdapter } = {}) => {
+export const createOfflineStorage = (args = {}) => {
+  const {
+    initialData = {},
+    adapterFn = createStorageAdapter,
+  } = args;
+
   const adapter = adapterFn(initialData);
 
   const retrieve = () =>
@@ -16,9 +21,7 @@ export const createOfflineStorage = ({ initialData = {}, adapterFn = createStora
 
 export const createSessionStorage = ({ initialData = {} } = {}) => {
   let data = initialData;
-  const retrieve = () => {
-    return data;
-  };
+  const retrieve = () => data;
 
   const update = (newData) => {
     data = { ...data, ...newData };

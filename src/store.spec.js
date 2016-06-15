@@ -79,7 +79,7 @@ describe('store', () => {
       store.subscribe((newData) => { wasCalledWith = newData; });
 
       const newData = { newData: 'newData' };
-      store.saveOffline(newData)
+      store.saveOffline(newData);
 
       assertThat(wasCalledWith, equalTo(newData));
     });

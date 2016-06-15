@@ -9,8 +9,8 @@ import {
 } from './storage';
 
 [
-  { name: 'session', createStorage: createSessionStorage},
-  { name: 'offline', createStorage: createOfflineStorage},
+  { name: 'session', createStorage: createSessionStorage },
+  { name: 'offline', createStorage: createOfflineStorage },
 ].forEach(({ name, createStorage }) => {
   describe(`${name} storage`, () => {
     describe('retrieve', () => {
@@ -44,4 +44,3 @@ import {
     });
   });
 });
-

@@ -1,9 +1,9 @@
 import {
   createOfflineStorage,
-  createSessionStorage
+  createSessionStorage,
 } from './storage';
 
-export const createStore = (initialData = {}) => {
+export const createStore = () => {
   const updateCallbacks = [];
   const offlineStorage = createOfflineStorage();
   const sessionStorage = createSessionStorage();
