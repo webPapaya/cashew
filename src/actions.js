@@ -1,11 +1,11 @@
 export const createActions = ({ store }) => {
   const updateCounter = (newValue) => {
-    store.update({ counts: newValue });
+    store.saveOffline({ counts: newValue });
   };
 
   const incrementCounter = () => {
-    const { counter } = store.read();
-    updateCounter(counter + 1);
+    const { counts } = store.retrieve();
+    updateCounter(counts + 1);
   };
 
   return { incrementCounter, updateCounter };

@@ -3,8 +3,8 @@ import {
   getEnv,
 } from '../environments';
 
-const nodeLocalStorage = (initialData = {}) => {
-  let storedData = initialData;
+const nodeLocalStorage = (initialData = "{}") => {
+  let storedData = JSON.parse(initialData);
   const retrieveStorage = () =>
     JSON.stringify(storedData);
 
@@ -21,7 +21,7 @@ const browserLocalStorage = (initialData = JSON.stringify({})) => {
     window.localStorage.getItem(STORAGE_KEY);
 
   const updateStorage = (updateData) =>
-    window.location.setItem(STORAGE_KEY, updateData);
+    window.localStorage.setItem(STORAGE_KEY, updateData);
 
   updateStorage(initialData);
 

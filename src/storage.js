@@ -6,7 +6,7 @@ export const createOfflineStorage = (args = {}) => {
     adapterFn = createStorageAdapter,
   } = args;
 
-  const adapter = adapterFn(initialData);
+  const adapter = adapterFn(JSON.stringify(initialData));
 
   const retrieve = () =>
     JSON.parse(adapter.retrieveStorage());

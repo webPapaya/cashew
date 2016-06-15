@@ -6,7 +6,7 @@ import { createActions } from './actions';
 
 const INITIAL_STORE_DATA = { counts: 0 };
 
-const store = createStore(INITIAL_STORE_DATA);
+const store = createStore({ offlineData: INITIAL_STORE_DATA });
 const actions = createActions({ store });
 
 const Counter = ({ counts }) => {
@@ -24,7 +24,7 @@ const Counter = ({ counts }) => {
   );
 };
 
-store.subscribe(() => {
-  const { counts } = store.read();
+store.subscribe((appState) => {
+  const { counts } = appState;
   ReactDOM.render(<Counter counts={ counts }/>, document.getElementById('main'));
 });
