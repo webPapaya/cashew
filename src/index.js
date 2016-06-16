@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { createStore } from './store';
+import { createStore } from './lib/store';
 import { createActions } from './actions';
 
 const store = createStore();

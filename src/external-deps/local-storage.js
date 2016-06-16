@@ -1,7 +1,7 @@
 import {
   TESTING,
   getEnv,
-} from '../environments';
+} from '../lib/environments';
 
 const nodeLocalStorage = (initialData = '{}') => {
   let storedData = JSON.parse(initialData);

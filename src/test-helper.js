@@ -1,6 +1,6 @@
 import {
   TESTING,
   setEnv,
-} from './environments';
+} from './lib/environments';
 
 setEnv(TESTING);
