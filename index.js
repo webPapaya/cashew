@@ -21169,7 +21169,7 @@ var createActions = exports.createActions = function createActions(_ref) {
 
   var updateCounter = function updateCounter(newValue) {
     store.saveOffline({ counts: newValue });
-    store.saveLocation({ counts: newValue });
+    store.saveInLocation({ counts: newValue });
   };
 
   var incrementCounter = function incrementCounter() {
@@ -21418,21 +21418,21 @@ var createStore = exports.createStore = function createStore() {
     notify();
   };
 
-  var saveSession = function saveSession() {
+  var saveInSession = function saveInSession() {
     var newData = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
     sessionStorage.update(newData);
     notify();
   };
 
-  var saveLocation = function saveLocation() {
+  var saveInLocation = function saveInLocation() {
     var newData = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
     locationStorage.update(newData);
     notify();
   };
 
-  return { retrieve: retrieve, subscribe: subscribe, saveOffline: saveOffline, saveSession: saveSession, saveLocation: saveLocation };
+  return { retrieve: retrieve, subscribe: subscribe, saveOffline: saveOffline, saveInSession: saveInSession, saveInLocation: saveInLocation };
 };
 
 },{"./storage":180}],180:[function(require,module,exports){
