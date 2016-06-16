@@ -22,7 +22,30 @@ const Counter = ({ counts }) => {
   );
 };
 
+
+
+
 store.subscribe((appState) => {
-  const { counts } = appState;
-  ReactDOM.render(<Counter counts={ counts }/>, document.getElementById('main'));
+  const containerDomElement = document.getElementById('counter-1');
+  if(containerDomElement) {
+    const { counts } = appState;
+    ReactDOM.render(<Counter counts={ counts }/>, containerDomElement);
+  }
+});
+
+
+store.subscribe((appState) => {
+  const containerDomElement = document.getElementById('counter-2');
+  if(containerDomElement) {
+    const { counts } = appState;
+    ReactDOM.render(<Counter counts={ counts }/>, containerDomElement);
+  }
+});
+
+store.subscribe((appState) => {
+  const containerDomElement = document.getElementById('counter-3');
+  if(containerDomElement) {
+    const { counts } = appState;
+    ReactDOM.render(<Counter counts={ counts }/>, containerDomElement);
+  }
 });
