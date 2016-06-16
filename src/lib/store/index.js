@@ -29,15 +29,15 @@ export const createStore = ({ sessionData = {}, offlineData = {}, locationData =
     notify();
   };
 
-  const saveSession = (newData = {}) => {
+  const saveInSession = (newData = {}) => {
     sessionStorage.update(newData);
     notify();
   };
 
-  const saveLocation = (newData = {}) => {
+  const saveInLocation = (newData = {}) => {
     locationStorage.update(newData)
     notify();
   };
 
-  return { retrieve, subscribe, saveOffline, saveSession, saveLocation };
+  return { retrieve, subscribe, saveOffline, saveInSession, saveInLocation };
 };

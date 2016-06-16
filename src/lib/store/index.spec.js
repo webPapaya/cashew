@@ -36,7 +36,7 @@ describe('store', () => {
       const sessionData = { session: 'session' };
 
       store.saveOffline(offlineData);
-      store.saveSession(sessionData);
+      store.saveInSession(sessionData);
 
       assertThat(store.retrieve(), equalTo({ ...sessionData, ...offlineData }));
     });
@@ -66,7 +66,7 @@ describe('store', () => {
       it('stores data', () => {
         const store = createStore();
         const data = { newData: 'session' };
-        store.saveSession(data);
+        store.saveInSession(data);
 
         assertThat(store.retrieve(), equalTo(data));
       });
@@ -75,7 +75,7 @@ describe('store', () => {
         let wasCalled = 0;
         const store = createStore();
         store.subscribe(() => { wasCalled += 1; });
-        store.saveSession({});
+        store.saveInSession({});
 
         assertThat(wasCalled, equalTo(2));
       });
