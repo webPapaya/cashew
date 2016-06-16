@@ -21236,7 +21236,7 @@ var createStorageAdapter = exports.createStorageAdapter = function createStorage
   return browserLocalStorage(data);
 };
 
-},{"../lib/environments":178}],176:[function(require,module,exports){
+},{"../lib/environments":179}],176:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21251,6 +21251,8 @@ var _querystring = require('querystring');
 var _querystring2 = _interopRequireDefault(_querystring);
 
 var _url = require('url');
+
+var _logger = require('./logger');
 
 var _environments = require('../lib/environments');
 
@@ -21296,12 +21298,22 @@ var createLocationAdapter = exports.createLocationAdapter = function createLocat
     return nodeLocation(initialData);
   }
   if (initialData) {
-    console.warn('Initial Data is ignored!');
+    (0, _logger.warn)('Initial Data is ignored!');
   }
   return browserLocation(initialData);
 };
 
-},{"../lib/environments":178,"querystring":32,"url":172}],177:[function(require,module,exports){
+},{"../lib/environments":179,"./logger":177,"querystring":32,"url":172}],177:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var warn = exports.warn = function warn(message) {
+  return console.warn(message);
+}; // eslint-disable-line no-console
+
+},{}],178:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21352,7 +21364,7 @@ store.subscribe(function (appState) {
   _reactDom2.default.render(_react2.default.createElement(Counter, { counts: counts }), document.getElementById('main'));
 });
 
-},{"./actions":174,"./lib/store":179,"react":171,"react-dom":33}],178:[function(require,module,exports){
+},{"./actions":174,"./lib/store":180,"react":171,"react-dom":33}],179:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21369,7 +21381,7 @@ var setEnv = exports.setEnv = function setEnv(env) {
   currentEnv = env;
 };
 
-},{}],179:[function(require,module,exports){
+},{}],180:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21435,7 +21447,7 @@ var createStore = exports.createStore = function createStore() {
   return { retrieve: retrieve, subscribe: subscribe, saveOffline: saveOffline, saveInSession: saveInSession, saveInLocation: saveInLocation };
 };
 
-},{"./storage":180}],180:[function(require,module,exports){
+},{"./storage":181}],181:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21502,4 +21514,4 @@ var createLocationStorage = exports.createLocationStorage = function createLocat
   return { update: update, retrieve: retrieve };
 };
 
-},{"../../external-deps/local-storage":175,"../../external-deps/location":176}]},{},[177]);
+},{"../../external-deps/local-storage":175,"../../external-deps/location":176}]},{},[178]);
