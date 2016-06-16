@@ -21359,9 +21359,30 @@ var Counter = function Counter(_ref) {
 };
 
 store.subscribe(function (appState) {
-  var counts = appState.counts;
+  var containerDomElement = document.getElementById('counter-1');
+  if (containerDomElement) {
+    var counts = appState.counts;
 
-  _reactDom2.default.render(_react2.default.createElement(Counter, { counts: counts }), document.getElementById('main'));
+    _reactDom2.default.render(_react2.default.createElement(Counter, { counts: counts }), containerDomElement);
+  }
+});
+
+store.subscribe(function (appState) {
+  var containerDomElement = document.getElementById('counter-2');
+  if (containerDomElement) {
+    var counts = appState.counts;
+
+    _reactDom2.default.render(_react2.default.createElement(Counter, { counts: counts }), containerDomElement);
+  }
+});
+
+store.subscribe(function (appState) {
+  var containerDomElement = document.getElementById('counter-3');
+  if (containerDomElement) {
+    var counts = appState.counts;
+
+    _reactDom2.default.render(_react2.default.createElement(Counter, { counts: counts }), containerDomElement);
+  }
 });
 
 },{"./actions":174,"./lib/store":180,"react":171,"react-dom":33}],179:[function(require,module,exports){
