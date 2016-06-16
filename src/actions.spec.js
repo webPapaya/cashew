@@ -24,8 +24,8 @@ describe('Actions', () => {
       const actions = createActions({ store });
 
       actions.incrementCounter();
+
       assertThat(store.retrieve(), equalTo({ counts: 1 }));
     });
   });
 });
-
