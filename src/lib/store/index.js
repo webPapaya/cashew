@@ -11,9 +11,9 @@ export const createStore = ({ sessionData = {}, offlineData = {}, locationData =
   const locationStorage = createLocationStorage({ initialData: locationData });
 
   const retrieve = () => ({
+    ...locationStorage.retrieve(),
     ...offlineStorage.retrieve(),
     ...sessionStorage.retrieve(),
-    ...locationStorage.retrieve(),
   });
 
   const subscribe = (next) => {
