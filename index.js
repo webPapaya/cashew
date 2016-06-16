@@ -21244,6 +21244,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.createLocationAdapter = undefined;
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _querystring = require('querystring');
 
 var _querystring2 = _interopRequireDefault(_querystring);
@@ -21261,11 +21263,12 @@ var browserLocation = function browserLocation() {
   };
 
   var updateLocation = function updateLocation(newData) {
+    var newSearch = _extends({}, retrieveLocation(), newData);
     var newLocation = new _url.Url();
-    newLocation.host = newData.host || location.host;
-    newLocation.pathname = newData.pathname || location.pathname;
-    newLocation.hostname = newData.hostname || location.hostname;
-    newLocation.search = _querystring2.default.stringify(newData) || location.search;
+    newLocation.host = location.host;
+    newLocation.pathname = location.pathname;
+    newLocation.hostname = location.hostname;
+    newLocation.search = _querystring2.default.stringify(newSearch) || location.search;
 
     window.history.pushState(null, null, newLocation.format());
   };
