@@ -1,6 +1,6 @@
 import queryString from 'querystring';
 import { Url } from 'url';
-import { warn } from 'logger';
+import { warn } from './logger';
 
 import {
   TESTING,
