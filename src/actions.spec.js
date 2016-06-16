@@ -17,5 +17,15 @@ describe('Actions', () => {
       assertThat(store.retrieve(), equalTo({ counts: 5 }));
     });
   });
+
+  describe('#incrementCounter', () => {
+    it('increments the counter by 1', () => {
+      const store = createStore();
+      const actions = createActions({ store });
+
+      actions.incrementCounter();
+      assertThat(store.retrieve(), equalTo({ counts: 1 }));
+    });
+  });
 });
 

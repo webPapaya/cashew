@@ -4,7 +4,7 @@ export const createActions = ({ store }) => {
   };
 
   const incrementCounter = () => {
-    const { counts } = store.retrieve();
+    const { counts = 0 } = store.retrieve();
     updateCounter(counts + 1);
   };
 
