@@ -35,7 +35,7 @@ export const createStore = ({ sessionData = {}, offlineData = {}, locationData =
   };
 
   const saveInLocation = (newData = {}) => {
-    locationStorage.update(newData)
+    locationStorage.update(newData);
     notify();
   };
 

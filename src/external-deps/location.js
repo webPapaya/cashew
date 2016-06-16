@@ -1,5 +1,6 @@
-import queryString from 'querystring'
-import {Url} from 'url';
+import queryString from 'querystring';
+import { Url } from 'url';
+import { warn } from 'logger';
 
 import {
   TESTING,
@@ -23,7 +24,7 @@ const browserLocation = () => {
     window.history.pushState(null, null, newLocation.format());
   };
 
-  return {retrieveLocation, updateLocation};
+  return { retrieveLocation, updateLocation };
 };
 
 const nodeLocation = (initialData = {}) => {
@@ -38,6 +39,6 @@ const nodeLocation = (initialData = {}) => {
 
 export const createLocationAdapter = (initialData) => {
   if (getEnv() === TESTING) { return nodeLocation(initialData); }
-  if (initialData) { console.warn('Initial Data is ignored!'); }
+  if (initialData) { warn('Initial Data is ignored!'); }
   return browserLocation(initialData);
 };
