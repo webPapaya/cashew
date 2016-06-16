@@ -9,13 +9,7 @@ import {
 const browserLocation = () => {
   const retrieveLocation = () => {
     const search = (location.search || '').replace(/^\?/, '');
-
-    return {
-      host: location.host,
-      pathname: location.pathname,
-      hostname: location.hostname,
-      search: queryString.parse(search)
-    };
+    return queryString.parse(search);
   };
 
   const updateLocation = (newData) => {
