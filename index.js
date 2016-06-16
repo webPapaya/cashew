@@ -21397,7 +21397,7 @@ var createStore = exports.createStore = function createStore() {
   var locationStorage = (0, _storage.createLocationStorage)({ initialData: locationData });
 
   var retrieve = function retrieve() {
-    return _extends({}, offlineStorage.retrieve(), sessionStorage.retrieve(), locationStorage.retrieve());
+    return _extends({}, locationStorage.retrieve(), offlineStorage.retrieve(), sessionStorage.retrieve());
   };
 
   var subscribe = function subscribe(next) {
