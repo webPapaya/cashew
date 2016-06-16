@@ -19706,7 +19706,8 @@ var createActions = exports.createActions = function createActions(_ref) {
   var incrementCounter = function incrementCounter() {
     var _store$retrieve = store.retrieve();
 
-    var counts = _store$retrieve.counts;
+    var _store$retrieve$count = _store$retrieve.counts;
+    var counts = _store$retrieve$count === undefined ? 0 : _store$retrieve$count;
 
     updateCounter(counts + 1);
   };
@@ -19720,29 +19721,12 @@ var createActions = exports.createActions = function createActions(_ref) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var DEFAULT = exports.DEFAULT = 'default';
-var TESTING = exports.TESTING = 'testing';
-
-var currentEnv = DEFAULT;
-var getEnv = exports.getEnv = function getEnv() {
-  return currentEnv;
-};
-var setEnv = exports.setEnv = function setEnv(env) {
-  currentEnv = env;
-};
-
-},{}],170:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 exports.createStorageAdapter = undefined;
 
-var _environments = require('../environments');
+var _environments = require('../lib/environments');
 
 var nodeLocalStorage = function nodeLocalStorage() {
-  var initialData = arguments.length <= 0 || arguments[0] === undefined ? "{}" : arguments[0];
+  var initialData = arguments.length <= 0 || arguments[0] === undefined ? '{}' : arguments[0];
 
   var storedData = JSON.parse(initialData);
   var retrieveStorage = function retrieveStorage() {
@@ -19783,7 +19767,7 @@ var createStorageAdapter = exports.createStorageAdapter = function createStorage
   return browserLocalStorage(data);
 };
 
-},{"../environments":169}],171:[function(require,module,exports){
+},{"../lib/environments":171}],170:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -19794,15 +19778,13 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _store = require('./store');
+var _store = require('./lib/store');
 
 var _actions = require('./actions');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var INITIAL_STORE_DATA = { counts: 0 };
-
-var store = (0, _store.createStore)({ offlineData: INITIAL_STORE_DATA });
+var store = (0, _store.createStore)();
 var actions = (0, _actions.createActions)({ store: store });
 
 var Counter = function Counter(_ref) {
@@ -19836,7 +19818,80 @@ store.subscribe(function (appState) {
   _reactDom2.default.render(_react2.default.createElement(Counter, { counts: counts }), document.getElementById('main'));
 });
 
-},{"./actions":168,"./store":173,"react":167,"react-dom":29}],172:[function(require,module,exports){
+},{"./actions":168,"./lib/store":172,"react":167,"react-dom":29}],171:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var DEFAULT = exports.DEFAULT = 'default';
+var TESTING = exports.TESTING = 'testing';
+
+var currentEnv = DEFAULT;
+var getEnv = exports.getEnv = function getEnv() {
+  return currentEnv;
+};
+var setEnv = exports.setEnv = function setEnv(env) {
+  currentEnv = env;
+};
+
+},{}],172:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createStore = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _storage = require('./storage');
+
+var createStore = exports.createStore = function createStore() {
+  var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+  var _ref$sessionData = _ref.sessionData;
+  var sessionData = _ref$sessionData === undefined ? {} : _ref$sessionData;
+  var _ref$offlineData = _ref.offlineData;
+  var offlineData = _ref$offlineData === undefined ? {} : _ref$offlineData;
+
+  var updateCallbacks = [];
+  var offlineStorage = (0, _storage.createOfflineStorage)({ initialData: offlineData });
+  var sessionStorage = (0, _storage.createSessionStorage)({ initialData: sessionData });
+
+  var retrieve = function retrieve() {
+    return _extends({}, offlineStorage.retrieve(), sessionStorage.retrieve());
+  };
+
+  var subscribe = function subscribe(next) {
+    next(retrieve());
+    updateCallbacks.push(next);
+  };
+
+  var notify = function notify() {
+    return updateCallbacks.forEach(function (callback) {
+      callback(retrieve());
+    });
+  };
+
+  var saveOffline = function saveOffline() {
+    var newData = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+    offlineStorage.update(newData);
+    notify();
+  };
+
+  var saveSession = function saveSession() {
+    var newData = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+    sessionStorage.update(newData);
+    notify();
+  };
+
+  return { retrieve: retrieve, subscribe: subscribe, saveOffline: saveOffline, saveSession: saveSession };
+};
+
+},{"./storage":173}],173:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -19846,7 +19901,7 @@ exports.createSessionStorage = exports.createOfflineStorage = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _localStorage = require('./external-deps/local-storage');
+var _localStorage = require('../../external-deps/local-storage');
 
 var createOfflineStorage = exports.createOfflineStorage = function createOfflineStorage() {
   var args = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
@@ -19888,60 +19943,4 @@ var createSessionStorage = exports.createSessionStorage = function createSession
   return { retrieve: retrieve, update: update };
 };
 
-},{"./external-deps/local-storage":170}],173:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.createStore = undefined;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _storage = require('./storage');
-
-var createStore = exports.createStore = function createStore() {
-  var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-  var _ref$sessionData = _ref.sessionData;
-  var sessionData = _ref$sessionData === undefined ? {} : _ref$sessionData;
-  var _ref$offlineData = _ref.offlineData;
-  var offlineData = _ref$offlineData === undefined ? {} : _ref$offlineData;
-
-  var updateCallbacks = [];
-  var offlineStorage = (0, _storage.createOfflineStorage)({ initialData: offlineData });
-  var sessionStorage = (0, _storage.createSessionStorage)({ initialData: sessionData });
-
-  var retrieve = function retrieve() {
-    return _extends({}, offlineStorage.retrieve(), sessionStorage.retrieve());
-  };
-
-  var subscribe = function subscribe(next) {
-    next(retrieve());
-    updateCallbacks.push(next);
-  };
-
-  var notify = function notify() {
-    updateCallbacks.forEach(function (callback) {
-      callback(retrieve());
-    });
-  };
-
-  var saveOffline = function saveOffline() {
-    var newData = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-    offlineStorage.update(newData);
-    notify();
-  };
-
-  var saveSession = function saveSession() {
-    var newData = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-    sessionStorage.update(newData);
-    notify();
-  };
-
-  return { retrieve: retrieve, subscribe: subscribe, saveOffline: saveOffline, saveSession: saveSession };
-};
-
-},{"./storage":172}]},{},[171]);
+},{"../../external-deps/local-storage":169}]},{},[170]);
