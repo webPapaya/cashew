@@ -18,10 +18,8 @@ export const createStore = ({ sessionData = {}, offlineData = {} } = {}) => {
     updateCallbacks.push(next);
   };
 
-  const notify = () => {
-    updateCallbacks
-      .forEach((callback) => { callback(retrieve()); });
-  };
+  const notify = () => updateCallbacks
+    .forEach((callback) => { callback(retrieve()); });
 
   const saveOffline = (newData = {}) => {
     offlineStorage.update(newData);

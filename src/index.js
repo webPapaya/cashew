@@ -4,9 +4,7 @@ import ReactDOM from 'react-dom';
 import { createStore } from './store';
 import { createActions } from './actions';
 
-const INITIAL_STORE_DATA = { counts: 0 };
-
-const store = createStore({ offlineData: INITIAL_STORE_DATA });
+const store = createStore();
 const actions = createActions({ store });
 
 const Counter = ({ counts }) => {
