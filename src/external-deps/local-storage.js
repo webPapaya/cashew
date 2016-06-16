@@ -3,7 +3,7 @@ import {
   getEnv,
 } from '../environments';
 
-const nodeLocalStorage = (initialData = "{}") => {
+const nodeLocalStorage = (initialData = '{}') => {
   let storedData = JSON.parse(initialData);
   const retrieveStorage = () =>
     JSON.stringify(storedData);
