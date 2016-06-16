@@ -13,11 +13,12 @@ const browserLocation = () => {
   };
 
   const updateLocation = (newData) => {
+    const newSearch = { ...retrieveLocation(), ...newData };
     const newLocation = new Url();
-    newLocation.host = newData.host || location.host;
-    newLocation.pathname = newData.pathname || location.pathname;
-    newLocation.hostname = newData.hostname || location.hostname;
-    newLocation.search = queryString.stringify(newData) || location.search;
+    newLocation.host = location.host;
+    newLocation.pathname = location.pathname;
+    newLocation.hostname = location.hostname;
+    newLocation.search = queryString.stringify(newSearch) || location.search;
 
     window.history.pushState(null, null, newLocation.format());
   };
