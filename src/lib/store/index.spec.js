@@ -3,7 +3,7 @@ import {
   equalTo,
 } from 'hamjest';
 
-import { createStore } from './store';
+import { createStore } from './index';
 
 describe('store', () => {
   describe('create', () => {

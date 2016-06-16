@@ -1,4 +1,4 @@
-import { createStorageAdapter } from '../external-deps/local-storage';
+import { createStorageAdapter } from '../../external-deps/local-storage';
 
 export const createOfflineStorage = (args = {}) => {
   const {
