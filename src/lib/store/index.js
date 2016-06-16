@@ -1,16 +1,19 @@
 import {
   createOfflineStorage,
   createSessionStorage,
+  createLocationStorage,
 } from './storage';
 
-export const createStore = ({ sessionData = {}, offlineData = {} } = {}) => {
+export const createStore = ({ sessionData = {}, offlineData = {}, locationData = {} } = {}) => {
   const updateCallbacks = [];
   const offlineStorage = createOfflineStorage({ initialData: offlineData });
   const sessionStorage = createSessionStorage({ initialData: sessionData });
+  const locationStorage = createLocationStorage({ initialData: locationData });
 
   const retrieve = () => ({
     ...offlineStorage.retrieve(),
     ...sessionStorage.retrieve(),
+    ...locationStorage.retrieve(),
   });
 
   const subscribe = (next) => {
@@ -31,5 +34,10 @@ export const createStore = ({ sessionData = {}, offlineData = {} } = {}) => {
     notify();
   };
 
-  return { retrieve, subscribe, saveOffline, saveSession };
+  const saveLocation = (newData = {}) => {
+    locationStorage.update(newData)
+    notify();
+  };
+
+  return { retrieve, subscribe, saveOffline, saveSession, saveLocation };
 };

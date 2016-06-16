@@ -1,4 +1,5 @@
 import { createStorageAdapter } from '../../external-deps/local-storage';
+import { createLocationAdapter } from '../../external-deps/location';
 
 export const createOfflineStorage = (args = {}) => {
   const {
@@ -28,4 +29,14 @@ export const createSessionStorage = ({ initialData = {} } = {}) => {
   };
 
   return { retrieve, update };
+};
+
+
+export const createLocationStorage = () => {
+  const adapter = createLocationAdapter();
+
+  const retrieve = () => adapter.retrieveLocation();
+  const update = (newData) => adapter.updateLocation(newData);
+
+  return { update, retrieve };
 };

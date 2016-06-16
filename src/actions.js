@@ -1,6 +1,7 @@
 export const createActions = ({ store }) => {
   const updateCounter = (newValue) => {
     store.saveOffline({ counts: newValue });
+    store.saveLocation({ counts: newValue });
   };
 
   const incrementCounter = () => {
