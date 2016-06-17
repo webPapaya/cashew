@@ -12,9 +12,10 @@ const createComponents = (componentsDefinition) => {
       isInitialized = true;
     };
 
+
     return {
       initialize,
-      isInitialized() { return isInitialized; }
+      get isInitialized() { return isInitialized; }
     };
   });
 };
@@ -26,7 +27,7 @@ describe('createComponent', () => {
       const COMPONENTS = [{
         initialize(...args) { initialized = args; }
       }];
-      const components = createComponents(COMPONENTS)
+      const components = createComponents(COMPONENTS);
       components[0].initialize('wasCalled');
 
       assertThat(initialized, equalTo(['wasCalled']));
@@ -38,11 +39,9 @@ describe('createComponent', () => {
         const components = createComponents(COMPONENTS);
         components[0].initialize();
 
-        assertThat(components[0].isInitialized(), equalTo(true));
+        assertThat(components[0].isInitialized, equalTo(true));
       });
     });
-
-
   });
 });
 
