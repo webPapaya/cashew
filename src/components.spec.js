@@ -24,14 +24,24 @@ const createComponents = (componentsDefinition) => {
     };
 
     return {
+      ...componentDefinition,
       initialize,
       destruct,
-      get isInitialized() { return isInitialized; }
+      isInitialized() { return isInitialized; }
     };
   });
 };
 
 describe('createComponent', () => {
+  it('given properties are bypassed', () => {
+    const COMPONENTS = [{
+      property: 'is bypassed'
+    }];
+    const components = createComponents(COMPONENTS);
+
+    assertThat(components[0].property, equalTo('is bypassed'));
+  });
+
   describe('initialize()', () => {
     describe('WHEN component specified an initialize method', () => {
       it('calls components initialize method', () => {
@@ -60,7 +70,7 @@ describe('createComponent', () => {
         const components = createComponents(COMPONENTS);
         components[0].initialize();
 
-        assertThat(components[0].isInitialized, equalTo(true));
+        assertThat(components[0].isInitialized(), equalTo(true));
       });
     });
   });
@@ -91,7 +101,7 @@ describe('createComponent', () => {
         const components = createComponents(COMPONENTS);
         components[0].destruct();
 
-        assertThat(components[0].isInitialized, equalTo(false));
+        assertThat(components[0].isInitialized(), equalTo(false));
       });
     });
   });
