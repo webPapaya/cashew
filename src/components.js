@@ -25,8 +25,6 @@ const Timer = ({ currentTime }) => {
   );
 };
 
-
-
 const COMPONENTS = [
   {
     domId: 'counter-1',
@@ -34,7 +32,6 @@ const COMPONENTS = [
       const { counts } = appState;
       return <Counter counts={ counts } actions={ actions }/>;
     },
-
   }, {
     domId: 'counter-2',
     initialize: ({ actions }) => {

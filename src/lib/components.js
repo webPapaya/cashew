@@ -3,7 +3,7 @@ export const createComponents = (componentsDefinition) => {
     let isInitialized = false;
 
     const initialize = (...args) => {
-      if (componentDefinition.initialize) {
+      if (!isInitialized && componentDefinition.initialize) {
         componentDefinition.initialize(...args);
       }
 
@@ -11,7 +11,7 @@ export const createComponents = (componentsDefinition) => {
     };
 
     const destruct = (...args) => {
-      if (componentDefinition.destruct) {
+      if (isInitialized && componentDefinition.destruct) {
         componentDefinition.destruct(...args);
       }
 
@@ -22,7 +22,7 @@ export const createComponents = (componentsDefinition) => {
       ...componentDefinition,
       initialize,
       destruct,
-      isInitialized() { return isInitialized; }
+      isInitialized() { return isInitialized; },
     };
   });
 };
