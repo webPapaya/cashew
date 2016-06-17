@@ -15,21 +15,39 @@ const Counter = ({ counts, actions }) => {
   );
 };
 
+const Timer = ({ currentTime }) => {
+  if(!currentTime) { return <div></div>; }
+  return (
+    <div>
+      { currentTime.toUTCString() }
+    </div>
+  );
+};
+
 export const COMPONENTS = [
   {
     domId: 'counter-1',
+    initialize:() => {},
+    initialized: false,
     renderComponent: ({ appState, actions }) => {
       const { counts } = appState;
       return <Counter counts={ counts } actions={ actions }/>;
     },
+
   }, {
     domId: 'counter-2',
+    initialize: ({ appState, actions }) => {
+      actions.startClock();
+    },
+    initialized: false,
     renderComponent: ({ appState, actions }) => {
-      const { counts } = appState;
-      return <Counter counts={ counts } actions={ actions }/>;
+      const { currentTime } = appState;
+      return <Timer currentTime={ currentTime } />;
     },
   }, {
     domId: 'counter-3',
+    initialize:() => {},
+    initialized: false,
     renderComponent: ({ appState, actions }) => {
       const { counts } = appState;
       return <Counter counts={ counts } actions={ actions } />;

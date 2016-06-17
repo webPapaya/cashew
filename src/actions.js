@@ -9,5 +9,11 @@ export const createActions = ({ store }) => {
     updateCounter(counts + 1);
   };
 
-  return { incrementCounter, updateCounter };
+  const startClock = () => {
+    global.setInterval(() => {
+      store.saveInSession({ currentTime: new Date() })
+    }, 1000);
+  };
+
+  return { incrementCounter, updateCounter, startClock };
 };
