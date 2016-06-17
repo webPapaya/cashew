@@ -1,25 +1,39 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { createStore } from './lib/store';
 import { createActions } from './actions';
 import { COMPONENTS } from './components';
 
+const initializeComponent = ({ component, appState, actions }) => {
+  if (!component.initialized) {
+    component.initialize({ appState, actions });
+    component.initialized = true;
+  }
+};
+
+const destructComponent = ({ component }) => {
+  if (component.initialized) {
+    component.initialized = false;
+  }
+};
+
+const renderComponentToDom = ({ component, domElement }) => {
+  ReactDOM.render(component, domElement);
+};
+
 const store = createStore();
 const actions = createActions({ store });
 
 COMPONENTS.forEach((component) => {
-  const { domId, renderComponent, initialize } = component;
-
+  const { domId, renderComponent } = component;
   store.subscribe((appState) => {
-    const containerDomElement = document.getElementById(domId);
-    if (containerDomElement) {
-      if (!component.initialized) {
-        initialize({ appState, actions });
-        component.initialized = true;
-      }
-
-      ReactDOM.render(renderComponent({ appState, actions }), containerDomElement);
+    const domElement = document.getElementById(domId);
+    if (domElement) {
+      const renderedComponent = renderComponent({ appState, actions });
+      initializeComponent({ component, appState, actions });
+      renderComponentToDom({ component: renderedComponent, domElement });
+    } else {
+      destructComponent({ component });
     }
   });
 });

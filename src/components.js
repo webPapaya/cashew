@@ -27,7 +27,7 @@ const Timer = ({ currentTime }) => {
 export const COMPONENTS = [
   {
     domId: 'counter-1',
-    initialize:() => {},
+    initialize() {},
     initialized: false,
     renderComponent: ({ appState, actions }) => {
       const { counts } = appState;
@@ -36,17 +36,17 @@ export const COMPONENTS = [
 
   }, {
     domId: 'counter-2',
-    initialize: ({ appState, actions }) => {
+    initialize: ({ actions }) => {
       actions.startClock();
     },
     initialized: false,
-    renderComponent: ({ appState, actions }) => {
+    renderComponent({ appState }) {
       const { currentTime } = appState;
       return <Timer currentTime={ currentTime } />;
     },
   }, {
     domId: 'counter-3',
-    initialize:() => {},
+    initialize() {},
     initialized: false,
     renderComponent: ({ appState, actions }) => {
       const { counts } = appState;
