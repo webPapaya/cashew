@@ -6,6 +6,7 @@ import {
 const createComponents = (componentsDefinition) => {
   return componentsDefinition.map((componentDefinition) => {
     let isInitialized = false;
+
     const initialize = (...args) => {
       componentDefinition.initialize(...args);
       isInitialized = true;
@@ -20,7 +21,7 @@ const createComponents = (componentsDefinition) => {
 
 describe('createComponent', () => {
   describe('initialize()', () => {
-    it('calls component initialize method', () => {
+    it('calls components initialize method', () => {
       let initialized = void 0;
       const COMPONENTS = [{
         initialize(...args) { initialized = args; }
@@ -31,13 +32,17 @@ describe('createComponent', () => {
       assertThat(initialized, equalTo(['wasCalled']));
     });
 
-    it('isInitialized is set to true', () => {
-      const COMPONENTS = [{ initialize() {} }];
-      const components = createComponents(COMPONENTS);
-      components[0].initialize();
+    describe('WHEN component was initialized', () => {
+      it('isInitialized is true', () => {
+        const COMPONENTS = [{ initialize() {} }];
+        const components = createComponents(COMPONENTS);
+        components[0].initialize();
 
-      assertThat(components[0].isInitialized(), equalTo(true));
+        assertThat(components[0].isInitialized(), equalTo(true));
+      });
     });
+
+
   });
 });
 

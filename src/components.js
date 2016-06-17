@@ -62,3 +62,7 @@ export const components = COMPONENTS.map((component) => {
     ...component,
   };
 });
+
+export const createComponents = () => {
+  
+};
