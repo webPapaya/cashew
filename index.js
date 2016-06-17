@@ -21193,16 +21193,18 @@ var createActions = exports.createActions = function createActions(_ref) {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],175:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.COMPONENTS = undefined;
+exports.components = undefined;
 
-var _react = require("react");
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _components = require('./lib/components');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21216,19 +21218,19 @@ var Counter = function Counter(_ref) {
   };
 
   return _react2.default.createElement(
-    "div",
+    'div',
     null,
     _react2.default.createElement(
-      "div",
+      'div',
       null,
       counts
     ),
     _react2.default.createElement(
-      "button",
+      'button',
       { onClick: actions.incrementCounter },
-      "Click me"
+      'Click me'
     ),
-    _react2.default.createElement("input", { type: "range", min: "-100", max: "100", value: counts, onChange: updateCounter })
+    _react2.default.createElement('input', { type: 'range', min: '-100', max: '100', value: counts, onChange: updateCounter })
   );
 };
 
@@ -21236,19 +21238,17 @@ var Timer = function Timer(_ref2) {
   var currentTime = _ref2.currentTime;
 
   if (!currentTime) {
-    return _react2.default.createElement("div", null);
+    return _react2.default.createElement('div', null);
   }
   return _react2.default.createElement(
-    "div",
+    'div',
     null,
     currentTime.toUTCString()
   );
 };
 
-var COMPONENTS = exports.COMPONENTS = [{
+var COMPONENTS = [{
   domId: 'counter-1',
-  initialize: function initialize() {},
-  initialized: false,
   renderComponent: function renderComponent(_ref3) {
     var appState = _ref3.appState;
     var actions = _ref3.actions;
@@ -21256,27 +21256,21 @@ var COMPONENTS = exports.COMPONENTS = [{
 
     return _react2.default.createElement(Counter, { counts: counts, actions: actions });
   }
-
 }, {
   domId: 'counter-2',
   initialize: function initialize(_ref4) {
-    var appState = _ref4.appState;
     var actions = _ref4.actions;
 
     actions.startClock();
   },
-  initialized: false,
   renderComponent: function renderComponent(_ref5) {
     var appState = _ref5.appState;
-    var actions = _ref5.actions;
     var currentTime = appState.currentTime;
 
     return _react2.default.createElement(Timer, { currentTime: currentTime });
   }
 }, {
   domId: 'counter-3',
-  initialize: function initialize() {},
-  initialized: false,
   renderComponent: function renderComponent(_ref6) {
     var appState = _ref6.appState;
     var actions = _ref6.actions;
@@ -21286,7 +21280,9 @@ var COMPONENTS = exports.COMPONENTS = [{
   }
 }];
 
-},{"react":171}],176:[function(require,module,exports){
+var components = exports.components = (0, _components.createComponents)(COMPONENTS);
+
+},{"./lib/components":180,"react":171}],176:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21338,7 +21334,7 @@ var createStorageAdapter = exports.createStorageAdapter = function createStorage
   return browserLocalStorage(data);
 };
 
-},{"../lib/environments":180}],177:[function(require,module,exports){
+},{"../lib/environments":181}],177:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21405,7 +21401,7 @@ var createLocationAdapter = exports.createLocationAdapter = function createLocat
   return browserLocation(initialData);
 };
 
-},{"../lib/environments":180,"./logger":178,"querystring":32,"url":172}],178:[function(require,module,exports){
+},{"../lib/environments":181,"./logger":178,"querystring":32,"url":172}],178:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21417,10 +21413,6 @@ var warn = exports.warn = function warn(message) {
 
 },{}],179:[function(require,module,exports){
 'use strict';
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = require('react-dom');
 
@@ -21434,29 +21426,76 @@ var _components = require('./components');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var renderComponentToDom = function renderComponentToDom(_ref) {
+  var component = _ref.component;
+  var domElement = _ref.domElement;
+
+  _reactDom2.default.render(component, domElement);
+};
+
 var store = (0, _store.createStore)();
 var actions = (0, _actions.createActions)({ store: store });
 
-_components.COMPONENTS.forEach(function (component) {
+_components.components.forEach(function (component) {
   var domId = component.domId;
   var renderComponent = component.renderComponent;
   var initialize = component.initialize;
+  var destruct = component.destruct;
 
 
   store.subscribe(function (appState) {
-    var containerDomElement = document.getElementById(domId);
-    if (containerDomElement) {
-      if (!component.initialized) {
-        initialize({ appState: appState, actions: actions });
-        component.initialized = true;
-      }
+    var domElement = document.getElementById(domId);
+    if (domElement) {
+      initialize({ appState: appState, actions: actions });
 
-      _reactDom2.default.render(renderComponent({ appState: appState, actions: actions }), containerDomElement);
+      var renderedComponent = renderComponent({ appState: appState, actions: actions });
+      renderComponentToDom({ component: renderedComponent, domElement: domElement });
+    } else {
+      destruct({ appState: appState, actions: actions });
     }
   });
 });
 
-},{"./actions":174,"./components":175,"./lib/store":181,"react":171,"react-dom":33}],180:[function(require,module,exports){
+},{"./actions":174,"./components":175,"./lib/store":182,"react-dom":33}],180:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var createComponents = exports.createComponents = function createComponents(componentsDefinition) {
+  return componentsDefinition.map(function (componentDefinition) {
+    var _isInitialized = false;
+
+    var initialize = function initialize() {
+      if (!_isInitialized && componentDefinition.initialize) {
+        componentDefinition.initialize.apply(componentDefinition, arguments);
+      }
+
+      _isInitialized = true;
+    };
+
+    var destruct = function destruct() {
+      if (_isInitialized && componentDefinition.destruct) {
+        componentDefinition.destruct.apply(componentDefinition, arguments);
+      }
+
+      _isInitialized = false;
+    };
+
+    return _extends({}, componentDefinition, {
+      initialize: initialize,
+      destruct: destruct,
+      isInitialized: function isInitialized() {
+        return _isInitialized;
+      }
+    });
+  });
+};
+
+},{}],181:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21473,7 +21512,7 @@ var setEnv = exports.setEnv = function setEnv(env) {
   currentEnv = env;
 };
 
-},{}],181:[function(require,module,exports){
+},{}],182:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21539,7 +21578,7 @@ var createStore = exports.createStore = function createStore() {
   return { retrieve: retrieve, subscribe: subscribe, saveOffline: saveOffline, saveInSession: saveInSession, saveInLocation: saveInLocation };
 };
 
-},{"./storage":182}],182:[function(require,module,exports){
+},{"./storage":183}],183:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
