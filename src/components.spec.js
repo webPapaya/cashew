@@ -8,12 +8,19 @@ const createComponents = (componentsDefinition) => {
     let isInitialized = false;
 
     const initialize = (...args) => {
-      componentDefinition.initialize(...args);
+      if (componentDefinition.initialize) {
+        componentDefinition.initialize(...args);
+      }
+
       isInitialized = true;
     };
 
     const destruct = (...args) => {
-      componentDefinition.destruct(...args);
+      if (componentDefinition.destruct) {
+        componentDefinition.destruct(...args);
+      }
+
+      isInitialized = false;
     };
 
     return {
@@ -26,15 +33,25 @@ const createComponents = (componentsDefinition) => {
 
 describe('createComponent', () => {
   describe('initialize()', () => {
-    it('calls components initialize method', () => {
-      let initialized = void 0;
-      const COMPONENTS = [{
-        initialize(...args) { initialized = args; }
-      }];
-      const components = createComponents(COMPONENTS);
-      components[0].initialize('wasCalled');
+    describe('WHEN component specified an initialize method', () => {
+      it('calls components initialize method', () => {
+        let initialized = void 0;
+        const COMPONENTS = [{
+          initialize(...args) { initialized = args; }
+        }];
+        const components = createComponents(COMPONENTS);
+        components[0].initialize('wasCalled');
 
-      assertThat(initialized, equalTo(['wasCalled']));
+        assertThat(initialized, equalTo(['wasCalled']));
+      });
+    });
+
+    describe('WHEN component didn\'t specify an initialize method', () => {
+      it('doesn\'t fail', () => {
+        const COMPONENTS = [{}];
+        const components = createComponents(COMPONENTS);
+        components[0].initialize('wasCalled');
+      });
     });
 
     describe('WHEN component was initialized', () => {
@@ -58,6 +75,24 @@ describe('createComponent', () => {
       components[0].destruct('wasCalled');
 
       assertThat(destructed, equalTo(['wasCalled']));
+    });
+
+    describe('WHEN component didn\'t specify an destruct method', () => {
+      it('doesn\'t fail', () => {
+        const COMPONENTS = [{}];
+        const components = createComponents(COMPONENTS);
+        components[0].destruct('wasCalled');
+      });
+    });
+
+    describe('WHEN component was destructed', () => {
+      it('isInitialized is false', () => {
+        const COMPONENTS = [{ destruct() {} }];
+        const components = createComponents(COMPONENTS);
+        components[0].destruct();
+
+        assertThat(components[0].isInitialized, equalTo(false));
+      });
     });
   });
 });
