@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom';
 
 import { createStore } from './lib/store';
 import { createActions } from './actions';
-import { COMPONENTS } from './components';
+import { components } from './components';
 
 const initializeComponent = ({ component, appState, actions }) => {
   if (!component.initialized) {
@@ -24,7 +24,7 @@ const renderComponentToDom = ({ component, domElement }) => {
 const store = createStore();
 const actions = createActions({ store });
 
-COMPONENTS.forEach((component) => {
+components.forEach((component) => {
   const { domId, renderComponent } = component;
   store.subscribe((appState) => {
     const domElement = document.getElementById(domId);

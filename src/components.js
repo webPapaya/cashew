@@ -24,10 +24,9 @@ const Timer = ({ currentTime }) => {
   );
 };
 
-export const COMPONENTS = [
+const COMPONENTS = [
   {
     domId: 'counter-1',
-    initialize() {},
     initialized: false,
     renderComponent: ({ appState, actions }) => {
       const { counts } = appState;
@@ -54,3 +53,12 @@ export const COMPONENTS = [
     },
   },
 ];
+
+export const components = COMPONENTS.map((component) => {
+  return {
+    initialize: () => {},
+    destruct: () => {},
+    initialized: false,
+    ...component,
+  };
+});
