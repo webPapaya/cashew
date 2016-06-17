@@ -22,30 +22,33 @@ const Counter = ({ counts }) => {
   );
 };
 
+const COMPONENTS = [
+  {
+    domId: 'counter-1',
+    renderComponent: (appState) => {
+      const { counts } = appState;
+      return <Counter counts={ counts }/>;
+    },
+  }, {
+    domId: 'counter-2',
+    renderComponent: (appState) => {
+      const { counts } = appState;
+      return <Counter counts={ counts }/>;
+    },
+  }, {
+    domId: 'counter-3',
+    renderComponent: (appState) => {
+      const { counts } = appState;
+      return <Counter counts={ counts }/>;
+    },
+  },
+];
 
-
-
-store.subscribe((appState) => {
-  const containerDomElement = document.getElementById('counter-1');
-  if(containerDomElement) {
-    const { counts } = appState;
-    ReactDOM.render(<Counter counts={ counts }/>, containerDomElement);
-  }
-});
-
-
-store.subscribe((appState) => {
-  const containerDomElement = document.getElementById('counter-2');
-  if(containerDomElement) {
-    const { counts } = appState;
-    ReactDOM.render(<Counter counts={ counts }/>, containerDomElement);
-  }
-});
-
-store.subscribe((appState) => {
-  const containerDomElement = document.getElementById('counter-3');
-  if(containerDomElement) {
-    const { counts } = appState;
-    ReactDOM.render(<Counter counts={ counts }/>, containerDomElement);
-  }
+COMPONENTS.forEach(({ domId, renderComponent }) => {
+  store.subscribe((appState) => {
+    const containerDomElement = document.getElementById(domId);
+    if (containerDomElement) {
+      ReactDOM.render(renderComponent(appState), containerDomElement);
+    }
+  });
 });
