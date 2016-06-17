@@ -12,9 +12,13 @@ const createComponents = (componentsDefinition) => {
       isInitialized = true;
     };
 
+    const destruct = (...args) => {
+      componentDefinition.destruct(...args);
+    };
 
     return {
       initialize,
+      destruct,
       get isInitialized() { return isInitialized; }
     };
   });
@@ -41,6 +45,19 @@ describe('createComponent', () => {
 
         assertThat(components[0].isInitialized, equalTo(true));
       });
+    });
+  });
+
+  describe('destruct()', () => {
+    it('calls components destruct method', () => {
+      let destructed = void 0;
+      const COMPONENTS = [{
+        destruct(...args) { destructed = args; }
+      }];
+      const components = createComponents(COMPONENTS);
+      components[0].destruct('wasCalled');
+
+      assertThat(destructed, equalTo(['wasCalled']));
     });
   });
 });
