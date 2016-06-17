@@ -1,5 +1,5 @@
-export const createComponents = (componentsDefinition) => {
-  return componentsDefinition.map((componentDefinition) => {
+export const createComponents = (componentsDefinition) =>
+  componentsDefinition.map((componentDefinition) => {
     let isInitialized = false;
 
     const initialize = (...args) => {
@@ -25,4 +25,3 @@ export const createComponents = (componentsDefinition) => {
       isInitialized() { return isInitialized; },
     };
   });
-};

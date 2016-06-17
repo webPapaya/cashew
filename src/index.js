@@ -12,13 +12,13 @@ const store = createStore();
 const actions = createActions({ store });
 
 components.forEach((component) => {
-  const { 
-    domId, 
-    renderComponent, 
-    initialize, 
-    destruct, 
+  const {
+    domId,
+    renderComponent,
+    initialize,
+    destruct,
   } = component;
-  
+
   store.subscribe((appState) => {
     const domElement = document.getElementById(domId);
     if (domElement) {

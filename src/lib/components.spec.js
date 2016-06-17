@@ -41,8 +41,6 @@ describe('createComponent', () => {
       });
     });
 
-
-
     describe('WHEN component didn\'t specify an initialize method', () => {
       it('doesn\'t fail', () => {
         const componentDefinition = [{}];
