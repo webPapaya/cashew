@@ -11,7 +11,7 @@ export const createActions = ({ store }) => {
 
   const startClock = () => {
     global.setInterval(() => {
-      store.saveInSession({ currentTime: new Date() })
+      store.saveInSession({ currentTime: new Date() });
     }, 1000);
   };
 

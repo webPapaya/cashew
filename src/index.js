@@ -14,7 +14,7 @@ COMPONENTS.forEach((component) => {
   store.subscribe((appState) => {
     const containerDomElement = document.getElementById(domId);
     if (containerDomElement) {
-      if(!component.initialized) {
+      if (!component.initialized) {
         initialize({ appState, actions });
         component.initialized = true;
       }

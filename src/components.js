@@ -16,7 +16,7 @@ const Counter = ({ counts, actions }) => {
 };
 
 const Timer = ({ currentTime }) => {
-  if(!currentTime) { return <div></div>; }
+  if (!currentTime) { return <div></div>; }
   return (
     <div>
       { currentTime.toUTCString() }
