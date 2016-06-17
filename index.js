@@ -21159,6 +21159,7 @@ module.exports = {
 };
 
 },{}],174:[function(require,module,exports){
+(function (global){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21181,10 +21182,111 @@ var createActions = exports.createActions = function createActions(_ref) {
     updateCounter(counts + 1);
   };
 
-  return { incrementCounter: incrementCounter, updateCounter: updateCounter };
+  var startClock = function startClock() {
+    global.setInterval(function () {
+      store.saveInSession({ currentTime: new Date() });
+    }, 1000);
+  };
+
+  return { incrementCounter: incrementCounter, updateCounter: updateCounter, startClock: startClock };
 };
 
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],175:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.COMPONENTS = undefined;
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Counter = function Counter(_ref) {
+  var counts = _ref.counts;
+  var actions = _ref.actions;
+
+  var updateCounter = function updateCounter(evt) {
+    var inputValue = parseInt(evt.currentTarget.value, 10);
+    actions.updateCounter(inputValue);
+  };
+
+  return _react2.default.createElement(
+    "div",
+    null,
+    _react2.default.createElement(
+      "div",
+      null,
+      counts
+    ),
+    _react2.default.createElement(
+      "button",
+      { onClick: actions.incrementCounter },
+      "Click me"
+    ),
+    _react2.default.createElement("input", { type: "range", min: "-100", max: "100", value: counts, onChange: updateCounter })
+  );
+};
+
+var Timer = function Timer(_ref2) {
+  var currentTime = _ref2.currentTime;
+
+  if (!currentTime) {
+    return _react2.default.createElement("div", null);
+  }
+  return _react2.default.createElement(
+    "div",
+    null,
+    currentTime.toUTCString()
+  );
+};
+
+var COMPONENTS = exports.COMPONENTS = [{
+  domId: 'counter-1',
+  initialize: function initialize() {},
+  initialized: false,
+  renderComponent: function renderComponent(_ref3) {
+    var appState = _ref3.appState;
+    var actions = _ref3.actions;
+    var counts = appState.counts;
+
+    return _react2.default.createElement(Counter, { counts: counts, actions: actions });
+  }
+
+}, {
+  domId: 'counter-2',
+  initialize: function initialize(_ref4) {
+    var appState = _ref4.appState;
+    var actions = _ref4.actions;
+
+    actions.startClock();
+  },
+  initialized: false,
+  renderComponent: function renderComponent(_ref5) {
+    var appState = _ref5.appState;
+    var actions = _ref5.actions;
+    var currentTime = appState.currentTime;
+
+    return _react2.default.createElement(Timer, { currentTime: currentTime });
+  }
+}, {
+  domId: 'counter-3',
+  initialize: function initialize() {},
+  initialized: false,
+  renderComponent: function renderComponent(_ref6) {
+    var appState = _ref6.appState;
+    var actions = _ref6.actions;
+    var counts = appState.counts;
+
+    return _react2.default.createElement(Counter, { counts: counts, actions: actions });
+  }
+}];
+
+},{"react":171}],176:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21236,7 +21338,7 @@ var createStorageAdapter = exports.createStorageAdapter = function createStorage
   return browserLocalStorage(data);
 };
 
-},{"../lib/environments":179}],176:[function(require,module,exports){
+},{"../lib/environments":180}],177:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21303,7 +21405,7 @@ var createLocationAdapter = exports.createLocationAdapter = function createLocat
   return browserLocation(initialData);
 };
 
-},{"../lib/environments":179,"./logger":177,"querystring":32,"url":172}],177:[function(require,module,exports){
+},{"../lib/environments":180,"./logger":178,"querystring":32,"url":172}],178:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21313,7 +21415,7 @@ var warn = exports.warn = function warn(message) {
   return console.warn(message);
 }; // eslint-disable-line no-console
 
-},{}],178:[function(require,module,exports){
+},{}],179:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21328,64 +21430,33 @@ var _store = require('./lib/store');
 
 var _actions = require('./actions');
 
+var _components = require('./components');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var store = (0, _store.createStore)();
 var actions = (0, _actions.createActions)({ store: store });
 
-var Counter = function Counter(_ref) {
-  var counts = _ref.counts;
+_components.COMPONENTS.forEach(function (component) {
+  var domId = component.domId;
+  var renderComponent = component.renderComponent;
+  var initialize = component.initialize;
 
-  var updateCounter = function updateCounter(evt) {
-    var inputValue = parseInt(evt.currentTarget.value, 10);
-    actions.updateCounter(inputValue);
-  };
 
-  return _react2.default.createElement(
-    'div',
-    null,
-    _react2.default.createElement(
-      'div',
-      null,
-      counts
-    ),
-    _react2.default.createElement(
-      'button',
-      { onClick: actions.incrementCounter },
-      'Click me'
-    ),
-    _react2.default.createElement('input', { type: 'range', min: '-100', max: '100', value: counts, onChange: updateCounter })
-  );
-};
+  store.subscribe(function (appState) {
+    var containerDomElement = document.getElementById(domId);
+    if (containerDomElement) {
+      if (!component.initialized) {
+        initialize({ appState: appState, actions: actions });
+        component.initialized = true;
+      }
 
-store.subscribe(function (appState) {
-  var containerDomElement = document.getElementById('counter-1');
-  if (containerDomElement) {
-    var counts = appState.counts;
-
-    _reactDom2.default.render(_react2.default.createElement(Counter, { counts: counts }), containerDomElement);
-  }
+      _reactDom2.default.render(renderComponent({ appState: appState, actions: actions }), containerDomElement);
+    }
+  });
 });
 
-store.subscribe(function (appState) {
-  var containerDomElement = document.getElementById('counter-2');
-  if (containerDomElement) {
-    var counts = appState.counts;
-
-    _reactDom2.default.render(_react2.default.createElement(Counter, { counts: counts }), containerDomElement);
-  }
-});
-
-store.subscribe(function (appState) {
-  var containerDomElement = document.getElementById('counter-3');
-  if (containerDomElement) {
-    var counts = appState.counts;
-
-    _reactDom2.default.render(_react2.default.createElement(Counter, { counts: counts }), containerDomElement);
-  }
-});
-
-},{"./actions":174,"./lib/store":180,"react":171,"react-dom":33}],179:[function(require,module,exports){
+},{"./actions":174,"./components":175,"./lib/store":181,"react":171,"react-dom":33}],180:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21402,7 +21473,7 @@ var setEnv = exports.setEnv = function setEnv(env) {
   currentEnv = env;
 };
 
-},{}],180:[function(require,module,exports){
+},{}],181:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21468,7 +21539,7 @@ var createStore = exports.createStore = function createStore() {
   return { retrieve: retrieve, subscribe: subscribe, saveOffline: saveOffline, saveInSession: saveInSession, saveInLocation: saveInLocation };
 };
 
-},{"./storage":181}],181:[function(require,module,exports){
+},{"./storage":182}],182:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21535,4 +21606,4 @@ var createLocationStorage = exports.createLocationStorage = function createLocat
   return { update: update, retrieve: retrieve };
 };
 
-},{"../../external-deps/local-storage":175,"../../external-deps/location":176}]},{},[178]);
+},{"../../external-deps/local-storage":176,"../../external-deps/location":177}]},{},[179]);
