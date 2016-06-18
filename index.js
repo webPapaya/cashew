@@ -21258,7 +21258,7 @@ var COMPONENTS = [{
   }
 }, {
   domId: 'counter-2',
-  initialize: function initialize(_ref4) {
+  construct: function construct(_ref4) {
     var actions = _ref4.actions;
 
     actions.startClock();
@@ -21439,14 +21439,14 @@ var actions = (0, _actions.createActions)({ store: store });
 _components.components.forEach(function (component) {
   var domId = component.domId;
   var renderComponent = component.renderComponent;
-  var initialize = component.initialize;
+  var construct = component.construct;
   var destruct = component.destruct;
 
 
   store.subscribe(function (appState) {
     var domElement = document.getElementById(domId);
     if (domElement) {
-      initialize({ appState: appState, actions: actions });
+      construct({ appState: appState, actions: actions });
 
       var renderedComponent = renderComponent({ appState: appState, actions: actions });
       renderComponentToDom({ component: renderedComponent, domElement: domElement });
@@ -21469,9 +21469,9 @@ var createComponents = exports.createComponents = function createComponents(comp
   return componentsDefinition.map(function (componentDefinition) {
     var _isInitialized = false;
 
-    var initialize = function initialize() {
-      if (!_isInitialized && componentDefinition.initialize) {
-        componentDefinition.initialize.apply(componentDefinition, arguments);
+    var construct = function construct() {
+      if (!_isInitialized && componentDefinition.construct) {
+        componentDefinition.construct.apply(componentDefinition, arguments);
       }
 
       _isInitialized = true;
@@ -21486,7 +21486,7 @@ var createComponents = exports.createComponents = function createComponents(comp
     };
 
     return _extends({}, componentDefinition, {
-      initialize: initialize,
+      construct: construct,
       destruct: destruct,
       isInitialized: function isInitialized() {
         return _isInitialized;
