@@ -25,27 +25,32 @@ const Timer = ({ currentTime }) => {
   );
 };
 
+const ClockControlls = ({ actions }) => {
+  return (
+    <div>
+      <button onClick={ actions.addClock }>Add Clock</button>
+      <button onClick={ actions.removeClock }>Remove Clock</button>
+    </div>
+  );
+};
+
 const COMPONENTS = [
   {
     domId: 'counter-1',
-    render: ({ appState, actions }) => {
+    render({ appState, actions }) {
       const { counts } = appState;
       return <Counter counts={ counts } actions={ actions }/>;
     },
   }, {
     domId: 'counter-2',
-    construct: ({ actions }) => {
-      actions.startClock();
-    },
     render({ appState }) {
       const { currentTime } = appState;
       return <Timer currentTime={ currentTime } />;
     },
   }, {
     domId: 'counter-3',
-    render: ({ appState, actions }) => {
-      const { counts } = appState;
-      return <Counter counts={ counts } actions={ actions } />;
+    render({ actions }) {
+      return <ClockControlls actions={ actions } />;
     },
   },
 ];
