@@ -21416,17 +21416,17 @@ var warn = exports.warn = function warn(message) {
 
 var _components = require('./components');
 
-var _bootstrapBrowser = require('./lib/bootstrap-browser');
+var _bootstrap = require('./lib/bootstrap');
 
-(0, _bootstrapBrowser.bootstrapBrowser)(_components.components);
+(0, _bootstrap.browser)({ components: _components.components });
 
-},{"./components":175,"./lib/bootstrap-browser":180}],180:[function(require,module,exports){
+},{"./components":175,"./lib/bootstrap":180}],180:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.bootstrapBrowser = undefined;
+exports.browser = undefined;
 
 var _reactDom = require('react-dom');
 
@@ -21448,7 +21448,9 @@ var renderComponentToDom = function renderComponentToDom(_ref) {
   _reactDom2.default.render(component, domElement);
 };
 
-var bootstrapBrowser = exports.bootstrapBrowser = function bootstrapBrowser(components) {
+var browser = exports.browser = function browser(_ref2) {
+  var components = _ref2.components;
+
   var store = (0, _index.createStore)();
   var actions = (0, _actions.createActions)({ store: store });
 
