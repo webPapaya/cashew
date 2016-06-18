@@ -15,19 +15,17 @@ components.forEach((component) => {
   const {
     domId,
     renderComponent,
-    construct,
-    destruct,
   } = component;
 
   store.subscribe((appState) => {
     const domElement = document.getElementById(domId);
     if (domElement) {
-      construct({ appState, actions });
+      component.construct({ appState, actions });
 
       const renderedComponent = renderComponent({ appState, actions });
       renderComponentToDom({ component: renderedComponent, domElement });
     } else {
-      destruct({ appState, actions });
+      component.destruct({ appState, actions });
     }
   });
 });
