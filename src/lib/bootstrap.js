@@ -17,12 +17,12 @@ export const browser = ({ components }) => {
       const domElement = document.getElementById(component.domId);
 
       if (shouldComponentRender(domElement)) {
-        component.construct({ appState, actions });
+        component.construct({ store, appState, actions });
 
         const renderedComponent = component.render({ appState, actions });
         renderComponentToDom({ component: renderedComponent, domElement });
       } else {
-        component.destruct({ appState, actions });
+        component.destruct({ store, appState, actions });
       }
     });
   });

@@ -1,13 +1,33 @@
 import React from 'react';
 import { createComponents } from './lib/components';
 
-const DirectoryListing = ({ actions }) => {};
+const DirectoryListing = ({ actions, fileList }) => {
+  const readFiles = (evt) => {
+    actions.readFiles(evt.target.files);
+  };
+
+  return (
+    <div>
+      <input type="file" multiple onChange={ readFiles }/>
+      <ul>
+        { fileList.map(({ name }, index) => {
+          return (
+            <li key={ index }>
+              { name }
+            </li>
+          )
+        })}
+      </ul>
+    </div>
+  );
+};
 
 const COMPONENTS = [
   {
     domId: 'counter-1',
-    render({ actions }) {
-      return <DirectoryListing actions={ actions }/>;
+    render({ actions, appState }) {
+      const { fileList = [] } = appState;
+      return <DirectoryListing actions={ actions } fileList={ fileList } />;
     },
   }
 ];
