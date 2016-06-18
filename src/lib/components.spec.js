@@ -13,47 +13,47 @@ describe('createComponent', () => {
     assertThat(components[0].property, equalTo('is bypassed'));
   });
 
-  describe('initialize()', () => {
-    describe('WHEN component specified an initialize method', () => {
-      it('calls components initialize method', () => {
-        let initialized = void 0;
+  describe('construct()', () => {
+    describe('WHEN component specified an construct method', () => {
+      it('calls components construct method', () => {
+        let constructed = void 0;
         const componentDefinition = [{
-          initialize(...args) { initialized = args; },
+          construct(...args) { constructed = args; },
         }];
         const components = createComponents(componentDefinition);
-        components[0].initialize('wasCalled');
+        components[0].construct('wasCalled');
 
-        assertThat(initialized, equalTo(['wasCalled']));
+        assertThat(constructed, equalTo(['wasCalled']));
       });
     });
 
     describe('OR component is already initialized', () => {
-      it('does NOT call initialize method again', () => {
-        let initialized = 0;
+      it('does NOT call construct method again', () => {
+        let constructed = 0;
         const componentDefinition = [{
-          initialize() { initialized += 1; },
+          construct() { constructed += 1; },
         }];
         const components = createComponents(componentDefinition);
-        components[0].initialize();
-        components[0].initialize();
+        components[0].construct();
+        components[0].construct();
 
-        assertThat(initialized, equalTo(1));
+        assertThat(constructed, equalTo(1));
       });
     });
 
-    describe('WHEN component didn\'t specify an initialize method', () => {
+    describe('WHEN component didn\'t specify an construct method', () => {
       it('doesn\'t fail', () => {
         const componentDefinition = [{}];
         const components = createComponents(componentDefinition);
-        components[0].initialize('wasCalled');
+        components[0].construct('wasCalled');
       });
     });
 
     describe('WHEN component was initialized', () => {
       it('isInitialized is true', () => {
-        const componentDefinition = [{ initialize() {} }];
+        const componentDefinition = [{ construct() {} }];
         const components = createComponents(componentDefinition);
-        components[0].initialize();
+        components[0].construct();
 
         assertThat(components[0].isInitialized(), equalTo(true));
       });
@@ -67,7 +67,7 @@ describe('createComponent', () => {
         destruct(...args) { destructed = args; },
       }];
       const components = createComponents(componentDefinition);
-      components[0].initialize();
+      components[0].construct();
       components[0].destruct('wasCalled');
 
       assertThat(destructed, equalTo(['wasCalled']));
@@ -80,7 +80,7 @@ describe('createComponent', () => {
           destruct() { destructed += 1; },
         }];
         const components = createComponents(componentDefinition);
-        components[0].initialize();
+        components[0].construct();
         components[0].destruct();
         components[0].destruct();
 

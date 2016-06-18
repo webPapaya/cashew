@@ -15,14 +15,14 @@ components.forEach((component) => {
   const {
     domId,
     renderComponent,
-    initialize,
+    construct,
     destruct,
   } = component;
 
   store.subscribe((appState) => {
     const domElement = document.getElementById(domId);
     if (domElement) {
-      initialize({ appState, actions });
+      construct({ appState, actions });
 
       const renderedComponent = renderComponent({ appState, actions });
       renderComponentToDom({ component: renderedComponent, domElement });

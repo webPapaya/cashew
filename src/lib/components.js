@@ -2,9 +2,9 @@ export const createComponents = (componentsDefinition) =>
   componentsDefinition.map((componentDefinition) => {
     let isInitialized = false;
 
-    const initialize = (...args) => {
-      if (!isInitialized && componentDefinition.initialize) {
-        componentDefinition.initialize(...args);
+    const construct = (...args) => {
+      if (!isInitialized && componentDefinition.construct) {
+        componentDefinition.construct(...args);
       }
 
       isInitialized = true;
@@ -20,7 +20,7 @@ export const createComponents = (componentsDefinition) =>
 
     return {
       ...componentDefinition,
-      initialize,
+      construct,
       destruct,
       isInitialized() { return isInitialized; },
     };

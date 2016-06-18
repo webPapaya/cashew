@@ -83,7 +83,7 @@ describe('store', () => {
   });
 
   describe('subscribe callback', () => {
-    it('is called on initialize', () => {
+    it('is called on construct', () => {
       let wasCalled = false;
       const store = createStore();
       store.subscribe(() => { wasCalled = true; });

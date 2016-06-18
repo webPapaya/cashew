@@ -34,7 +34,7 @@ const COMPONENTS = [
     },
   }, {
     domId: 'counter-2',
-    initialize: ({ actions }) => {
+    construct: ({ actions }) => {
       actions.startClock();
     },
     renderComponent({ appState }) {
