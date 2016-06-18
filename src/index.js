@@ -1,5 +1,5 @@
 import { components } from './components';
-import { bootstrapBrowser } from './lib/bootstrap-browser';
+import { browser as bootstrapBrowser } from './lib/bootstrap';
 
 bootstrapBrowser(components);
 

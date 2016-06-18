@@ -8,7 +8,7 @@ const renderComponentToDom = ({ component, domElement }) => {
   ReactDOM.render(component, domElement);
 };
 
-export const bootstrapBrowser = (components) => {
+export const browser = (components) => {
   const store = createStore();
   const actions = createActions({ store });
 
