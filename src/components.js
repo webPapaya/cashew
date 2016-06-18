@@ -1,6 +1,18 @@
 import React from 'react';
 import { createComponents } from './lib/components';
 
+const File = ({ name, loaded, key }) => {
+  const loadStatus = loaded
+    ? "was loaded"
+    : "not loaded yet";
+
+  return (
+    <li key={ key }>
+      { name }, { loadStatus }
+    </li>
+  );
+};
+
 const DirectoryListing = ({ actions, fileList }) => {
   const readFiles = (evt) => {
     actions.readFiles(evt.target.files);
@@ -10,13 +22,8 @@ const DirectoryListing = ({ actions, fileList }) => {
     <div>
       <input type="file" multiple onChange={ readFiles }/>
       <ul>
-        { fileList.map(({ name }, index) => {
-          return (
-            <li key={ index }>
-              { name }
-            </li>
-          )
-        })}
+        { fileList.map(({name, loaded}, index) =>
+          <File name={ name } loaded={ loaded } key={ index } />) }
       </ul>
     </div>
   );
