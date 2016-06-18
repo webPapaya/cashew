@@ -21160,7 +21160,7 @@ module.exports = {
 
 },{}],174:[function(require,module,exports){
 (function (global){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -21183,12 +21183,52 @@ var createActions = exports.createActions = function createActions(_ref) {
   };
 
   var startClock = function startClock() {
-    global.setInterval(function () {
-      store.saveInSession({ currentTime: new Date() });
-    }, 1000);
+    var _store$retrieve2 = store.retrieve();
+
+    var clockId = _store$retrieve2.clockId;
+
+    if (!clockId) {
+      var updateClock = function updateClock() {
+        store.saveInSession({ currentTime: new Date() });
+      };
+
+      updateClock();
+      var newClockId = global.setInterval(updateClock, 1000);
+
+      store.saveInSession({ clockId: newClockId });
+    }
   };
 
-  return { incrementCounter: incrementCounter, updateCounter: updateCounter, startClock: startClock };
+  var stopClock = function stopClock() {
+    var _store$retrieve3 = store.retrieve();
+
+    var clockId = _store$retrieve3.clockId;
+
+    global.clearInterval(clockId);
+  };
+
+  var addClock = function addClock() {
+    var iDiv = document.createElement('div');
+    iDiv.id = 'counter-2';
+    document.getElementsByTagName('body')[0].appendChild(iDiv);
+    startClock();
+  };
+
+  var removeClock = function removeClock() {
+    var domElement = document.getElementById('counter-2');
+    domElement.parentNode.removeChild(domElement);
+    stopClock();
+    store.saveInSession({ clockId: null });
+  };
+
+  return {
+    addClock: addClock,
+    removeClock: removeClock,
+    incrementCounter: incrementCounter,
+    updateCounter: updateCounter,
+    startClock: startClock,
+    stopClock: stopClock
+  };
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
@@ -21247,22 +21287,36 @@ var Timer = function Timer(_ref2) {
   );
 };
 
+var ClockControlls = function ClockControlls(_ref3) {
+  var actions = _ref3.actions;
+
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(
+      'button',
+      { onClick: actions.addClock },
+      'Add Clock'
+    ),
+    _react2.default.createElement(
+      'button',
+      { onClick: actions.removeClock },
+      'Remove Clock'
+    )
+  );
+};
+
 var COMPONENTS = [{
   domId: 'counter-1',
-  render: function render(_ref3) {
-    var appState = _ref3.appState;
-    var actions = _ref3.actions;
+  render: function render(_ref4) {
+    var appState = _ref4.appState;
+    var actions = _ref4.actions;
     var counts = appState.counts;
 
     return _react2.default.createElement(Counter, { counts: counts, actions: actions });
   }
 }, {
   domId: 'counter-2',
-  construct: function construct(_ref4) {
-    var actions = _ref4.actions;
-
-    actions.startClock();
-  },
   render: function render(_ref5) {
     var appState = _ref5.appState;
     var currentTime = appState.currentTime;
@@ -21272,11 +21326,9 @@ var COMPONENTS = [{
 }, {
   domId: 'counter-3',
   render: function render(_ref6) {
-    var appState = _ref6.appState;
     var actions = _ref6.actions;
-    var counts = appState.counts;
 
-    return _react2.default.createElement(Counter, { counts: counts, actions: actions });
+    return _react2.default.createElement(ClockControlls, { actions: actions });
   }
 }];
 
