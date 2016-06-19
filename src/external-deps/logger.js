@@ -1,1 +1,1 @@
-export const warn = (message) => console.warn(message); // eslint-disable-line no-console
+export const warn = (message) => void 0;

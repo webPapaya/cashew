@@ -1,3 +1,5 @@
+import { warn } from './logger';
+
 import {
   TESTING,
   getEnv,
@@ -14,7 +16,7 @@ const nodeLocalStorage = (initialData = '{}') => {
   return { retrieveStorage, updateStorage };
 };
 
-const browserLocalStorage = (initialData = JSON.stringify({})) => {
+const browserLocalStorage = () => {
   const STORAGE_KEY = 'CASHEW_STORAGE';
 
   const retrieveStorage = () =>
@@ -23,12 +25,11 @@ const browserLocalStorage = (initialData = JSON.stringify({})) => {
   const updateStorage = (updateData) =>
     window.localStorage.setItem(STORAGE_KEY, updateData);
 
-  updateStorage(initialData);
-
   return { retrieveStorage, updateStorage };
 };
 
 export const createStorageAdapter = (data = {}) => {
   if (getEnv() === TESTING) { return nodeLocalStorage(data); }
-  return browserLocalStorage(data);
+  if( data ) { warn('Local Storage Adapter ignores initial data'); }
+  return browserLocalStorage();
 };
