@@ -14,15 +14,15 @@ const File = ({ name, loaded, key, imgSrc }) => {
   );
 };
 
-const DirectoryListing = ({ actions, fileList, allFilesLoaded }) => {
+const DirectoryListing = ({ actions, fileList, loadedFiles }) => {
   const readFiles = (evt) => {
     actions.readFiles(evt.target.files);
   };
 
-  if(!allFilesLoaded) {
+  if(loadedFiles.length !== fileList.length) {
     return (
       <div>
-        loading files
+        { loadedFiles.length } of { fileList.length } already loaded
       </div>
     )
   }
@@ -43,8 +43,8 @@ const COMPONENTS = [
     domId: 'counter-1',
     render({ actions, appState }) {
       const { fileList = [] } = appState;
-      const allFilesLoaded = fileList.every((file) => file.loaded );
-      return <DirectoryListing actions={ actions } fileList={ fileList } allFilesLoaded={ allFilesLoaded } />;
+      const loadedFiles = fileList.filter((file) => file.loaded );
+      return <DirectoryListing actions={ actions } fileList={ fileList } loadedFiles={ loadedFiles } />;
     },
   }
 ];
