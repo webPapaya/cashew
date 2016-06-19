@@ -10,7 +10,6 @@ export const createStore = ({ sessionData = {}, offlineData = {}, locationData =
   const offlineStorage = createOfflineStorage({ initialData: offlineData });
   const sessionStorage = createSessionStorage({ initialData: sessionData });
   const locationStorage = createLocationStorage({ initialData: locationData });
-  localStorage.update({});
 
   const retrieve = () => {
     const localStorageAndOffline = merge(locationStorage.retrieve(), offlineStorage.retrieve());
