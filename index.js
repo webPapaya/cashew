@@ -21226,6 +21226,7 @@ var File = function File(_ref) {
   var name = _ref.name;
   var loaded = _ref.loaded;
   var key = _ref.key;
+  var imgSrc = _ref.imgSrc;
 
   var loadStatus = loaded ? "was loaded" : "not loaded yet";
 
@@ -21234,17 +21235,30 @@ var File = function File(_ref) {
     { key: key },
     name,
     ', ',
-    loadStatus
+    loadStatus,
+    _react2.default.createElement('img', { src: imgSrc, alt: name })
   );
 };
 
 var DirectoryListing = function DirectoryListing(_ref2) {
   var actions = _ref2.actions;
   var fileList = _ref2.fileList;
+  var loadedFiles = _ref2.loadedFiles;
 
   var readFiles = function readFiles(evt) {
     actions.readFiles(evt.target.files);
   };
+
+  if (loadedFiles.length !== fileList.length) {
+    return _react2.default.createElement(
+      'div',
+      null,
+      loadedFiles.length,
+      ' of ',
+      fileList.length,
+      ' already loaded'
+    );
+  }
 
   return _react2.default.createElement(
     'div',
@@ -21256,7 +21270,8 @@ var DirectoryListing = function DirectoryListing(_ref2) {
       fileList.map(function (_ref3, index) {
         var name = _ref3.name;
         var loaded = _ref3.loaded;
-        return _react2.default.createElement(File, { name: name, loaded: loaded, key: index });
+        var dataUrl = _ref3.dataUrl;
+        return _react2.default.createElement(File, { name: name, loaded: loaded, imgSrc: dataUrl, key: index });
       })
     )
   );
@@ -21270,7 +21285,10 @@ var COMPONENTS = [{
     var _appState$fileList = appState.fileList;
     var fileList = _appState$fileList === undefined ? [] : _appState$fileList;
 
-    return _react2.default.createElement(DirectoryListing, { actions: actions, fileList: fileList });
+    var loadedFiles = fileList.filter(function (file) {
+      return file.loaded;
+    });
+    return _react2.default.createElement(DirectoryListing, { actions: actions, fileList: fileList, loadedFiles: loadedFiles });
   }
 }];
 
