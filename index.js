@@ -21159,79 +21159,53 @@ module.exports = {
 };
 
 },{}],174:[function(require,module,exports){
-(function (global){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var filesToFileList = function filesToFileList(files) {
+  var fileList = [];
+  for (var i = 0, file; file = files[i]; i++) {
+    fileList.push(file);
+  }
+  return fileList;
+};
+
 var createActions = exports.createActions = function createActions(_ref) {
   var store = _ref.store;
 
-  var updateCounter = function updateCounter(newValue) {
-    store.saveOffline({ counts: newValue });
-    store.saveInLocation({ counts: newValue });
-  };
+  var readFile = function readFile(file, id) {
+    var reader = new FileReader();
 
-  var incrementCounter = function incrementCounter() {
     var _store$retrieve = store.retrieve();
 
-    var _store$retrieve$count = _store$retrieve.counts;
-    var counts = _store$retrieve$count === undefined ? 0 : _store$retrieve$count;
+    var fileList = _store$retrieve.fileList;
 
-    updateCounter(counts + 1);
+
+    reader.onload = function (_ref2) {
+      var target = _ref2.target;
+
+      var dataUrl = target.result;
+
+      fileList[id].dataUrl = dataUrl;
+      fileList[id].loaded = true;
+
+      store.saveInSession({ fileList: fileList });
+    };
+
+    reader.readAsDataURL(file);
   };
 
-  var startClock = function startClock() {
-    var _store$retrieve2 = store.retrieve();
-
-    var clockId = _store$retrieve2.clockId;
-
-    if (!clockId) {
-      var updateClock = function updateClock() {
-        store.saveInSession({ currentTime: new Date() });
-      };
-
-      updateClock();
-      var newClockId = global.setInterval(updateClock, 1000);
-
-      store.saveInSession({ clockId: newClockId });
-    }
+  var readFiles = function readFiles(files) {
+    var fileList = filesToFileList(files);
+    store.saveInSession({ fileList: fileList });
+    fileList.forEach(readFile);
   };
 
-  var stopClock = function stopClock() {
-    var _store$retrieve3 = store.retrieve();
-
-    var clockId = _store$retrieve3.clockId;
-
-    global.clearInterval(clockId);
-  };
-
-  var addClock = function addClock() {
-    var iDiv = document.createElement('div');
-    iDiv.id = 'counter-2';
-    document.getElementsByTagName('body')[0].appendChild(iDiv);
-    startClock();
-  };
-
-  var removeClock = function removeClock() {
-    var domElement = document.getElementById('counter-2');
-    domElement.parentNode.removeChild(domElement);
-    stopClock();
-    store.saveInSession({ clockId: null });
-  };
-
-  return {
-    addClock: addClock,
-    removeClock: removeClock,
-    incrementCounter: incrementCounter,
-    updateCounter: updateCounter,
-    startClock: startClock,
-    stopClock: stopClock
-  };
+  return { readFiles: readFiles };
 };
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],175:[function(require,module,exports){
 'use strict';
 
@@ -21248,60 +21222,42 @@ var _components = require('./lib/components');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Counter = function Counter(_ref) {
-  var counts = _ref.counts;
-  var actions = _ref.actions;
+var File = function File(_ref) {
+  var name = _ref.name;
+  var loaded = _ref.loaded;
+  var key = _ref.key;
 
-  var updateCounter = function updateCounter(evt) {
-    var inputValue = parseInt(evt.currentTarget.value, 10);
-    actions.updateCounter(inputValue);
+  var loadStatus = loaded ? "was loaded" : "not loaded yet";
+
+  return _react2.default.createElement(
+    'li',
+    { key: key },
+    name,
+    ', ',
+    loadStatus
+  );
+};
+
+var DirectoryListing = function DirectoryListing(_ref2) {
+  var actions = _ref2.actions;
+  var fileList = _ref2.fileList;
+
+  var readFiles = function readFiles(evt) {
+    actions.readFiles(evt.target.files);
   };
 
   return _react2.default.createElement(
     'div',
     null,
+    _react2.default.createElement('input', { type: 'file', multiple: true, onChange: readFiles }),
     _react2.default.createElement(
-      'div',
+      'ul',
       null,
-      counts
-    ),
-    _react2.default.createElement(
-      'button',
-      { onClick: actions.incrementCounter },
-      'Click me'
-    ),
-    _react2.default.createElement('input', { type: 'range', min: '-100', max: '100', value: counts, onChange: updateCounter })
-  );
-};
-
-var Timer = function Timer(_ref2) {
-  var currentTime = _ref2.currentTime;
-
-  if (!currentTime) {
-    return _react2.default.createElement('div', null);
-  }
-  return _react2.default.createElement(
-    'div',
-    null,
-    currentTime.toUTCString()
-  );
-};
-
-var ClockControlls = function ClockControlls(_ref3) {
-  var actions = _ref3.actions;
-
-  return _react2.default.createElement(
-    'div',
-    null,
-    _react2.default.createElement(
-      'button',
-      { onClick: actions.addClock },
-      'Add Clock'
-    ),
-    _react2.default.createElement(
-      'button',
-      { onClick: actions.removeClock },
-      'Remove Clock'
+      fileList.map(function (_ref3, index) {
+        var name = _ref3.name;
+        var loaded = _ref3.loaded;
+        return _react2.default.createElement(File, { name: name, loaded: loaded, key: index });
+      })
     )
   );
 };
@@ -21309,26 +21265,12 @@ var ClockControlls = function ClockControlls(_ref3) {
 var COMPONENTS = [{
   domId: 'counter-1',
   render: function render(_ref4) {
-    var appState = _ref4.appState;
     var actions = _ref4.actions;
-    var counts = appState.counts;
+    var appState = _ref4.appState;
+    var _appState$fileList = appState.fileList;
+    var fileList = _appState$fileList === undefined ? [] : _appState$fileList;
 
-    return _react2.default.createElement(Counter, { counts: counts, actions: actions });
-  }
-}, {
-  domId: 'counter-2',
-  render: function render(_ref5) {
-    var appState = _ref5.appState;
-    var currentTime = appState.currentTime;
-
-    return _react2.default.createElement(Timer, { currentTime: currentTime });
-  }
-}, {
-  domId: 'counter-3',
-  render: function render(_ref6) {
-    var actions = _ref6.actions;
-
-    return _react2.default.createElement(ClockControlls, { actions: actions });
+    return _react2.default.createElement(DirectoryListing, { actions: actions, fileList: fileList });
   }
 }];
 
@@ -21341,6 +21283,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.createStorageAdapter = undefined;
+
+var _logger = require('./logger');
 
 var _environments = require('../lib/environments');
 
@@ -21360,8 +21304,6 @@ var nodeLocalStorage = function nodeLocalStorage() {
 };
 
 var browserLocalStorage = function browserLocalStorage() {
-  var initialData = arguments.length <= 0 || arguments[0] === undefined ? JSON.stringify({}) : arguments[0];
-
   var STORAGE_KEY = 'CASHEW_STORAGE';
 
   var retrieveStorage = function retrieveStorage() {
@@ -21372,8 +21314,6 @@ var browserLocalStorage = function browserLocalStorage() {
     return window.localStorage.setItem(STORAGE_KEY, updateData);
   };
 
-  updateStorage(initialData);
-
   return { retrieveStorage: retrieveStorage, updateStorage: updateStorage };
 };
 
@@ -21383,10 +21323,13 @@ var createStorageAdapter = exports.createStorageAdapter = function createStorage
   if ((0, _environments.getEnv)() === _environments.TESTING) {
     return nodeLocalStorage(data);
   }
-  return browserLocalStorage(data);
+  if (data) {
+    (0, _logger.warn)('Local Storage Adapter ignores initial data');
+  }
+  return browserLocalStorage();
 };
 
-},{"../lib/environments":182}],177:[function(require,module,exports){
+},{"../lib/environments":182,"./logger":178}],177:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21460,8 +21403,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var warn = exports.warn = function warn(message) {
-  return console.warn(message);
-}; // eslint-disable-line no-console
+  return void 0;
+};
 
 },{}],179:[function(require,module,exports){
 'use strict';
@@ -21511,12 +21454,12 @@ var browser = exports.browser = function browser(_ref2) {
       var domElement = document.getElementById(component.domId);
 
       if (shouldComponentRender(domElement)) {
-        component.construct({ appState: appState, actions: actions });
+        component.construct({ store: store, appState: appState, actions: actions });
 
         var renderedComponent = component.render({ appState: appState, actions: actions });
         renderComponentToDom({ component: renderedComponent, domElement: domElement });
       } else {
-        component.destruct({ appState: appState, actions: actions });
+        component.destruct({ store: store, appState: appState, actions: actions });
       }
     });
   });
