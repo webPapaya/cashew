@@ -21276,43 +21276,27 @@ var _components = require('./lib/components');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var File = function File(_ref) {
-  var name = _ref.name;
-  var loaded = _ref.loaded;
-  var key = _ref.key;
-  var imgSrc = _ref.imgSrc;
-
-  var loadStatus = loaded ? "was loaded" : "not loaded yet";
+var Loading = function Loading(_ref) {
+  var allFiles = _ref.allFiles;
+  var loadedFiles = _ref.loadedFiles;
 
   return _react2.default.createElement(
-    'li',
-    { key: key },
-    name,
-    ', ',
-    loadStatus,
-    _react2.default.createElement('img', { src: imgSrc, alt: name })
+    'div',
+    null,
+    loadedFiles.length,
+    ' of ',
+    allFiles.length,
+    ' already loaded'
   );
 };
 
-var DirectoryListing = function DirectoryListing(_ref2) {
+var Files = function Files(_ref2) {
   var actions = _ref2.actions;
   var fileList = _ref2.fileList;
-  var loadedFiles = _ref2.loadedFiles;
 
   var readFiles = function readFiles(evt) {
-    actions.readFiles(evt.target.files);
+    return actions.readFiles(evt.target.files);
   };
-
-  if (loadedFiles.length !== fileList.length) {
-    return _react2.default.createElement(
-      'div',
-      null,
-      loadedFiles.length,
-      ' of ',
-      fileList.length,
-      ' already loaded'
-    );
-  }
 
   return _react2.default.createElement(
     'div',
@@ -21331,11 +21315,38 @@ var DirectoryListing = function DirectoryListing(_ref2) {
   );
 };
 
+var File = function File(_ref4) {
+  var name = _ref4.name;
+  var loaded = _ref4.loaded;
+  var key = _ref4.key;
+  var imgSrc = _ref4.imgSrc;
+
+  var loadStatus = loaded ? "was loaded" : "not loaded yet";
+
+  return _react2.default.createElement(
+    'li',
+    { key: key },
+    name,
+    ', ',
+    loadStatus,
+    _react2.default.createElement('img', { src: imgSrc, alt: name })
+  );
+};
+
+var DirectoryListing = function DirectoryListing(_ref5) {
+  var actions = _ref5.actions;
+  var fileList = _ref5.fileList;
+  var loadedFiles = _ref5.loadedFiles;
+
+  var isFullyLoaded = loadedFiles.length !== fileList.length;
+  return isFullyLoaded ? _react2.default.createElement(Loading, { allFiles: fileList, loadedFiles: loadedFiles }) : _react2.default.createElement(Files, { actions: actions, fileList: fileList });
+};
+
 var COMPONENTS = [{
   domId: 'counter-1',
-  render: function render(_ref4) {
-    var actions = _ref4.actions;
-    var appState = _ref4.appState;
+  render: function render(_ref6) {
+    var actions = _ref6.actions;
+    var appState = _ref6.appState;
     var _appState$fileList = appState.fileList;
     var fileList = _appState$fileList === undefined ? [] : _appState$fileList;
 
