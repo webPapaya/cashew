@@ -1,6 +1,29 @@
 import React from 'react';
 import { createComponents } from './lib/components';
 
+const Loading = (({ allFiles, loadedFiles }) => {
+  return (
+    <div>
+      { loadedFiles.length } of { allFiles.length } already loaded
+    </div>
+  )
+});
+
+const Files = ({ actions, fileList }) => {
+  const readFiles = (evt) =>
+    actions.readFiles(evt.target.files);
+
+  return (
+    <div>
+      <input type="file" multiple onChange={ readFiles }/>
+      <ul>
+        { fileList.map(({name, loaded, dataUrl }, index) =>
+          <File name={ name } loaded={ loaded } imgSrc={ dataUrl } key={ index } />) }
+      </ul>
+    </div>
+  );
+};
+
 const File = ({ name, loaded, key, imgSrc }) => {
   const loadStatus = loaded
     ? "was loaded"
@@ -15,27 +38,10 @@ const File = ({ name, loaded, key, imgSrc }) => {
 };
 
 const DirectoryListing = ({ actions, fileList, loadedFiles }) => {
-  const readFiles = (evt) => {
-    actions.readFiles(evt.target.files);
-  };
-
-  if(loadedFiles.length !== fileList.length) {
-    return (
-      <div>
-        { loadedFiles.length } of { fileList.length } already loaded
-      </div>
-    )
-  }
-
-  return (
-    <div>
-      <input type="file" multiple onChange={ readFiles }/>
-      <ul>
-        { fileList.map(({name, loaded, dataUrl }, index) =>
-          <File name={ name } loaded={ loaded } imgSrc={ dataUrl } key={ index } />) }
-      </ul>
-    </div>
-  );
+  const isFullyLoaded = loadedFiles.length !== fileList.length;
+  return isFullyLoaded
+    ? <Loading allFiles={ fileList } loadedFiles={ loadedFiles } />
+    : <Files actions={ actions } fileList={ fileList } />;
 };
 
 const COMPONENTS = [
