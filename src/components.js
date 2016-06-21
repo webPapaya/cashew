@@ -1,13 +1,13 @@
 import React from 'react';
 import { createComponents } from './lib/components';
 
-const Loading = (({ allFiles, loadedFiles }) => {
+const Loading = ({ allFiles, loadedFiles }) => {
   return (
     <div>
       { loadedFiles.length } of { allFiles.length } already loaded
     </div>
   )
-});
+};
 
 const Files = ({ actions, fileList }) => {
   const readFiles = (evt) =>
