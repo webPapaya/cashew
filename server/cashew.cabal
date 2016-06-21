@@ -1,0 +1,29 @@
+name:                cashew
+version:             0.0.1
+synopsis:            cashew
+homepage:            https://github.com/webpapaya/cashew
+license:             MIT
+author:              Thomas Mayrhofer
+maintainer:          thomas@mayrhofer.at
+category:            Web
+build-type:          Simple
+cabal-version:       >=1.8
+
+executable cashwe
+  main-is:             Main.hs
+  -- other-modules:
+  build-depends:       base ==4.8.*
+                     , wai
+                     , warp
+                     , http-types
+                     , resourcet
+                     , scotty
+                     , text
+                     , bytestring
+                     , blaze-html
+                     , monad-logger
+                     , heroku
+                     , transformers
+                     , wai-middleware-static
+                     , wai-extra
+                     , time
