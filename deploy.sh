@@ -4,11 +4,11 @@ set -e # Exit with nonzero exit code if anything fails
 SOURCE_BRANCH="master"
 
 function setup {
-  cd client/ &&  npm install
+  cd client/ &&  npm install && cd ..
 }
 
 function build {
-  cd client/ &&  npm run lint && npm run test && npm run build
+  cd client/ && npm run lint && npm run test && npm run build && cd ..
 }
 
 function configGit {
@@ -38,6 +38,7 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]
     build
     exit 0
 fi
+
 
 setupDeployKeys
 configGit
