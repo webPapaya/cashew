@@ -6,6 +6,6 @@ env:
   global:
   - ENCRYPTION_LABEL: 056edb9fd3e4
   - COMMIT_AUTHOR_EMAIL: "thomas+deploy@mayrhofer.at"
-  - GIT_DEPLOY_DIR: "dist/"
+  - GIT_DEPLOY_DIR: "client/dist/"
   - GIT_DEPLOY_BRANCH: "gh-pages"
   - GIT_DEPLOY_REPO: "git@github.com:webPapaya/cashew.git"

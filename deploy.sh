@@ -4,7 +4,7 @@ set -e # Exit with nonzero exit code if anything fails
 SOURCE_BRANCH="master"
 
 function build {
-  npm run lint && npm run test && npm run build
+  cd client/ &&  npm run lint && npm run test && npm run build
 }
 
 function configGit {
