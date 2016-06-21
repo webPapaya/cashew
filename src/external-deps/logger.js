@@ -1,1 +1,1 @@
-export const warn = (message) => void 0;
+export const warn = () => void 0;

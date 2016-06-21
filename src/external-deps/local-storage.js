@@ -30,6 +30,6 @@ const browserLocalStorage = () => {
 
 export const createStorageAdapter = (data = {}) => {
   if (getEnv() === TESTING) { return nodeLocalStorage(data); }
-  if( data ) { warn('Local Storage Adapter ignores initial data'); }
+  if (data) { warn('Local Storage Adapter ignores initial data'); }
   return browserLocalStorage();
 };

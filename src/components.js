@@ -1,13 +1,11 @@
 import React from 'react';
 import { createComponents } from './lib/components';
 
-const Loading = ({ allFiles, loadedFiles }) => {
-  return (
-    <div>
-      { loadedFiles.length } of { allFiles.length } already loaded
-    </div>
-  )
-};
+const Loading = ({ allFiles, loadedFiles }) =>
+  <div>
+    { loadedFiles.length } of { allFiles.length } already loaded
+  </div>
+;
 
 const Files = ({ actions, fileList }) => {
   const readFiles = (evt) =>
@@ -17,7 +15,7 @@ const Files = ({ actions, fileList }) => {
     <div>
       <input type="file" multiple onChange={ readFiles }/>
       <ul>
-        { fileList.map(({name, loaded, dataUrl }, index) =>
+        { fileList.map(({ name, loaded, dataUrl }, index) =>
           <File name={ name } loaded={ loaded } imgSrc={ dataUrl } key={ index } />) }
       </ul>
     </div>
@@ -26,8 +24,8 @@ const Files = ({ actions, fileList }) => {
 
 const File = ({ name, loaded, key, imgSrc }) => {
   const loadStatus = loaded
-    ? "was loaded"
-    : "not loaded yet";
+    ? 'was loaded'
+    : 'not loaded yet';
 
   return (
     <li key={ key }>
@@ -49,10 +47,16 @@ const COMPONENTS = [
     domId: 'counter-1',
     render({ actions, appState }) {
       const { fileList = [] } = appState;
-      const loadedFiles = fileList.filter((file) => file.loaded );
-      return <DirectoryListing actions={ actions } fileList={ fileList } loadedFiles={ loadedFiles } />;
+      const loadedFiles = fileList.filter((file) => file.loaded);
+      return (
+        <DirectoryListing
+          actions={ actions }
+          fileList={ fileList }
+          loadedFiles={ loadedFiles }
+        />
+      );
     },
-  }
+  },
 ];
 
 export const components = createComponents(COMPONENTS);
