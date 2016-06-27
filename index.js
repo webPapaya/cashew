@@ -21220,7 +21220,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 var filesToFileList = function filesToFileList(files) {
   var fileList = [];
-  for (var i = 0, file; file = files[i]; i++) {
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
     fileList.push(file);
   }
   return fileList;
@@ -21279,10 +21280,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Loading = function Loading(_ref) {
   var allFiles = _ref.allFiles;
   var loadedFiles = _ref.loadedFiles;
-
   return _react2.default.createElement(
     'div',
-    null,
+    {
+      __self: undefined
+    },
     loadedFiles.length,
     ' of ',
     allFiles.length,
@@ -21300,16 +21302,22 @@ var Files = function Files(_ref2) {
 
   return _react2.default.createElement(
     'div',
-    null,
-    _react2.default.createElement('input', { type: 'file', multiple: true, onChange: readFiles }),
+    {
+      __self: undefined
+    },
+    _react2.default.createElement('input', { type: 'file', multiple: true, onChange: readFiles, __self: undefined
+    }),
     _react2.default.createElement(
       'ul',
-      null,
+      {
+        __self: undefined
+      },
       fileList.map(function (_ref3, index) {
         var name = _ref3.name;
         var loaded = _ref3.loaded;
         var dataUrl = _ref3.dataUrl;
-        return _react2.default.createElement(File, { name: name, loaded: loaded, imgSrc: dataUrl, key: index });
+        return _react2.default.createElement(File, { name: name, loaded: loaded, imgSrc: dataUrl, key: index, __self: undefined
+        });
       })
     )
   );
@@ -21321,15 +21329,17 @@ var File = function File(_ref4) {
   var key = _ref4.key;
   var imgSrc = _ref4.imgSrc;
 
-  var loadStatus = loaded ? "was loaded" : "not loaded yet";
+  var loadStatus = loaded ? 'was loaded' : 'not loaded yet';
 
   return _react2.default.createElement(
     'li',
-    { key: key },
+    { key: key, __self: undefined
+    },
     name,
     ', ',
     loadStatus,
-    _react2.default.createElement('img', { src: imgSrc, alt: name })
+    _react2.default.createElement('img', { src: imgSrc, alt: name, __self: undefined
+    })
   );
 };
 
@@ -21339,7 +21349,9 @@ var DirectoryListing = function DirectoryListing(_ref5) {
   var loadedFiles = _ref5.loadedFiles;
 
   var isFullyLoaded = loadedFiles.length !== fileList.length;
-  return isFullyLoaded ? _react2.default.createElement(Loading, { allFiles: fileList, loadedFiles: loadedFiles }) : _react2.default.createElement(Files, { actions: actions, fileList: fileList });
+  return isFullyLoaded ? _react2.default.createElement(Loading, { allFiles: fileList, loadedFiles: loadedFiles, __self: undefined
+  }) : _react2.default.createElement(Files, { actions: actions, fileList: fileList, __self: undefined
+  });
 };
 
 var COMPONENTS = [{
@@ -21353,13 +21365,38 @@ var COMPONENTS = [{
     var loadedFiles = fileList.filter(function (file) {
       return file.loaded;
     });
-    return _react2.default.createElement(DirectoryListing, { actions: actions, fileList: fileList, loadedFiles: loadedFiles });
+    return _react2.default.createElement(DirectoryListing, {
+      actions: actions,
+      fileList: fileList,
+      loadedFiles: loadedFiles,
+      __self: this
+    });
   }
 }];
 
 var components = exports.components = (0, _components.createComponents)(COMPONENTS);
 
-},{"./lib/components":182,"react":172}],177:[function(require,module,exports){
+},{"./lib/components":183,"react":172}],177:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.deepMerge = undefined;
+
+var _deepmerge = require('deepmerge');
+
+var _deepmerge2 = _interopRequireDefault(_deepmerge);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var deepMerge = exports.deepMerge = function deepMerge() {
+  var src = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+  var target = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+  return (0, _deepmerge2.default)(src, target);
+};
+
+},{"deepmerge":1}],178:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21390,7 +21427,7 @@ var browserLocalStorage = function browserLocalStorage() {
   var STORAGE_KEY = 'CASHEW_STORAGE';
 
   var retrieveStorage = function retrieveStorage() {
-    return window.localStorage.getItem(STORAGE_KEY);
+    return window.localStorage.getItem(STORAGE_KEY) || '{}';
   };
 
   var updateStorage = function updateStorage(updateData) {
@@ -21412,7 +21449,7 @@ var createStorageAdapter = exports.createStorageAdapter = function createStorage
   return browserLocalStorage();
 };
 
-},{"../lib/environments":183,"./logger":179}],178:[function(require,module,exports){
+},{"../lib/environments":184,"./logger":180}],179:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21479,17 +21516,17 @@ var createLocationAdapter = exports.createLocationAdapter = function createLocat
   return browserLocation(initialData);
 };
 
-},{"../lib/environments":183,"./logger":179,"querystring":33,"url":173}],179:[function(require,module,exports){
+},{"../lib/environments":184,"./logger":180,"querystring":33,"url":173}],180:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var warn = exports.warn = function warn(message) {
+var warn = exports.warn = function warn() {
   return void 0;
 };
 
-},{}],180:[function(require,module,exports){
+},{}],181:[function(require,module,exports){
 'use strict';
 
 var _components = require('./components');
@@ -21498,7 +21535,7 @@ var _bootstrap = require('./lib/bootstrap');
 
 (0, _bootstrap.browser)({ components: _components.components });
 
-},{"./components":176,"./lib/bootstrap":181}],181:[function(require,module,exports){
+},{"./components":176,"./lib/bootstrap":182}],182:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21548,7 +21585,7 @@ var browser = exports.browser = function browser(_ref2) {
   });
 };
 
-},{"../actions":175,"./store/index":184,"react-dom":34}],182:[function(require,module,exports){
+},{"../actions":175,"./store/index":185,"react-dom":34}],183:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21587,7 +21624,7 @@ var createComponents = exports.createComponents = function createComponents(comp
   });
 };
 
-},{}],183:[function(require,module,exports){
+},{}],184:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21604,7 +21641,7 @@ var setEnv = exports.setEnv = function setEnv(env) {
   currentEnv = env;
 };
 
-},{}],184:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21612,13 +21649,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.createStore = undefined;
 
-var _deepmerge = require('deepmerge');
-
-var _deepmerge2 = _interopRequireDefault(_deepmerge);
+var _deepMerge = require('../../external-deps/deep-merge');
 
 var _storage = require('./storage');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var createStore = exports.createStore = function createStore() {
   var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
@@ -21636,8 +21669,8 @@ var createStore = exports.createStore = function createStore() {
   var locationStorage = (0, _storage.createLocationStorage)({ initialData: locationData });
 
   var retrieve = function retrieve() {
-    var localStorageAndOffline = (0, _deepmerge2.default)(locationStorage.retrieve(), offlineStorage.retrieve());
-    return (0, _deepmerge2.default)(localStorageAndOffline, sessionStorage.retrieve());
+    var localStorageAndOffline = (0, _deepMerge.deepMerge)(locationStorage.retrieve(), offlineStorage.retrieve());
+    return (0, _deepMerge.deepMerge)(localStorageAndOffline, sessionStorage.retrieve());
   };
 
   var subscribe = function subscribe(next) {
@@ -21675,7 +21708,7 @@ var createStore = exports.createStore = function createStore() {
   return { retrieve: retrieve, subscribe: subscribe, saveOffline: saveOffline, saveInSession: saveInSession, saveInLocation: saveInLocation };
 };
 
-},{"./storage":185,"deepmerge":1}],185:[function(require,module,exports){
+},{"../../external-deps/deep-merge":177,"./storage":186}],186:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21742,4 +21775,4 @@ var createLocationStorage = exports.createLocationStorage = function createLocat
   return { update: update, retrieve: retrieve };
 };
 
-},{"../../external-deps/local-storage":177,"../../external-deps/location":178}]},{},[180]);
+},{"../../external-deps/local-storage":178,"../../external-deps/location":179}]},{},[181]);
