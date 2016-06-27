@@ -20,7 +20,7 @@ const browserLocalStorage = () => {
   const STORAGE_KEY = 'CASHEW_STORAGE';
 
   const retrieveStorage = () =>
-    window.localStorage.getItem(STORAGE_KEY);
+    window.localStorage.getItem(STORAGE_KEY) || '{}';
 
   const updateStorage = (updateData) =>
     window.localStorage.setItem(STORAGE_KEY, updateData);

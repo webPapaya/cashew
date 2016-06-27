@@ -1,4 +1,4 @@
-import merge from 'deepmerge';
+import { deepMerge } from '../../external-deps/deep-merge';
 import {
   createOfflineStorage,
   createSessionStorage,
@@ -12,8 +12,8 @@ export const createStore = ({ sessionData = {}, offlineData = {}, locationData =
   const locationStorage = createLocationStorage({ initialData: locationData });
 
   const retrieve = () => {
-    const localStorageAndOffline = merge(locationStorage.retrieve(), offlineStorage.retrieve());
-    return merge(localStorageAndOffline, sessionStorage.retrieve());
+    const localStorageAndOffline = deepMerge(locationStorage.retrieve(), offlineStorage.retrieve());
+    return deepMerge(localStorageAndOffline, sessionStorage.retrieve());
   };
 
   const subscribe = (next) => {
