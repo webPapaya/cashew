@@ -1,6 +1,7 @@
 const filesToFileList = (files) => {
   const fileList = [];
-  for (let i = 0, file; file = files[i]; i++) {
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
     fileList.push(file);
   }
   return fileList;
