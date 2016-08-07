@@ -1,21 +1,20 @@
-export const createActions = ({ store }) => {
+const createTimerActions = ({ store }) => {
   const tick = () => {
     const { duration = 0 } = store.retrieve();
     store.saveInSession({ duration: duration + 1 });
   };
 
-  const pauseTick = () => {
+  const pause = () => {
     const { interval } = store.retrieve();
     global.clearInterval(interval);
   };
 
-  const startTick = () => {
+  const start = () => {
     stopInterval();
-    const interval = global.setInterval(() => { tick() }, 1000);
-    store.saveInSession({ interval });
+    startInterval();
   };
 
-  const stopTick = () => {
+  const stop = () => {
     stopInterval();
     resetDuration();
   };
@@ -29,5 +28,16 @@ export const createActions = ({ store }) => {
     global.clearInterval(interval);
   };
 
-  return { tick, pauseTick, startTick, stopTick };
+  const startInterval = () => {
+    const interval = global.setInterval(() => { tick() }, 1000);
+    store.saveInSession({ interval });
+  };
+
+  return { tick, pause, start, stop };
+};
+
+
+export const createActions = ({ store }) => {
+  const timerActions = createTimerActions({ store });
+  return { timer: timerActions };
 };

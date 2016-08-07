@@ -15,20 +15,21 @@ const Timer = ({ duration = 0, onPause, onStart, onStop }) => {
 const COMPONENTS = [
   {
     construct({ actions }) {
-      actions.startTick();
+      actions.timer.start();
     },
     destruct({ actions }) {
-      actions.stopTick();
+      actions.timer.stop();
     },
     domId: 'counter-1',
     render({ appState, actions }) {
       const { duration } = appState;
+
       return (
         <Timer
           duration={ duration }
-          onPause={ actions.pauseTick }
-          onStart={ actions.startTick }
-          onStop={ actions.stopTick }
+          onStart={ actions.timer.start }
+          onPause={ actions.timer.pause }
+          onStop={ actions.timer.stop }
         />
       );
     },
