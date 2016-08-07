@@ -14,10 +14,13 @@ const Timer = ({ duration = 0, onPause, onStart, onStop }) => {
 
 const COMPONENTS = [
   {
-    domId: 'counter-1',
     construct({ actions }) {
       actions.startTick();
     },
+    destruct({ actions }) {
+      actions.stopTick();
+    },
+    domId: 'counter-1',
     render({ appState, actions }) {
       const { duration } = appState;
       return (
@@ -29,10 +32,7 @@ const COMPONENTS = [
         />
       );
     },
-    destruct({ store }) {
-      const { interval } = store.retrieve();
-      global.clearInterval(interval);
-    },
+
   },
 ];
 

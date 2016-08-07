@@ -10,14 +10,23 @@ export const createActions = ({ store }) => {
   };
 
   const startTick = () => {
+    stopInterval();
     const interval = global.setInterval(() => { tick() }, 1000);
     store.saveInSession({ interval });
   };
 
   const stopTick = () => {
+    stopInterval();
+    resetDuration();
+  };
+
+  const resetDuration = () => {
+    store.saveInSession({ duration: 0 });
+  };
+
+  const stopInterval = () => {
     const { interval } = store.retrieve();
     global.clearInterval(interval);
-    store.saveInSession({ duration: 0, interval: void 0 });
   };
 
   return { tick, pauseTick, startTick, stopTick };
