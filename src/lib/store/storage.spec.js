@@ -1,6 +1,8 @@
 import {
+  promiseThat,
   assertThat,
   equalTo,
+  isFulfilledWith,
 } from 'hamjest';
 
 import {
@@ -12,13 +14,13 @@ import {
   { name: 'session', createStorage: createSessionStorage },
   { name: 'offline', createStorage: createOfflineStorage },
 ].forEach(({ name, createStorage }) => {
-  describe(`${name} storage`, () => {
+  describe.only(`${name} storage`, () => {
     describe('retrieve', () => {
       it('responds the whole store', () => {
         const data = { dummy: 'data' };
         const offlineStore = createStorage({ initialData: data });
 
-        assertThat(offlineStore.retrieve(), equalTo(data));
+        return promiseThat(offlineStore.retrieve(), isFulfilledWith(data));
       });
     });
 
@@ -27,8 +29,11 @@ import {
         const offlineStore = createStorage();
 
         const data = { myKey: 'myValue' };
-        offlineStore.update(data);
-        assertThat(offlineStore.retrieve(), equalTo(data));
+        return offlineStore
+          .update(data)
+          .then(() => {
+            return promiseThat(offlineStore.retrieve(), isFulfilledWith(data));
+          });
       });
 
       it('AND doesn\'t override existing data', () => {
@@ -36,10 +41,12 @@ import {
         const updateData = { myKey: 'myValue' };
 
         const offlineStore = createStorage({ initialData: existingData });
-        offlineStore.update(updateData);
-
-        assertThat(offlineStore.retrieve(),
-          equalTo({ ...existingData, ...updateData }));
+        return offlineStore
+          .update(updateData)
+          .then(() => {
+            return promiseThat(offlineStore.retrieve(),
+              isFulfilledWith({ ...existingData, ...updateData }));
+          });
       });
     });
   });

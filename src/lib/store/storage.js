@@ -9,12 +9,15 @@ export const createOfflineStorage = (args = {}) => {
 
   const adapter = adapterFn(JSON.stringify(initialData));
 
-  const retrieve = () =>
-    JSON.parse(adapter.retrieveStorage());
+  const retrieve = () => {
+    return Promise.resolve(JSON.parse(adapter.retrieveStorage()));
+  }
+
 
   const update = (newData) => {
-    const data = retrieve();
-    adapter.updateStorage(JSON.stringify({ ...data, ...newData }));
+    return retrieve().then((data) => {
+      adapter.updateStorage(JSON.stringify({ ...data, ...newData }));
+    });
   };
 
   return { retrieve, update };
