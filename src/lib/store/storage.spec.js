@@ -48,6 +48,17 @@ import {
               isFulfilledWith({ ...existingData, ...updateData }));
           });
       });
+
+      it('AND responds updated data', () => {
+        const updateData = { myKey: 'myValue' };
+
+        const offlineStore = createStorage();
+        return offlineStore
+          .update(updateData)
+          .then((updatedData) => {
+            assertThat(updatedData, equalTo(updateData));
+          });
+      });
     });
   });
 });

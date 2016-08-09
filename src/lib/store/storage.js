@@ -11,13 +11,14 @@ export const createOfflineStorage = (args = {}) => {
 
   const retrieve = () => {
     return Promise.resolve(JSON.parse(adapter.retrieveStorage()));
-  }
-
+  };
 
   const update = (newData) => {
-    return retrieve().then((data) => {
-      adapter.updateStorage(JSON.stringify({ ...data, ...newData }));
-    });
+    return retrieve()
+      .then((data) => {
+        adapter.updateStorage(JSON.stringify({ ...data, ...newData }));
+      })
+      .then(() => retrieve());
   };
 
   return { retrieve, update };
@@ -25,10 +26,11 @@ export const createOfflineStorage = (args = {}) => {
 
 export const createSessionStorage = ({ initialData = {} } = {}) => {
   let data = initialData;
-  const retrieve = () => data;
+  const retrieve = () => Promise.resolve(data);
 
   const update = (newData) => {
     data = { ...data, ...newData };
+    return retrieve();
   };
 
   return { retrieve, update };
