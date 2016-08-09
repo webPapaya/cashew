@@ -14,7 +14,7 @@ import {
   { name: 'session', createStorage: createSessionStorage },
   { name: 'offline', createStorage: createOfflineStorage },
 ].forEach(({ name, createStorage }) => {
-  describe.only(`${name} storage`, () => {
+  describe(`${name} storage`, () => {
     describe('retrieve', () => {
       it('responds the whole store', () => {
         const data = { dummy: 'data' };

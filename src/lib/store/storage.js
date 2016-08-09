@@ -40,8 +40,11 @@ export const createSessionStorage = ({ initialData = {} } = {}) => {
 export const createLocationStorage = () => {
   const adapter = createLocationAdapter();
 
-  const retrieve = () => adapter.retrieveLocation();
-  const update = (newData) => adapter.updateLocation(newData);
+  const retrieve = () => Promise.resolve(adapter.retrieveLocation());
+  const update = (newData) => {
+    adapter.updateLocation(newData);
+    return retrieve();
+  };
 
   return { update, retrieve };
 };
