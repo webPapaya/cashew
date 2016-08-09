@@ -25,18 +25,21 @@ export const createStore = ({ sessionData = {}, offlineData = {}, locationData =
     .forEach((callback) => { callback(retrieve()); });
 
   const saveOffline = (newData = {}) => {
-    offlineStorage.update(newData);
-    notify();
+    return offlineStorage
+      .update(newData)
+      .then(notify);
   };
 
   const saveInSession = (newData = {}) => {
-    sessionStorage.update(newData);
-    notify();
+    return sessionStorage
+      .update(newData)
+      .then(notify);
   };
 
   const saveInLocation = (newData = {}) => {
-    locationStorage.update(newData);
-    notify();
+    return locationStorage
+      .update(newData)
+      .then(notify);
   };
 
   return { retrieve, subscribe, saveOffline, saveInSession, saveInLocation };

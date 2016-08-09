@@ -1,4 +1,6 @@
 import {
+  promiseThat,
+  isFulfilledWith,
   assertThat,
   equalTo,
 } from 'hamjest';
@@ -12,14 +14,14 @@ describe('store', () => {
         const sessionData = { session: 'data' };
         const store = createStore({ sessionData });
 
-        assertThat(store.retrieve(), equalTo(sessionData));
+        promiseThat(store.retrieve(), isFulfilledWith(sessionData));
       });
 
       it('offlineData', () => {
         const offlineData = { offline: 'data' };
         const store = createStore({ offlineData });
 
-        assertThat(store.retrieve(), equalTo(offlineData));
+        promiseThat(store.retrieve(), equalTo(offlineData));
       });
     });
   });
@@ -27,7 +29,7 @@ describe('store', () => {
   describe('retrieve', () => {
     it('returns the stores data', () => {
       const store = createStore();
-      assertThat(store.retrieve(), equalTo({}));
+      promiseThat(store.retrieve(), equalTo({}));
     });
 
     it('responds data from session AND offline store', () => {
@@ -38,7 +40,7 @@ describe('store', () => {
       store.saveOffline(offlineData);
       store.saveInSession(sessionData);
 
-      assertThat(store.retrieve(), equalTo({ ...sessionData, ...offlineData }));
+      promiseThat(store.retrieve(), equalTo({ ...sessionData, ...offlineData }));
     });
   });
 
@@ -49,16 +51,17 @@ describe('store', () => {
         const data = { newData: 'offline' };
         store.saveOffline(data);
 
-        assertThat(store.retrieve(), equalTo(data));
+        promiseThat(store.retrieve(), equalTo(data));
       });
 
       it('notifies when data changed', () => {
         let wasCalled = 0;
         const store = createStore();
         store.subscribe(() => { wasCalled += 1; });
-        store.saveOffline({});
 
-        assertThat(wasCalled, equalTo(2));
+        return store.saveOffline({}).then(() => {
+          assertThat(wasCalled, equalTo(2))
+        });
       });
     });
 
@@ -68,16 +71,17 @@ describe('store', () => {
         const data = { newData: 'session' };
         store.saveInSession(data);
 
-        assertThat(store.retrieve(), equalTo(data));
+        promiseThat(store.retrieve(), equalTo(data));
       });
 
       it('notifies when data changed', () => {
         let wasCalled = 0;
         const store = createStore();
         store.subscribe(() => { wasCalled += 1; });
-        store.saveInSession({});
 
-        assertThat(wasCalled, equalTo(2));
+        return store.saveInSession({}).then(() => {
+          assertThat(wasCalled, equalTo(2))
+        });
       });
     });
   });
@@ -97,9 +101,8 @@ describe('store', () => {
       store.subscribe((newData) => { wasCalledWith = newData; });
 
       const newData = { newData: 'newData' };
-      store.saveOffline(newData);
-
-      assertThat(wasCalledWith, equalTo(newData));
+      store.saveOffline(newData)
+        .then(() => assertThat(wasCalledWith, equalTo(newData)));
     });
   });
 });
