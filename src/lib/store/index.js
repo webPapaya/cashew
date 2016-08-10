@@ -24,23 +24,19 @@ export const createStore = ({ sessionData = {}, offlineData = {}, locationData =
   const notify = () => updateCallbacks
     .forEach((callback) => { callback(retrieve()); });
 
-  const saveOffline = (newData = {}) => {
-    return offlineStorage
+  const saveInStorage = (storage, newData) =>
+    storage
       .update(newData)
       .then(notify);
-  };
 
-  const saveInSession = (newData = {}) => {
-    return sessionStorage
-      .update(newData)
-      .then(notify);
-  };
+  const saveOffline = (newData = {}) =>
+    saveInStorage(offlineStorage, newData);
 
-  const saveInLocation = (newData = {}) => {
-    return locationStorage
-      .update(newData)
-      .then(notify);
-  };
+  const saveInSession = (newData = {}) =>
+    saveInStorage(sessionStorage, newData);
+
+  const saveInLocation = (newData = {}) =>
+    saveInStorage(locationStorage, newData);
 
   return { retrieve, subscribe, saveOffline, saveInSession, saveInLocation };
 };
