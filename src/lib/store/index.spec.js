@@ -7,7 +7,39 @@ import {
 
 import { createStore } from './index';
 
+const generateArray = (elements) => {
+  let array = [];
+  for(let i = 0; i < elements; i++) {
+    array.push(void 0);
+  }
+  return array;
+};
+
 describe('store', () => {
+  describe('race condition', () => {
+    it('doesn\'t occur', () => {
+      const length = 10;
+      const store = createStore({ sessionData: { myData: [] } });
+      const promises = generateArray(length).map((_element, index) => {
+        return store.retrieve()
+          .then((data) => {
+            return new Promise((resolve) => {
+              setTimeout(() => resolve(data), Math.random() * 10)
+            });
+          })
+          .then((data) => {
+            store.saveInSession(data.myData.push(index));
+          });
+      });
+
+      return Promise.all(promises)
+        .then(store.retrieve)
+        .then((data) => {
+          assertThat(data.myData.length, equalTo(length));
+        });
+    });
+  });
+
   describe('create', () => {
     describe('can be initialized with', () => {
       it('sessionData', () => {
