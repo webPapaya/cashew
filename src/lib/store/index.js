@@ -12,8 +12,14 @@ export const createStore = ({ sessionData = {}, offlineData = {}, locationData =
   const locationStorage = createLocationStorage({ initialData: locationData });
 
   const retrieve = () => {
-    const localStorageAndOffline = deepMerge(locationStorage.retrieve(), offlineStorage.retrieve());
-    return deepMerge(localStorageAndOffline, sessionStorage.retrieve());
+    return Promise.all([
+      locationStorage.retrieve(),
+      offlineStorage.retrieve(),
+      sessionStorage.retrieve(),
+    ]).then(([locationStorage, offlineStorage, sessionStorage]) => {
+      const localStorageAndOffline = deepMerge(locationStorage, offlineStorage);
+      return deepMerge(localStorageAndOffline, sessionStorage);
+    });
   };
 
   const subscribe = (next) => {
