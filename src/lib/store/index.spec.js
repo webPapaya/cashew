@@ -8,8 +8,8 @@ import {
 import { createStore } from './index';
 
 const generateArray = (elements) => {
-  let array = [];
-  for(let i = 0; i < elements; i++) {
+  const array = [];
+  for (let i = 0; i < elements; i++) {
     array.push(void 0);
   }
   return array;
@@ -24,7 +24,7 @@ describe('store', () => {
         return store.retrieve()
           .then((data) => {
             return new Promise((resolve) => {
-              setTimeout(() => resolve(data), Math.random() * 10)
+              setTimeout(() => resolve(data), Math.random() * 10);
             });
           })
           .then((data) => {
@@ -92,7 +92,7 @@ describe('store', () => {
         store.subscribe(() => { wasCalled += 1; });
 
         return store.saveOffline({}).then(() => {
-          assertThat(wasCalled, equalTo(2))
+          assertThat(wasCalled, equalTo(2));
         });
       });
     });
@@ -112,7 +112,7 @@ describe('store', () => {
         store.subscribe(() => { wasCalled += 1; });
 
         return store.saveInSession({}).then(() => {
-          assertThat(wasCalled, equalTo(2))
+          assertThat(wasCalled, equalTo(2));
         });
       });
     });

@@ -14,7 +14,7 @@ export const browser = ({ components }) => {
 
   components.forEach((component) => {
     store.subscribe((appState) => {
-      const domElement = document.getElementById(component.domId);
+      const domElement = global.document.getElementById(component.domId);
 
       if (shouldComponentRender(domElement)) {
         component.construct({ store, appState, actions });

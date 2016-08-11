@@ -9,11 +9,12 @@ import {
 
 const browserLocation = () => {
   const retrieveLocation = () => {
-    const search = (location.search || '').replace(/^\?/, '');
+    const search = (global.location.search || '').replace(/^\?/, '');
     return queryString.parse(search);
   };
 
   const updateLocation = (newData) => {
+    const location = global.location;
     const newSearch = { ...retrieveLocation(), ...newData };
     const newLocation = new Url();
     newLocation.host = location.host;
@@ -21,7 +22,7 @@ const browserLocation = () => {
     newLocation.hostname = location.hostname;
     newLocation.search = queryString.stringify(newSearch) || location.search;
 
-    window.history.pushState(null, null, newLocation.format());
+    global.history.pushState(null, null, newLocation.format());
   };
 
   return { retrieveLocation, updateLocation };

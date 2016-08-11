@@ -43,10 +43,8 @@ import {
         const offlineStore = createStorage({ initialData: existingData });
         return offlineStore
           .update(updateData)
-          .then(() => {
-            return promiseThat(offlineStore.retrieve(),
-              isFulfilledWith({ ...existingData, ...updateData }));
-          });
+          .then(() => promiseThat(
+            offlineStore.retrieve(), isFulfilledWith({ ...existingData, ...updateData })));
       });
 
       it('AND responds updated data', () => {

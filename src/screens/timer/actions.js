@@ -29,7 +29,7 @@ export const createActions = ({ store }) => {
   };
 
   const startInterval = () => {
-    const interval = global.setInterval(() => { tick() }, 1);
+    const interval = global.setInterval(() => { tick(); }, 1);
     store.saveInSession({ interval });
   };
 
