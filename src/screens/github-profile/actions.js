@@ -42,13 +42,11 @@ export const createActions = ({ store }) => {
       store.saveOffline({ currentScreen: SCREENS.application, userList });
     });
 
-  const storeCurrentUser = ({ username, twitter }) => {
+  const storeCurrentUser = ({ username, twitter }) =>
     store.saveOffline({ signedIn: true, currentUser: { username, twitter } });
-  };
 
-  const removeCurrentUser = () => {
+  const removeCurrentUser = () =>
     store.saveOffline({ signedIn: false, currentUser: {} });
-  };
 
   const showUserDetail = ({ userId }) => Promise.resolve()
     .then(apiGetUserList)
@@ -56,15 +54,28 @@ export const createActions = ({ store }) => {
       alert(JSON.stringify(userList[userId]));
     });
 
+  const addSignInError = () =>
+    store.saveInSession({ errors: ['Couldn\'t sign in'] });
+
+  const removeErrors = () =>
+    store.saveInSession({ errors: [] });
+
+  const handleSignInError = () => {
+    addSignInError();
+    showSignInScreen();
+  };
+
   const signIn = ({ username, password }) => Promise.resolve()
     .then(showLoadingScreen)
+    .then(removeErrors)
     .then(() => apiSignIn({ username, password }))
     .then(storeCurrentUser)
     .then(showApplicationScreen)
-    .catch(showSignInScreen);
+    .catch(handleSignInError);
 
   const signOut = () => Promise.resolve()
     .then(showLoadingScreen)
+    .then(removeErrors)
     .then(removeCurrentUser)
     .then(showSignInScreen);
 

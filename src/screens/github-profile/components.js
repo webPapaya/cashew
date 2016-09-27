@@ -11,6 +11,7 @@ class SignInScreen extends React.Component {
 
     return (
       <form>
+        { this.props.errors }
         <input ref="username" type="text" />
         <input ref="password" type="password" />
         <button onClick={ onSubmit }>Login</button>
@@ -55,8 +56,11 @@ const SCREENS_TO_COMPONENTS = {
       onSignOut={ actions.signOut }
       onShowUserDetail={ actions.showUserDetail }
     />,
-  default: ({ actions }) =>
-    <SignInScreen onSubmit={ actions.signIn } />,
+  default: ({ actions, appState }) =>
+    <SignInScreen
+      onSubmit={ actions.signIn }
+      errors={ appState.errors }
+    />,
 };
 
 export const COMPONENTS = [{
