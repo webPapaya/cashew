@@ -23,12 +23,12 @@ export const createStore = ({ sessionData = {}, offlineData = {}, locationData =
   };
 
   const subscribe = (next) => {
-    next(retrieve());
+    retrieve().then((appState) => next(appState));
     updateCallbacks.push(next);
   };
 
   const notify = () => updateCallbacks
-    .forEach((callback) => { callback(retrieve()); });
+    .forEach((callback) => { retrieve().then((appState) => callback(appState)); });
 
   const saveInStorage = (storage, newData) =>
     storage
