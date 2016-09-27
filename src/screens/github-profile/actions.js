@@ -1,3 +1,5 @@
+import { SCREENS } from './constants';
+
 const FORBIDDEN = 400;
 const apiSignIn = ({ username, password }) => {
   return new Promise((resolve, reject) => {
@@ -12,23 +14,23 @@ const apiSignIn = ({ username, password }) => {
 
 export const createActions = ({ store }) => {
   const showLoadingScreen = () => {
-    store.saveOffline({ currentScreen: 'loading' });
+    store.saveOffline({ currentScreen: SCREENS.loading });
   };
 
   const showSignInScreen = () => {
-    store.saveOffline({ currentScreen: 'sign-in' });
+    store.saveOffline({ currentScreen: SCREENS.signIn });
   };
 
   const showApplicationScreen = () => {
-    store.saveOffline({ currentScreen: 'application' });
+    store.saveOffline({ currentScreen: SCREENS.application });
   };
 
   const storeCurrentUser = ({ username, twitter }) => {
-    store.saveOffline({ currentUser: { username, twitter } });
+    store.saveOffline({ signedIn: true, currentUser: { username, twitter } });
   };
 
   const removeCurrentUser = () => {
-    store.saveOffline({ currentUser: {} });
+    store.saveOffline({ signedIn: false, currentUser: {} });
   };
 
   const signIn = ({ username, password }) => Promise.resolve()

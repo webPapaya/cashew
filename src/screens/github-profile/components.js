@@ -1,4 +1,6 @@
 import React from 'react';
+import { SCREENS } from './constants';
+
 class SignInScreen extends React.Component {
   render() {
     const onSubmit = () => {
@@ -27,14 +29,13 @@ const ApplicationScreen = ({ currentUser, onSignOut }) => {
   );
 };
 
-const SCREENS = {
-  loading: () => <div>Loading</div>,
-  application: ({ appState, actions }) =>
+const SCREENS_TO_COMPONENTS = {
+  [SCREENS.loading]: () => <div>Loading</div>,
+  [SCREENS.application]: ({ appState, actions }) =>
     <ApplicationScreen
       currentUser={ appState.currentUser }
       onSignOut={ actions.signOut }
     />,
-
   default: ({ actions }) =>
     <SignInScreen onSubmit={ actions.signIn } />,
 };
@@ -43,7 +44,7 @@ export const COMPONENTS = [{
   domId: 'counter-1',
   render({ appState, actions }) {
     const { currentScreen } = appState;
-    const screenToRender = SCREENS[currentScreen] || SCREENS.default;
+    const screenToRender = SCREENS_TO_COMPONENTS[currentScreen] || SCREENS_TO_COMPONENTS.default;
     return screenToRender({ appState, actions });
   },
 }];
