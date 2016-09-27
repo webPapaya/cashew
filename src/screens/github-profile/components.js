@@ -19,13 +19,30 @@ class SignInScreen extends React.Component {
   }
 }
 
-const ApplicationScreen = ({ currentUser, onSignOut }) => {
+
+const ApplicationScreen = ({ currentUser, userList, onSignOut }) => {
+  const htmlListOfUsers = userList.map(({ username, twitter }, index) => {
+    return (
+      <li key={ index }>
+        <ul>
+          <li>{ username }</li>
+          <li>{ twitter }</li>
+        </ul>
+      </li>
+    );
+  });
+
   return (
-    <ul>
-      <li>{ currentUser.username }</li>
-      <li>{ currentUser.twitter }</li>
-      <li><a href="#" onClick={ onSignOut }>Sign out</a></li>
-    </ul>
+    <div>
+      <ul>
+        <li>{ currentUser.username }</li>
+        <li>{ currentUser.twitter }</li>
+        <li><a href="#" onClick={ onSignOut }>Sign out</a></li>
+      </ul>
+      <ul>
+        { htmlListOfUsers }
+      </ul>
+    </div>
   );
 };
 
@@ -34,6 +51,7 @@ const SCREENS_TO_COMPONENTS = {
   [SCREENS.application]: ({ appState, actions }) =>
     <ApplicationScreen
       currentUser={ appState.currentUser }
+      userList={ appState.userList }
       onSignOut={ actions.signOut }
     />,
   default: ({ actions }) =>
