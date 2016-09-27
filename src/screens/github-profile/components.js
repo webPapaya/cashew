@@ -20,11 +20,11 @@ class SignInScreen extends React.Component {
 }
 
 
-const ApplicationScreen = ({ currentUser, userList, onSignOut }) => {
+const ApplicationScreen = ({ currentUser, userList, onSignOut, onShowUserDetail }) => {
   const htmlListOfUsers = userList.map(({ username, twitter }, index) => {
     return (
       <li key={ index }>
-        <ul>
+        <ul onClick={ () => onShowUserDetail({ userId: index }) }>
           <li>{ username }</li>
           <li>{ twitter }</li>
         </ul>
@@ -53,6 +53,7 @@ const SCREENS_TO_COMPONENTS = {
       currentUser={ appState.currentUser }
       userList={ appState.userList }
       onSignOut={ actions.signOut }
+      onShowUserDetail={ actions.showUserDetail }
     />,
   default: ({ actions }) =>
     <SignInScreen onSubmit={ actions.signIn } />,

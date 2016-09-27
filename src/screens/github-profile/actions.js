@@ -50,6 +50,12 @@ export const createActions = ({ store }) => {
     store.saveOffline({ signedIn: false, currentUser: {} });
   };
 
+  const showUserDetail = ({ userId }) => Promise.resolve()
+    .then(apiGetUserList)
+    .then((userList) => {
+      alert(JSON.stringify(userList[userId]));
+    });
+
   const signIn = ({ username, password }) => Promise.resolve()
     .then(showLoadingScreen)
     .then(() => apiSignIn({ username, password }))
@@ -62,6 +68,6 @@ export const createActions = ({ store }) => {
     .then(removeCurrentUser)
     .then(showSignInScreen);
 
-  return { signIn, signOut };
+  return { signIn, signOut, showUserDetail };
 };
 
