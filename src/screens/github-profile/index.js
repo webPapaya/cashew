@@ -5,7 +5,7 @@ const apiSignIn = ({ username, password }) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if( username === 'username' && password === 'password' ) {
-        return resolve({ username , password });
+        return resolve({ username, twitter: '@webpapaya' });
       }
       reject({ statusCode: FORBIDDEN });
     }, 500);
@@ -14,30 +14,39 @@ const apiSignIn = ({ username, password }) => {
 
 export const createActions = ({ store }) => {
   const showLoadingScreen = () => {
-    store.saveInSession({ currentScreen: 'loading' });
+    store.saveOffline({ currentScreen: 'loading' });
   };
 
   const showSignInScreen = () => {
-    store.saveInSession({ currentScreen: 'sign-in' });
+    store.saveOffline({ currentScreen: 'sign-in' });
   };
 
   const showApplicationScreen = () => {
-    store.saveInSession({ currentScreen: 'application' });
+    store.saveOffline({ currentScreen: 'application' });
   };
 
-  const signIn = ({ username, password }) => {
-    Promise.resolve()
-      .then(showLoadingScreen)
-      .then(() => apiSignIn({ username, password }))
-      .then(showApplicationScreen)
-      .catch(showSignInScreen);
+  const storeCurrentUser = ({ username, twitter }) => {
+    store.saveOffline({ currentUser: { username, twitter } });
   };
 
-  return { showLoadingScreen, signIn };
+  const removeCurrentUser = () => {
+    store.saveOffline({ currentUser: {} });
+  };
+
+  const signIn = ({ username, password }) => Promise.resolve()
+    .then(showLoadingScreen)
+    .then(() => apiSignIn({ username, password }))
+    .then(storeCurrentUser)
+    .then(showApplicationScreen)
+    .catch(showSignInScreen);
+
+  const signOut = () => Promise.resolve()
+    .then(showLoadingScreen)
+    .then(removeCurrentUser)
+    .then(showSignInScreen);
+
+  return { signIn, signOut };
 };
-
-
-
 
 
 class SignInScreen extends React.Component {
@@ -58,10 +67,26 @@ class SignInScreen extends React.Component {
   }
 }
 
+const ApplicationScreen = ({ currentUser, onSignOut }) => {
+  return (
+    <ul>
+      <li>{ currentUser.username }</li>
+      <li>{ currentUser.twitter }</li>
+      <li><a href="#" onClick={ onSignOut }>Sign out</a></li>
+    </ul>
+  );
+};
+
 const SCREENS = {
   loading: () => <div>Loading</div>,
-  application: () => <div>Application</div>,
-  default: ({ actions }) => <SignInScreen onSubmit={ actions.signIn } />,
+  application: ({ appState, actions }) =>
+    <ApplicationScreen
+      currentUser={ appState.currentUser }
+      onSignOut={ actions.signOut }
+    />,
+
+  default: ({ actions }) =>
+    <SignInScreen onSubmit={ actions.signIn } />,
 };
 
 export const COMPONENTS = [{
