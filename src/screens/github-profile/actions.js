@@ -58,10 +58,9 @@ export const createActions = ({ store }) => {
   const removeErrors = () =>
     store.saveInSession({ errors: [] });
 
-  const handleSignInError = () => {
-    addSignInError();
-    showSignInScreen();
-  };
+  const handleSignInError = () => Promise.resolve()
+    .then(addSignInError)
+    .then(showSignInScreen);
 
   const signIn = ({ username, password }) => Promise.resolve()
     .then(showLoadingScreen)
