@@ -17,13 +17,15 @@ export const browser = ({ components }) => {
       const domElement = global.document.getElementById(component.domId);
 
       if (shouldComponentRender(domElement)) {
-        component.construct({ store, appState, actions });
-
-        const renderedComponent = component.render({ appState, actions });
-        renderComponentToDom({ component: renderedComponent, domElement });
-      } else {
-        component.destruct({ store, appState, actions });
+        return Promise.resolve()
+          .then(() => component.construct({ store, appState, actions }))
+          .then(() => {
+            const renderedComponent = component.render({ appState, actions });
+            renderComponentToDom({ component: renderedComponent, domElement });
+          });
       }
+
+      return component.destruct({ store, appState, actions });
     });
   });
 };
