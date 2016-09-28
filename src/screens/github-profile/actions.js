@@ -1,5 +1,31 @@
 import { SCREENS } from './constants';
-import * as api from './api';
+
+const FORBIDDEN = 400;
+const apiSignIn = ({ username, password }) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if( username === 'username' && password === 'password' ) {
+        return resolve({ username, twitter: '@webpapaya' });
+      }
+      reject({ statusCode: FORBIDDEN });
+    }, 500);
+  });
+};
+
+const apiGetUserList = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        { username: 'username1', twitter: '@username1'},
+        { username: 'username2', twitter: '@username2'},
+        { username: 'username3', twitter: '@username3'},
+        { username: 'username4', twitter: '@username4'},
+        { username: 'username5', twitter: '@username5'},
+        { username: 'username6', twitter: '@username6'},
+      ]);
+    }, 500);
+  });
+};
 
 export const createActions = ({ store }) => {
   const showLoadingScreen = () => {
@@ -11,7 +37,7 @@ export const createActions = ({ store }) => {
   };
 
   const showApplicationScreen = () => Promise.resolve()
-    .then(api.getUserList)
+    .then(apiGetUserList)
     .then((userList) => {
       store.saveOffline({ currentScreen: SCREENS.application, userList });
     });
@@ -23,7 +49,7 @@ export const createActions = ({ store }) => {
     store.saveOffline({ signedIn: false, currentUser: {} });
 
   const showUserDetail = ({ userId }) => Promise.resolve()
-    .then(api.getUserList)
+    .then(apiGetUserList)
     .then((userList) => {
       alert(JSON.stringify(userList[userId]));
     });
@@ -42,7 +68,7 @@ export const createActions = ({ store }) => {
   const signIn = ({ username, password }) => Promise.resolve()
     .then(showLoadingScreen)
     .then(removeErrors)
-    .then(() => signIn({ username, password }))
+    .then(() => apiSignIn({ username, password }))
     .then(storeCurrentUser)
     .then(showApplicationScreen)
     .catch(handleSignInError);
