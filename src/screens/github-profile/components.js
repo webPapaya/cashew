@@ -3,7 +3,8 @@ import { SCREENS } from './constants';
 
 class SignInScreen extends React.Component {
   render() {
-    const onSubmit = () => {
+    const onSubmit = (event) => {
+      event.preventDefault();
       const username = this.refs.username.value;
       const password = this.refs.password.value;
       this.props.onSubmit({ username, password });
