@@ -2,13 +2,11 @@ import { SCREENS } from './constants';
 import * as api from './api';
 
 export const createActions = ({ store }) => {
-  const showLoadingScreen = () => {
+  const showLoadingScreen = () =>
     store.saveOffline({ currentScreen: SCREENS.loading });
-  };
 
-  const showSignInScreen = () => {
+  const showSignInScreen = () =>
     store.saveOffline({ currentScreen: SCREENS.signIn });
-  };
 
   const showApplicationScreen = () => Promise.resolve()
     .then(api.getUserList)
