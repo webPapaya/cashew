@@ -1,22 +1,22 @@
 import { SCREENS } from './constants';
 import * as Api from './api';
 
-const showLoadingScreen = (store) =>
-  store.saveOffline({ currentScreen: SCREENS.loading });
-
-const showSignInScreen = (store) =>
-  store.saveOffline({ currentScreen: SCREENS.signIn });
-
-const showApplicationScreen = (store) => Promise.resolve()
-  .then(Api.apiGetUserList)
-  .then((userList) => {
-    store.saveOffline({ currentScreen: SCREENS.application, userList });
-  });
-
-const storeCurrentUser = (store, { username, twitter }) =>
-  store.saveOffline({ signedIn: true, currentUser: { username, twitter } });
-
 export const createActions = ({ store }) => {
+  const showLoadingScreen = () =>
+    store.saveOffline({ currentScreen: SCREENS.loading });
+
+  const showSignInScreen = () =>
+    store.saveOffline({ currentScreen: SCREENS.signIn });
+
+  const showApplicationScreen = () => Promise.resolve()
+    .then(Api.apiGetUserList)
+    .then((userList) => {
+      store.saveOffline({ currentScreen: SCREENS.application, userList });
+    });
+
+  const storeCurrentUser = ({ username, twitter }) =>
+    store.saveOffline({ signedIn: true, currentUser: { username, twitter } });
+
   const removeCurrentUser = () =>
     store.saveOffline({ signedIn: false, currentUser: {} });
 
@@ -34,21 +34,21 @@ export const createActions = ({ store }) => {
 
   const handleSignInError = () => Promise.resolve()
     .then(addSignInError)
-    .then(() => showSignInScreen(store));
+    .then(showSignInScreen);
 
   const signIn = ({ username, password }) => Promise.resolve()
-    .then(() => showLoadingScreen(store))
+    .then(showLoadingScreen)
     .then(removeErrors)
     .then(() => Api.apiSignIn({ username, password }))
-    .then((...args) => storeCurrentUser(store, ...args))
-    .then(() => showApplicationScreen(store))
+    .then(storeCurrentUser)
+    .then(showApplicationScreen)
     .catch(handleSignInError);
 
   const signOut = () => Promise.resolve()
-    .then(() => showLoadingScreen(store))
+    .then(showLoadingScreen)
     .then(removeErrors)
     .then(removeCurrentUser)
-    .then(() => showSignInScreen(store));
+    .then(showSignInScreen);
 
   return { signIn, signOut, showUserDetail };
 };
