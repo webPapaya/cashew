@@ -22,18 +22,16 @@ export const createStore = ({ sessionData = {}, offlineData = {}, locationData =
     });
   };
 
-  const subscribe = (next) => {
-    retrieve().then((appState) => next(appState));
-    updateCallbacks.push(next);
-  };
+  const subscribe = (next) => retrieve()
+    .then((appState) => next(appState))
+    .then(() => updateCallbacks.push(next));
 
-  const notify = () => updateCallbacks
-    .forEach((callback) => { retrieve().then((appState) => callback(appState)); });
+  const notify = () => Promise.all(
+    updateCallbacks.map((callback) => retrieve().then((appState) => callback(appState))));
 
-  const saveInStorage = (storage, newData) =>
-    storage
-      .update(newData)
-      .then(notify);
+  const saveInStorage = (storage, newData) => storage
+    .update(newData)
+    .then(notify);
 
   const saveOffline = (newData = {}) =>
     saveInStorage(offlineStorage, newData);

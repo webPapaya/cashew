@@ -89,11 +89,11 @@ describe('store', () => {
       it('notifies when data changed', () => {
         let wasCalled = 0;
         const store = createStore();
-        store.subscribe(() => { wasCalled += 1; });
-
-        return store.saveOffline({}).then(() => {
-          assertThat(wasCalled, equalTo(2));
-        });
+        return store.subscribe(() => { wasCalled += 1; })
+          .then(() => store.saveOffline({}))
+          .then(() => {
+            assertThat(wasCalled, equalTo(2));
+          });
       });
     });
 
@@ -109,11 +109,11 @@ describe('store', () => {
       it('notifies when data changed', () => {
         let wasCalled = 0;
         const store = createStore();
-        store.subscribe(() => { wasCalled += 1; });
-
-        return store.saveInSession({}).then(() => {
-          assertThat(wasCalled, equalTo(2));
-        });
+        return store.subscribe(() => {  wasCalled += 1 })
+          .then(() => store.saveInSession({}))
+          .then(() => {
+            assertThat(wasCalled, equalTo(2))
+          });
       });
     });
   });
@@ -122,8 +122,8 @@ describe('store', () => {
     it('is called on construct', () => {
       let wasCalled = false;
       const store = createStore();
-      store.subscribe(() => { wasCalled = true; });
-      assertThat(wasCalled, equalTo(true));
+      return store.subscribe(() => { wasCalled = true; })
+        .then(() => assertThat(wasCalled, equalTo(true)));
     });
 
     it('pushes store data to subscriptions', () => {
