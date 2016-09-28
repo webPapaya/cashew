@@ -28,13 +28,11 @@ const apiGetUserList = () => {
 };
 
 export const createActions = ({ store }) => {
-  const showLoadingScreen = () => {
+  const showLoadingScreen = () =>
     store.saveOffline({ currentScreen: SCREENS.loading });
-  };
 
-  const showSignInScreen = () => {
+  const showSignInScreen = () =>
     store.saveOffline({ currentScreen: SCREENS.signIn });
-  };
 
   const showApplicationScreen = () => Promise.resolve()
     .then(apiGetUserList)
