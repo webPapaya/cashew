@@ -26,8 +26,8 @@ export const createStore = ({ sessionData = {}, offlineData = {}, locationData =
     .then((appState) => next(appState))
     .then(() => updateCallbacks.push(next));
 
-  const notify = () => Promise.all(
-    updateCallbacks.map((callback) => retrieve().then((appState) => callback(appState))));
+  const notify = () => retrieve()
+    .then((appState) => Promise.all(updateCallbacks.map((callback) => callback(appState))));
 
   const saveInStorage = (storage, newData) => storage
     .update(newData)
