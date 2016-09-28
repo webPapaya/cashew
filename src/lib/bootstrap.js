@@ -4,9 +4,8 @@ import { createStore } from './store/index';
 import { createActions } from '../actions';
 
 const shouldComponentRender = (domElement) => domElement;
-const renderComponentToDom = ({ component, domElement }) => {
+const renderComponentToDom = ({ component, domElement }) =>
   ReactDOM.render(component, domElement);
-};
 
 export const browser = ({ components }) => {
   const store = createStore();
@@ -16,16 +15,16 @@ export const browser = ({ components }) => {
     store.subscribe((appState) => {
       const domElement = global.document.getElementById(component.domId);
 
-      if (shouldComponentRender(domElement)) {
-        return Promise.resolve()
-          .then(() => component.construct({ store, appState, actions }))
-          .then(() => {
-            const renderedComponent = component.render({ appState, actions });
-            renderComponentToDom({ component: renderedComponent, domElement });
-          });
+      if (!shouldComponentRender(domElement)) {
+        component.destruct({ store, appState, actions });
       }
 
-      return component.destruct({ store, appState, actions });
+      Promise.resolve()
+        .then(() => component.construct({ store, appState, actions }))
+        .then(() => {
+          const renderedComponent = component.render({ appState, actions });
+          renderComponentToDom({ component: renderedComponent, domElement });
+        });
     });
   });
 };
