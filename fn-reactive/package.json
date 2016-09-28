@@ -1,5 +1,5 @@
 {
-  "name": "cashew-handcrafted",
+  "name": "cashew-fn-reactive",
   "version": "0.0.1",
   "description": "",
   "main": "src/index.js",
@@ -46,8 +46,7 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
-    "deepmerge": "^0.2.10",
-    "github": "^3.1.1",
+    "most": "^1.0.3",
     "react": "^15.1.0",
     "react-dom": "^15.1.0"
   }
