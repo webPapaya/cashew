@@ -1,7 +1,8 @@
 import { SCREENS } from './constants';
-import * as Api from './api';
+import { createApi }  from './api';
 
 export const createActions = ({ store }) => {
+  const api = createApi();
   const showLoadingScreen = () =>
     store.saveOffline({ currentScreen: SCREENS.loading });
 
@@ -9,7 +10,7 @@ export const createActions = ({ store }) => {
     store.saveOffline({ currentScreen: SCREENS.signIn });
 
   const showApplicationScreen = () => Promise.resolve()
-    .then(Api.apiGetUserList)
+    .then(api.apiGetUserList)
     .then((userList) => {
       store.saveOffline({ currentScreen: SCREENS.application, userList });
     });
@@ -21,7 +22,7 @@ export const createActions = ({ store }) => {
     store.saveOffline({ signedIn: false, currentUser: {} });
 
   const showUserDetail = ({ userId }) => Promise.resolve()
-    .then(Api.apiGetUserList)
+    .then(api.apiGetUserList)
     .then((userList) => {
       alert(JSON.stringify(userList[userId]));
     });
@@ -39,7 +40,7 @@ export const createActions = ({ store }) => {
   const signIn = ({ username, password }) => Promise.resolve()
     .then(showLoadingScreen)
     .then(removeErrors)
-    .then(() => Api.apiSignIn({ username, password }))
+    .then(() => api.apiSignIn({ username, password }))
     .then(storeCurrentUser)
     .then(showApplicationScreen)
     .catch(handleSignInError);
