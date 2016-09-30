@@ -1,3 +1,3 @@
 export { createActions } from './actions';
-export { COMPONENT } from './components';
+export { SCREEN } from './components';
 

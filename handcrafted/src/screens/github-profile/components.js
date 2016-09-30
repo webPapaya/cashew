@@ -63,7 +63,7 @@ const SCREENS_TO_COMPONENTS = {
     />,
 };
 
-export const COMPONENT = {
+export const SCREEN = {
   domId: 'counter-1',
   render({ appState, actions }) {
     const { currentScreen } = appState;

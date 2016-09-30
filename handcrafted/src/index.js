@@ -4,10 +4,10 @@
 // bootstrapBrowser({ components });
 
 import { createComponent } from './lib/components';
-import { COMPONENT } from './screens/github-profile/index';
+import { SCREEN } from './screens/github-profile/index';
 import { single as bootstrapComponent } from './lib/bootstrap';
 
-const component = createComponent(COMPONENT);
+const component = createComponent(SCREEN);
 const domElement = global.document.getElementById(component.domId);
 bootstrapComponent({ component, domElement });
 
