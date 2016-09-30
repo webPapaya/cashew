@@ -33,3 +33,15 @@ export const browser = ({ components }) => {
     });
   });
 };
+
+export const single = ({ component, domElement }) => {
+  const { store, actions } = initialize();
+  store.subscribe((appState) => {
+    Promise.resolve()
+      .then(() => component.construct({ store, appState, actions }))
+      .then(() => {
+        const renderedComponent = component.render({ appState, actions });
+        renderComponentToDom({ component: renderedComponent, domElement });
+      });
+  });
+};

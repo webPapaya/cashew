@@ -21,7 +21,6 @@ class SignInScreen extends React.Component {
   }
 }
 
-
 const ApplicationScreen = ({ currentUser, userList, onSignOut, onShowUserDetail }) => {
   const htmlListOfUsers = userList.map(({ username, twitter }, index) => {
     return (
