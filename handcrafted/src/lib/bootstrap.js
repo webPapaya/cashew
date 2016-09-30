@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom';
-
+import ReactDOMServer from 'react-dom/server';
 import { createStore } from './store/index';
 import { createActions } from '../actions';
 
@@ -27,4 +27,8 @@ export const browser = ({ components }) => {
         });
     });
   });
+};
+
+export const server = (component) => {
+  return ReactDOMServer.renderToString(component);
 };
