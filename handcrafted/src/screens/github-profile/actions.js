@@ -51,6 +51,11 @@ export const createActions = ({ store, createApi = createBackendApi }) => {
     .then(removeCurrentUser)
     .then(showSignInScreen);
 
-  return { signIn, signOut, showUserDetail };
+  return {
+    signIn,
+    signOut,
+    showUserDetail,
+    showLoadingScreen,
+  };
 };
 
