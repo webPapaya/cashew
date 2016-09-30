@@ -3,9 +3,11 @@
 //
 // bootstrapBrowser({ components });
 
-import { components } from './components';
+import { createComponent } from './lib/components';
+import { COMPONENT } from './screens/github-profile/index';
 import { single as bootstrapComponent } from './lib/bootstrap';
 
-const domElement = global.document.getElementById('counter-1');
-bootstrapComponent({ component: components[0], domElement });
+const component = createComponent(COMPONENT);
+const domElement = global.document.getElementById(component.domId);
+bootstrapComponent({ component, domElement });
 

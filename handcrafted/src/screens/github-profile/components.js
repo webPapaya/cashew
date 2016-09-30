@@ -63,11 +63,11 @@ const SCREENS_TO_COMPONENTS = {
     />,
 };
 
-export const COMPONENTS = [{
+export const COMPONENT = {
   domId: 'counter-1',
   render({ appState, actions }) {
     const { currentScreen } = appState;
     const screenToRender = SCREENS_TO_COMPONENTS[currentScreen] || SCREENS_TO_COMPONENTS.default;
     return screenToRender({ appState, actions });
   },
-}];
+};
