@@ -1,7 +1,7 @@
 import { SCREENS } from './constants';
-import { createApi }  from './api';
+import { createBackendApi }  from './api';
 
-export const createActions = ({ store }) => {
+export const createActions = ({ store, createApi = createBackendApi }) => {
   const api = createApi();
   const showLoadingScreen = () =>
     store.saveOffline({ currentScreen: SCREENS.loading });

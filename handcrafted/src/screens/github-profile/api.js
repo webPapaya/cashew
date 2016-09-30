@@ -1,5 +1,5 @@
 const FORBIDDEN = 400;
-export const createApi = () => {
+export const createBackendApi = () => {
   const apiSignIn = ({ username, password }) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
