@@ -7,9 +7,14 @@ const shouldComponentRender = (domElement) => domElement;
 const renderComponentToDom = ({ component, domElement }) =>
   ReactDOM.render(component, domElement);
 
-export const browser = ({ components }) => {
+const initialize = () => {
   const store = createStore();
   const actions = createActions({ store });
+  return { store, actions };
+};
+
+export const browser = ({ components }) => {
+  const { store, actions } = initialize();
 
   components.forEach((component) => {
     store.subscribe((appState) => {
