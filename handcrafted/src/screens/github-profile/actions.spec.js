@@ -17,14 +17,17 @@ const createStoreMock = () => {
   }
 };
 
-const createApiMock = () => ({
+const createSuccessApiMock = () => ({
   signIn: () => Promise.resolve(),
-  getUserList: () => Promise.resolve()
 });
 
-const initializeActions = () => {
+const createFailingApiMock = () => ({
+  signIn: () => Promise.reject(),
+});
+
+const initializeActions = (createApi = createSuccessApiMock) => {
   const store = createStoreMock();
-  return { actions: createActions({ store, createApi: createApiMock }), store };
+  return { actions: createActions({ store, createApi }), store };
 };
 
 describe('showLoadingScreen()', () => {
@@ -42,8 +45,8 @@ describe('showSignInScreen()', () => {
 });
 
 describe('signIn', () => {
-  it('redirects to application', () => {
-    const { actions, store } = initializeActions();
+  it('redirects to application on success', () => {
+    const { actions, store } = initializeActions(createSuccessApiMock);
     const username = 'username';
     const password = 'password';
 
@@ -51,6 +54,18 @@ describe('signIn', () => {
       .then(() => {
         const { currentScreen } = store.retrieve();
         assertThat(currentScreen, equalTo(SCREENS.application))
+      });
+  });
+
+  it('redirects to sign in on error', () => {
+    const { actions, store } = initializeActions(createFailingApiMock);
+    const username = 'username';
+    const password = 'password';
+
+    return actions.signIn({ username, password })
+      .then(() => {
+        const { currentScreen } = store.retrieve();
+        assertThat(currentScreen, equalTo(SCREENS.signIn))
       });
   });
 });
