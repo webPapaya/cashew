@@ -1,6 +1,6 @@
 const FORBIDDEN = 400;
 export const createBackendApi = () => {
-  const apiSignIn = ({ username, password }) => {
+  const signIn = ({ username, password }) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if( username === 'username' && password === 'password' ) {
@@ -11,7 +11,7 @@ export const createBackendApi = () => {
     });
   };
 
-  const apiGetUserList = () => {
+  const getUserList = () => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve([
@@ -26,6 +26,6 @@ export const createBackendApi = () => {
     });
   };
 
-  return { apiGetUserList, apiSignIn };
+  return { getUserList, signIn };
 };
 

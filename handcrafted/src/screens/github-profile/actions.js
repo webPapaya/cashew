@@ -10,19 +10,19 @@ export const createActions = ({ store, createApi = createBackendApi }) => {
     store.saveOffline({ currentScreen: SCREENS.signIn });
 
   const showApplicationScreen = () => Promise.resolve()
-    .then(api.apiGetUserList)
+    .then(api.getUserList)
     .then((userList) => {
       store.saveOffline({ currentScreen: SCREENS.application, userList });
     });
 
-  const storeCurrentUser = ({ username, twitter }) =>
+  const storeCurrentUser = ({ username, twitter } = {}) =>
     store.saveOffline({ signedIn: true, currentUser: { username, twitter } });
 
   const removeCurrentUser = () =>
     store.saveOffline({ signedIn: false, currentUser: {} });
 
   const showUserDetail = ({ userId }) => Promise.resolve()
-    .then(api.apiGetUserList)
+    .then(api.getUserList)
     .then((userList) => {
       alert(JSON.stringify(userList[userId]));
     });
@@ -40,7 +40,7 @@ export const createActions = ({ store, createApi = createBackendApi }) => {
   const signIn = ({ username, password }) => Promise.resolve()
     .then(showLoadingScreen)
     .then(removeErrors)
-    .then(() => api.apiSignIn({ username, password }))
+    .then(() => api.signIn({ username, password }))
     .then(storeCurrentUser)
     .then(showApplicationScreen)
     .catch(handleSignInError);
@@ -56,6 +56,7 @@ export const createActions = ({ store, createApi = createBackendApi }) => {
     signOut,
     showUserDetail,
     showLoadingScreen,
+    showSignInScreen,
   };
 };
 
