@@ -45,13 +45,26 @@ export const createActions = ({ store, createApi = createBackendApi }) => {
     .then(showApplicationScreen)
     .catch(handleSignInError);
 
+  const unsetPagination = () => Promise.resolve()
+    .then(() => store.saveInLocation({ currentUserListPage: null }));
+
   const signOut = () => Promise.resolve()
     .then(showLoadingScreen)
     .then(removeErrors)
+    .then(unsetPagination)
     .then(removeCurrentUser)
     .then(showSignInScreen);
 
+  const jumpToPage = (pageNr) => {
+    const normalizedPageNr = pageNr >= 1 ? pageNr : 1;
+    return Promise.resolve()
+      .then(() => store.saveInLocation({ currentUserListPage: normalizedPageNr }))
+      .then(() => api.getUserList(normalizedPageNr))
+      .then((userList) => store.saveOffline({ userList }));
+  };
+
   return {
+    jumpToPage,
     signIn,
     signOut,
     showUserDetail,

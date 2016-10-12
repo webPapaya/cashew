@@ -1,3 +1,9 @@
+const buildArray = (number) => {
+  const array = [];
+  for(let i = 0; i < number; i++) { array.push(i); }
+  return array;
+};
+
 const FORBIDDEN = 400;
 export const createBackendApi = () => {
   const signIn = ({ username, password }) => {
@@ -11,17 +17,15 @@ export const createBackendApi = () => {
     });
   };
 
-  const getUserList = () => {
+  const getUserList = (page = 1) => {
+    const itemsPerPage = 5;
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve([
-          { username: 'username1', twitter: '@username1'},
-          { username: 'username2', twitter: '@username2'},
-          { username: 'username3', twitter: '@username3'},
-          { username: 'username4', twitter: '@username4'},
-          { username: 'username5', twitter: '@username5'},
-          { username: 'username6', twitter: '@username6'},
-        ]);
+        resolve(
+          buildArray(itemsPerPage).map((index) =>({
+            username: `username${(itemsPerPage - 1) * page + index}`,
+            twitter: `@username${(itemsPerPage - 1) * page + index}`,
+          })));
       }, 500);
     });
   };
