@@ -15,6 +15,8 @@ export const delay = (seconds) => new Promise((resolve) =>
 const waitAtLeastSeconds = (seconds) => (action) => (args) =>
   Promise.all([action(args), delay(seconds)]).then(([actionResult]) => actionResult);
 
+const parallel = (...args) => () =>
+  Promise.all(args.map((fn) => fn()));
 
 describe('ignoreReturnFor', () => {
   it('ignores return value', () => Promise.resolve()
@@ -44,6 +46,21 @@ describe('waitAtLeast', () => {
       });
   });
 });
+
+describe('parallel', () => {
+  it('executes code blocks in parallel', () => {
+    return Promise.resolve()
+      .then(parallel(
+        () => 'promise 1',
+        () => Promise.resolve('promise 2')
+      ))
+      .then(([promise1, promise2]) => {
+        assertThat(promise1, equalTo(promise1));
+        assertThat(promise2, equalTo(promise2));
+      });
+  });
+});
+
 
 
 
