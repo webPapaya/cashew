@@ -9,6 +9,13 @@ const rethrowError = (fn) => (error) => Promise.resolve()
   .then(() => fn(error))
   .then(() => { throw error });
 
+export const delay = (seconds) => new Promise((resolve) =>
+  setTimeout(resolve, seconds * 1000));
+
+const waitAtLeastSeconds = (seconds) => (action) => (args) =>
+  Promise.all([action(args), delay(seconds)]).then(([actionResult]) => actionResult);
+
+
 describe('ignoreReturnFor', () => {
   it('ignores return value', () => Promise.resolve()
     .then(() => '1 value')
@@ -25,5 +32,18 @@ describe('rethrowError', () => {
     .catch((error) =>
       assertThat(error, equalTo('my error'))));
 });
+
+describe('waitAtLeast', () => {
+  it('waits at least 15ms', () => {
+    const startTime = +new Date();
+    return Promise.resolve()
+      .then(waitAtLeastSeconds(0.015)(() => {}))
+      .then(() => {
+        const timeDifference = new Date() - startTime;
+        assertThat(timeDifference >= 10, equalTo(true));
+      });
+  });
+});
+
 
 
