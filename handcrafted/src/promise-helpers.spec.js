@@ -1,24 +1,26 @@
 import { assertThat, equalTo } from 'hamjest';
 
-const ignoreReturnFor = (fn) => (arg) => {
+export const ignoreReturnFor = (fn) => (arg) => {
   fn(arg);
   return arg;
 };
 
-const rethrowError = (fn) => (error) => Promise.resolve()
+export const debug = ignoreReturnFor((arg) => console.log(arg));
+
+export const rethrowError = (fn) => (error) => Promise.resolve()
   .then(() => fn(error))
   .then(() => { throw error });
 
 export const delay = (seconds) =>
   new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 
-const waitAtLeastSeconds = (seconds) => (action) => (args) =>
+export const waitAtLeastSeconds = (seconds) => (action) => (args) =>
   Promise.all([action(args), delay(seconds)]).then(([actionResult]) => actionResult);
 
-const parallel = (...args) => () =>
+export const parallel = (...args) => () =>
   Promise.all(args.map((fn) => fn()));
 
-const timeoutAfter = (seconds) => (action) => (args) => {
+export const timeoutAfter = (seconds) => (action) => (args) => {
   return new Promise((resolve, reject) => {
     const timeoutId = setTimeout(() => reject('timeout'), seconds * 1000);
     Promise.resolve(action(args)).then((result) => {
@@ -71,7 +73,7 @@ describe('parallel', () => {
   });
 });
 
-describe.only('timeoutAfter', () => {
+describe('timeoutAfter', () => {
   it('throws after 10ms', () => {
     const timeoutFast = timeoutAfter(0.01);
     const longRunningPromise = () => delay(0.1);
